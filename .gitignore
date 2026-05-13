@@ -1,0 +1,11 @@
+# Local configuration — contains machine-specific paths, never commit.
+config/env.sh
+
+# Java compilation output
+java/out/
+*.class
+
+# bpftrace temp files
+/tmp/correlate.*.bt
+
+.claude

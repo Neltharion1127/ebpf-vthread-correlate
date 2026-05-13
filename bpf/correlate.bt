@@ -1,0 +1,90 @@
+#!/usr/bin/env bpftrace
+//
+// correlate.bt — correlate virtual thread lifecycle events with syscalls.
+//
+// Requires USDT probes compiled into libjvm:
+//   hotspot:vthread__thaw(uintptr_t vthread_id, int thaw_kind, uintptr_t trace_buffer_addr)
+//   hotspot:vthread__freeze(uintptr_t vthread_id, int freeze_result, uintptr_t trace_buffer_addr)
+//
+// LIBJVM_PATH is replaced at runtime by run.sh before bpftrace sees this file.
+//
+// Map:
+//   @vthread[(uint64)curtask] = vthread_id
+//   Keyed by task_struct pointer rather than tid to avoid the namespace-aware
+//   bpf_get_ns_current_pid_tgid helper, which returns -EINVAL in container
+//   environments (e.g. OrbStack).  curtask is unique per OS thread and is
+//   accessible in both uprobe and tracepoint contexts.
+//
+
+BEGIN
+{
+    // freeze_result enum from continuationFreezeThaw.cpp
+    @freeze_name[0] = "ok";
+    @freeze_name[1] = "ok_bottom";
+    @freeze_name[2] = "pinned_cs";
+    @freeze_name[3] = "pinned_native";
+    @freeze_name[4] = "pinned_monitor";
+    @freeze_name[5] = "exception";
+
+    // thaw_kind enum from continuation.hpp
+    @thaw_name[0] = "top";
+    @thaw_name[1] = "return_barrier";
+    @thaw_name[2] = "return_barrier_ex";
+
+    printf("ebpf-vthread-correlate: tracing started\n");
+    printf("  USDT source: LIBJVM_PATH\n");
+    printf("  Watching: vthread__thaw, vthread__freeze, sys_enter_write\n\n");
+}
+
+// vthread__thaw fires when a virtual thread is about to resume execution on a
+// carrier thread.
+//   arg0 = virtual thread ID
+//   arg1 = thaw_kind (top=0, return_barrier=1, return_barrier_exception=2)
+//   arg2 = trace buffer address (off-heap memory allocated per virtual thread)
+usdt:LIBJVM_PATH:hotspot:vthread__thaw
+{
+    $vthread_id   = arg0;
+    $thaw_kind    = arg1;
+    $trace_buffer = arg2;
+    $trace_id     = *(uint64 *)uptr($trace_buffer);
+    @vthread[(uint64)curtask] = $vthread_id;
+    printf("[thaw]   carrier tid=%-6d  vthread_id=0x%lx  kind=%-18s  trace_buf=0x%lx  trace_id=%lu\n",
+           tid, $vthread_id, @thaw_name[(int64)$thaw_kind], $trace_buffer, $trace_id);
+}
+
+// vthread__freeze fires when a virtual thread is about to yield (park/block).
+//   arg0 = virtual thread ID
+//   arg1 = freeze_result (ok=0, pinned_cs=2, pinned_native=3, pinned_monitor=4)
+//   arg2 = trace buffer address
+// We remove the carrier→vthread mapping so stale entries don't misattribute
+// syscalls made by the next virtual thread on the same carrier.
+usdt:LIBJVM_PATH:hotspot:vthread__freeze
+{
+    $vthread_id    = arg0;
+    $freeze_result = arg1;
+    $trace_buffer  = arg2;
+    printf("[freeze] carrier tid=%-6d  vthread_id=0x%lx  result=%-16s  trace_buf=0x%lx\n",
+           tid, $vthread_id, @freeze_name[(int64)$freeze_result], $trace_buffer);
+    if (@vthread[(uint64)curtask]) {
+        delete(@vthread[(uint64)curtask]);
+    }
+}
+
+// sys_enter_write fires for every write(2) syscall.
+// If the calling tid is currently executing a virtual thread, print the
+// attribution; otherwise the write belongs to a plain OS thread and is ignored.
+tracepoint:syscalls:sys_enter_write
+{
+    if (@vthread[(uint64)curtask]) {
+        printf("[write]  carrier tid=%-6d  vthread_id=0x%lx  fd=%d  count=%d\n",
+               tid, @vthread[(uint64)curtask], args->fd, args->count);
+    }
+}
+
+END
+{
+    printf("\nebpf-vthread-correlate: tracing stopped\n");
+    clear(@vthread);
+    clear(@freeze_name);
+    clear(@thaw_name);
+}
