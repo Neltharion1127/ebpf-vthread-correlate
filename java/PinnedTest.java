@@ -11,9 +11,9 @@ public class PinnedTest {
         for (int i = 0; i < 5; i++) {
             final int id = i;
             Thread.ofVirtual().start(() -> {
-                synchronized (lock) {  // 持有 monitor
+                synchronized (lock) {  // Hold the monitor.
                     System.out.println("VT-" + id + " inside synchronized, parking...");
-                    LockSupport.parkNanos(500_000_000L);  // 在 synchronized 里 park → PINNED
+                    LockSupport.parkNanos(500_000_000L);  // Park inside synchronized -> PINNED.
                     System.out.println("VT-" + id + " resumed");
                 }
             });

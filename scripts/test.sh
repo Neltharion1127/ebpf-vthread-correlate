@@ -1,16 +1,14 @@
 #!/usr/bin/env bash
-# test.sh — compile and run VThreadTest using the self-built JDK.
+# test.sh — compile and run a Java test using the self-built JDK.
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 ROOT_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
 
 CONFIG="$ROOT_DIR/config/env.sh"
-OUT_DIR="$ROOT_DIR/java/out"
 
 # Optional first argument selects the test class (default: VThreadTest).
 CLASS="${1:-VThreadTest}"
-JAVA_SRC="$ROOT_DIR/java/${CLASS}.java"
 
 # Load user configuration.
 if [[ ! -f "$CONFIG" ]]; then
@@ -29,18 +27,30 @@ if [[ ! -x "$JAVA_HOME/bin/javac" ]]; then
     exit 1
 fi
 
+export PATH="$JAVA_HOME/bin:$PATH"
+
 echo "Using JDK: $JAVA_HOME"
+echo "Compiling project with Maven ..."
 
-mkdir -p "$OUT_DIR"
+cd "$ROOT_DIR"
+mvn clean compile -q
 
-if [[ ! -f "$JAVA_SRC" ]]; then
-    echo "error: $JAVA_SRC not found" >&2
+if [[ ! -f "$ROOT_DIR/target/classes/${CLASS}.class" ]]; then
+    echo "error: compiled class $CLASS not found under target/classes" >&2
     exit 1
 fi
 
-echo "Compiling $JAVA_SRC ..."
-"$JAVA_HOME/bin/javac" -d "$OUT_DIR" "$JAVA_SRC"
+echo "Resolving runtime classpath ..."
+CP="$(mvn -q dependency:build-classpath -DincludeScope=runtime -Dmdep.outputFile=/dev/stdout -q 2>/dev/null | tail -1)"
+if [[ -n "$CP" ]]; then
+    CP="target/classes:$CP"
+else
+    CP="target/classes"
+fi
 
 echo "Running $CLASS ..."
 echo ""
-"$JAVA_HOME/bin/java" -cp "$OUT_DIR" "$CLASS"
+"$JAVA_HOME/bin/java" \
+    --add-exports java.base/sun.misc=ALL-UNNAMED \
+    -cp "$CP" \
+    "$CLASS"

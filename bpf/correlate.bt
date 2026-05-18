@@ -8,17 +8,23 @@
 //
 // LIBJVM_PATH is replaced at runtime by run.sh before bpftrace sees this file.
 //
-// Map:
+// Maps:
 //   @vthread[(uint64)curtask] = vthread_id
-//   Keyed by task_struct pointer rather than tid to avoid the namespace-aware
-//   bpf_get_ns_current_pid_tgid helper, which returns -EINVAL in container
-//   environments (e.g. OrbStack).  curtask is unique per OS thread and is
-//   accessible in both uprobe and tracepoint contexts.
+//   @vtbuf[(uint64)curtask]   = trace_buffer_address
+//
+// Buffer layout (64 bytes, allocated per virtual thread):
+//   [0-7]   virtual thread ID (int64, written at construction)
+//   [8-23]  OTel traceId (16 bytes / 128-bit, written byte-by-byte big-endian)
+//   [24-31] OTel spanId  (8 bytes / 64-bit, written byte-by-byte big-endian)
+//   [32-63] reserved
+//
+// Endianness: Java writes traceId/spanId byte-by-byte (big-endian / network order).
+// eBPF reads raw uint64 (little-endian on ARM64 LE / x86_64), then bswap() at
+// printf time converts back to big-endian so the hex matches the OTel string.
 //
 
 BEGIN
 {
-    // freeze_result enum from continuationFreezeThaw.cpp
     @freeze_name[0] = "ok";
     @freeze_name[1] = "ok_bottom";
     @freeze_name[2] = "pinned_cs";
@@ -26,58 +32,63 @@ BEGIN
     @freeze_name[4] = "pinned_monitor";
     @freeze_name[5] = "exception";
 
-    // thaw_kind enum from continuation.hpp
     @thaw_name[0] = "top";
     @thaw_name[1] = "return_barrier";
     @thaw_name[2] = "return_barrier_ex";
 
     printf("ebpf-vthread-correlate: tracing started\n");
     printf("  USDT source: LIBJVM_PATH\n");
-    printf("  Watching: vthread__thaw, vthread__freeze, sys_enter_write\n\n");
+    printf("  Watching: vthread__thaw, vthread__freeze, sys_enter_write\n");
+    printf("  Buffer layout: [0-7] vtId  [8-23] traceId  [24-31] spanId\n\n");
 }
 
-// vthread__thaw fires when a virtual thread is about to resume execution on a
-// carrier thread.
-//   arg0 = virtual thread ID
-//   arg1 = thaw_kind (top=0, return_barrier=1, return_barrier_exception=2)
-//   arg2 = trace buffer address (off-heap memory allocated per virtual thread)
 usdt:LIBJVM_PATH:hotspot:vthread__thaw
 {
     $vthread_id   = arg0;
     $thaw_kind    = arg1;
     $trace_buffer = arg2;
-    $trace_id     = *(uint64 *)uptr($trace_buffer);
+
+    $trace_hi = *(uint64 *)uptr($trace_buffer + 8);
+    $trace_lo = *(uint64 *)uptr($trace_buffer + 16);
+    $span_id  = *(uint64 *)uptr($trace_buffer + 24);
+
     @vthread[(uint64)curtask] = $vthread_id;
-    printf("[thaw]   carrier tid=%-6d  vthread_id=0x%lx  kind=%-18s  trace_buf=0x%lx  trace_id=%lu\n",
-           tid, $vthread_id, @thaw_name[(int64)$thaw_kind], $trace_buffer, $trace_id);
+    @vtbuf[(uint64)curtask]   = $trace_buffer;
+
+    printf("[thaw]   carrier tid=%-6d  vthread_id=0x%lx  kind=%-18s  traceId=%016lx%016lx  spanId=%016lx\n",
+           tid, $vthread_id, @thaw_name[(int64)$thaw_kind], bswap($trace_hi), bswap($trace_lo), bswap($span_id));
 }
 
-// vthread__freeze fires when a virtual thread is about to yield (park/block).
-//   arg0 = virtual thread ID
-//   arg1 = freeze_result (ok=0, pinned_cs=2, pinned_native=3, pinned_monitor=4)
-//   arg2 = trace buffer address
-// We remove the carrier→vthread mapping so stale entries don't misattribute
-// syscalls made by the next virtual thread on the same carrier.
 usdt:LIBJVM_PATH:hotspot:vthread__freeze
 {
     $vthread_id    = arg0;
     $freeze_result = arg1;
     $trace_buffer  = arg2;
-    printf("[freeze] carrier tid=%-6d  vthread_id=0x%lx  result=%-16s  trace_buf=0x%lx\n",
-           tid, $vthread_id, @freeze_name[(int64)$freeze_result], $trace_buffer);
-    if (@vthread[(uint64)curtask]) {
-        delete(@vthread[(uint64)curtask]);
+
+    $trace_hi = *(uint64 *)uptr($trace_buffer + 8);
+    $trace_lo = *(uint64 *)uptr($trace_buffer + 16);
+    $span_id  = *(uint64 *)uptr($trace_buffer + 24);
+
+    printf("[freeze] carrier tid=%-6d  vthread_id=0x%lx  result=%-16s  traceId=%016lx%016lx  spanId=%016lx\n",
+           tid, $vthread_id, @freeze_name[(int64)$freeze_result], bswap($trace_hi), bswap($trace_lo), bswap($span_id));
+
+    $carrier = (uint64)curtask;
+    if (@vthread[$carrier]) {
+        delete(@vthread[$carrier]);
+        delete(@vtbuf[$carrier]);
     }
 }
 
-// sys_enter_write fires for every write(2) syscall.
-// If the calling tid is currently executing a virtual thread, print the
-// attribution; otherwise the write belongs to a plain OS thread and is ignored.
 tracepoint:syscalls:sys_enter_write
 {
     if (@vthread[(uint64)curtask]) {
-        printf("[write]  carrier tid=%-6d  vthread_id=0x%lx  fd=%d  count=%d\n",
-               tid, @vthread[(uint64)curtask], args->fd, args->count);
+        $buf = @vtbuf[(uint64)curtask];
+        $trace_hi = *(uint64 *)uptr($buf + 8);
+        $trace_lo = *(uint64 *)uptr($buf + 16);
+        $span_id  = *(uint64 *)uptr($buf + 24);
+
+        printf("[write]  carrier tid=%-6d  vthread_id=0x%lx  fd=%d  count=%d  traceId=%016lx%016lx  spanId=%016lx\n",
+               tid, @vthread[(uint64)curtask], args->fd, args->count, bswap($trace_hi), bswap($trace_lo), bswap($span_id));
     }
 }
 
@@ -85,6 +96,7 @@ END
 {
     printf("\nebpf-vthread-correlate: tracing stopped\n");
     clear(@vthread);
+    clear(@vtbuf);
     clear(@freeze_name);
     clear(@thaw_name);
 }

@@ -1,23 +1,93 @@
+import io.opentelemetry.api.OpenTelemetry;
+import io.opentelemetry.api.trace.Span;
+import io.opentelemetry.api.trace.Tracer;
+import io.opentelemetry.context.Context;
+import io.opentelemetry.context.ContextStorage;
+import io.opentelemetry.context.Scope;
+import io.opentelemetry.sdk.OpenTelemetrySdk;
+import io.opentelemetry.sdk.trace.SdkTracerProvider;
+import io.opentelemetry.sdk.trace.export.SimpleSpanProcessor;
+import io.opentelemetry.exporter.logging.LoggingSpanExporter;
+
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.locks.LockSupport;
 
 public class VThreadTest {
-    public static void main(String[] args) throws Exception {
-        System.out.println("Starting virtual thread test...");
 
-        for (int i = 0; i < 5; i++) {
-            final int id = i;
-            Thread vt = Thread.ofVirtual().start(() -> {
-                // println triggers write(2) on stdout — should appear in bpftrace output
-                // attributed to the virtual thread currently mounted on this carrier.
-                System.out.println("VT-" + id + " parking...");
-                // parkNanos causes a freeze: the virtual thread yields the carrier thread.
-                LockSupport.parkNanos(500_000_000L); // 500 ms
-                // On resume a thaw fires before this line executes.
-                System.out.println("VT-" + id + " resumed");
-            });
+    public static void main(String[] args) throws Exception {
+
+        // Register the custom ContextStorage before initializing the SDK.
+        ContextStorage.addWrapper(BufferSyncContextStorage::new);
+
+        SdkTracerProvider tracerProvider = SdkTracerProvider.builder()
+                .addSpanProcessor(SimpleSpanProcessor.create(
+                        LoggingSpanExporter.create()))
+                .build();
+
+        OpenTelemetry otel = OpenTelemetrySdk.builder()
+                .setTracerProvider(tracerProvider)
+                .buildAndRegisterGlobal();
+
+        Tracer tracer = otel.getTracer("vthread-test");
+
+        System.out.println("=== OTel + auto buffer sync ===");
+
+        Span parentSpan = tracer.spanBuilder("parent-request").startSpan();
+        try (Scope parentScope = parentSpan.makeCurrent()) {
+
+            String parentTraceId = parentSpan.getSpanContext().getTraceId();
+            System.out.println("[Main] traceId=" + parentTraceId);
+
+            List<Thread> vts = new ArrayList<>();
+            for (int i = 0; i < 3; i++) {
+                final int id = i;
+                final Context parentCtx = Context.current();
+
+                Thread vt = Thread.ofVirtual().start(() -> {
+                    try (Scope s = parentCtx.makeCurrent()) {
+
+                        // Create a child span; the buffer is updated automatically.
+                        Span childSpan = tracer.spanBuilder("vt-task-" + id).startSpan();
+                        try (Scope childScope = childSpan.makeCurrent()) {
+
+                            System.out.println("VT-" + id
+                                    + " threadId=" + Thread.currentThread().threadId()
+                                    + " traceId=" + childSpan.getSpanContext().getTraceId()
+                                    + " spanId=" + childSpan.getSpanContext().getSpanId());
+
+                            // Simulate a nested span; the buffer should switch to the new spanId.
+                            Span innerSpan = tracer.spanBuilder("vt-inner-" + id).startSpan();
+                            try (Scope innerScope = innerSpan.makeCurrent()) {
+                                System.out.println("VT-" + id + " inner spanId="
+                                        + innerSpan.getSpanContext().getSpanId());
+                                LockSupport.parkNanos(500_000_000L);
+                            } finally {
+                                innerSpan.end();
+                            }
+                            // After scope.close(), the buffer should restore the child spanId.
+
+                            System.out.println("VT-" + id + " resumed, back to spanId="
+                                    + Span.current().getSpanContext().getSpanId());
+
+                        } finally {
+                            childSpan.end();
+                        }
+                    }
+                });
+                vts.add(vt);
+            }
+            for (Thread vt : vts) vt.join();
+
+        } finally {
+            parentSpan.end();
         }
 
-        Thread.sleep(3000);
-        System.out.println("Done.");
+        try {
+            tracerProvider.shutdown();
+            System.out.println("Done.");
+        } finally {
+            BufferSyncContextStorage.closePlatformThreadBuffer();
+        }
     }
 }

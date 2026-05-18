@@ -3,9 +3,11 @@ config/env.sh
 
 # Java compilation output
 java/out/
+target/
 *.class
 
 # bpftrace temp files
 /tmp/correlate.*.bt
 
 .claude
+.vscode
