@@ -1,3 +1,5 @@
+package uk.ac.ncl.jensen;
+
 import io.opentelemetry.api.OpenTelemetry;
 import io.opentelemetry.api.trace.Span;
 import io.opentelemetry.api.trace.Tracer;

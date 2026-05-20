@@ -23,6 +23,18 @@ fi
 
 export PATH="$JAVA_HOME/bin:$PATH"
 
+# Locate mvn: prefer env var, then PATH, then SDKMAN's well-known location.
+if [[ -z "${MVN:-}" ]]; then
+    if command -v mvn &>/dev/null; then
+        MVN=mvn
+    elif [[ -x "${HOME}/.sdkman/candidates/maven/current/bin/mvn" ]]; then
+        MVN="${HOME}/.sdkman/candidates/maven/current/bin/mvn"
+    else
+        echo "error: mvn not found — set MVN=/path/to/mvn or install Maven" >&2
+        exit 1
+    fi
+fi
+
 cd "$PROJECT_DIR"
 
 echo "=== Using JDK: $JAVA_HOME ==="
@@ -30,16 +42,17 @@ echo "=== Using JDK: $JAVA_HOME ==="
 
 echo ""
 echo "=== Compiling with custom JDK ==="
-mvn clean compile -q
+"$MVN" clean compile -q
 
 echo ""
 echo "=== Resolving classpath ==="
-CP=$(mvn -q dependency:build-classpath -DincludeScope=runtime -Dmdep.outputFile=/dev/stdout -q 2>/dev/null | tail -1)
+CP=$("$MVN" -q dependency:build-classpath -DincludeScope=runtime -Dmdep.outputFile=/dev/stdout -q 2>/dev/null | tail -1)
 CP="target/classes:$CP"
 
 echo ""
 echo "=== Running VThreadTest ==="
 "$JAVA_HOME/bin/java" \
-    --add-exports java.base/sun.misc=ALL-UNNAMED \
+    --enable-preview \
+    --enable-native-access=ALL-UNNAMED \
     -cp "$CP" \
-    VThreadTest
+    uk.ac.ncl.jensen.VThreadTest

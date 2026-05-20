@@ -1,6 +1,6 @@
+package uk.ac.ncl.jensen;
+
 import java.util.concurrent.locks.LockSupport;
-import java.net.ServerSocket;
-import java.net.Socket;
 
 public class PinnedTest {
     static final Object lock = new Object();

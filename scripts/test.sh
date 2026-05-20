@@ -8,7 +8,14 @@ ROOT_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
 CONFIG="$ROOT_DIR/config/env.sh"
 
 # Optional first argument selects the test class (default: VThreadTest).
+# Accepts either short name (VThreadTest) or fully-qualified name.
 CLASS="${1:-VThreadTest}"
+PACKAGE="uk.ac.ncl.jensen"
+case "$CLASS" in
+    *.*) FQCN="$CLASS" ;;          # already fully-qualified
+    *)   FQCN="${PACKAGE}.${CLASS}" ;;
+esac
+CLASS_FILE="target/classes/$(echo "$FQCN" | tr '.' '/').class"
 
 # Load user configuration.
 if [[ ! -f "$CONFIG" ]]; then
@@ -35,8 +42,8 @@ echo "Compiling project with Maven ..."
 cd "$ROOT_DIR"
 mvn clean compile -q
 
-if [[ ! -f "$ROOT_DIR/target/classes/${CLASS}.class" ]]; then
-    echo "error: compiled class $CLASS not found under target/classes" >&2
+if [[ ! -f "$ROOT_DIR/$CLASS_FILE" ]]; then
+    echo "error: compiled class $FQCN not found ($ROOT_DIR/$CLASS_FILE)" >&2
     exit 1
 fi
 
@@ -48,9 +55,10 @@ else
     CP="target/classes"
 fi
 
-echo "Running $CLASS ..."
+echo "Running $FQCN ..."
 echo ""
 "$JAVA_HOME/bin/java" \
-    --add-exports java.base/sun.misc=ALL-UNNAMED \
+    --enable-preview \
+    --enable-native-access=ALL-UNNAMED \
     -cp "$CP" \
-    "$CLASS"
+    "$FQCN"
