@@ -18,8 +18,7 @@ import java.util.concurrent.TimeUnit;
 @OutputTimeUnit(TimeUnit.NANOSECONDS)
 @Warmup(iterations = 3, time = 1)
 @Measurement(iterations = 5, time = 1)
-@Fork(value = 1, jvmArgs = {"--enable-preview", "--enable-native-access=ALL-UNNAMED"},
-      jvm = "/home/jie/csc8499/jdk21u/build/linux-aarch64-server-release/images/jdk/bin/java")
+@Fork(value = 1, jvmArgs = {"--enable-preview", "--enable-native-access=ALL-UNNAMED"})
 @State(org.openjdk.jmh.annotations.Scope.Thread)
 public class ContextStorageBenchmark {
 
@@ -29,6 +28,9 @@ public class ContextStorageBenchmark {
 
     @Param({"false", "true"})
     private boolean useBufferSync;
+
+    @Param({"1", "3", "5"})
+    private int spanDepth;
 
     @Setup(Level.Trial)
     public void setup() {
@@ -48,14 +50,20 @@ public class ContextStorageBenchmark {
     }
 
     @Benchmark
-    public void makeCurrent_and_close() {
+    public void nested_spans() {
         try (Scope s = parentCtx.makeCurrent()) {
-            Span child = tracer.spanBuilder("child").startSpan();
-            try (Scope cs = child.makeCurrent()) {
-                // simulate one span lifecycle
-            } finally {
-                child.end();
-            }
+            createNestedSpans(spanDepth);
+        }
+    }
+
+    private void createNestedSpans(int depth) {
+        if (depth <= 0) return;
+
+        Span span = tracer.spanBuilder("level-" + depth).startSpan();
+        try (Scope s = span.makeCurrent()) {
+            createNestedSpans(depth - 1);
+        } finally {
+            span.end();
         }
     }
 }
