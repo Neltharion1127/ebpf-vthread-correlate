@@ -9,6 +9,7 @@ import io.opentelemetry.context.Scope;
 import java.lang.foreign.Arena;
 import java.lang.foreign.MemorySegment;
 import java.lang.foreign.ValueLayout;
+import java.lang.invoke.VarHandle;
 
 public class BufferSyncContextStorage implements ContextStorage {
 
@@ -71,6 +72,7 @@ public class BufferSyncContextStorage implements ContextStorage {
                 seg.set(ValueLayout.JAVA_BYTE, i, (byte) 0);
             }
         }
+        VarHandle.releaseFence();
     }
 
     private void writeTraceId(MemorySegment seg, String traceId) {
