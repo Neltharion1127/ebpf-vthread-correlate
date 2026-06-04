@@ -9,5 +9,7 @@ target/
 # bpftrace temp files
 /tmp/correlate.*.bt
 
+*.so
+
 .claude
 .vscode

@@ -41,18 +41,36 @@ echo "=== Using JDK: $JAVA_HOME ==="
 "$JAVA_HOME/bin/java" -version
 
 echo ""
-echo "=== Compiling with custom JDK ==="
-"$MVN" clean compile -q
+echo "=== Building shaded jar with custom JDK ==="
+"$MVN" clean package -q -DskipTests
 
-echo ""
-echo "=== Resolving classpath ==="
-CP=$("$MVN" -q dependency:build-classpath -DincludeScope=runtime -Dmdep.outputFile=/dev/stdout -q 2>/dev/null | tail -1)
-CP="target/classes:$CP"
+JAR="target/ebpf-vthread-correlate-1.0-SNAPSHOT.jar"
+if [[ ! -f "$JAR" ]]; then
+    echo "error: shaded jar $JAR not found after build" >&2
+    exit 1
+fi
+
+# Optional JVMTI agent (Plan A): set USE_AGENT=1 to have the agent allocate the
+# per-vthread trace buffer. Default (USE_AGENT unset/0) runs in degraded mode.
+JAVA_OPTS=(--enable-preview --enable-native-access=ALL-UNNAMED)
+if [[ "${USE_AGENT:-0}" == "1" ]]; then
+    if [[ -z "${AGENT_PATH:-}" ]]; then
+        echo "error: USE_AGENT=1 but AGENT_PATH is not set in $CONFIG" >&2
+        exit 1
+    fi
+    if [[ ! -f "$AGENT_PATH" ]]; then
+        echo "error: AGENT_PATH=$AGENT_PATH does not exist — build it with 'cd JVMTI-agent && make'" >&2
+        exit 1
+    fi
+    JAVA_OPTS=(-agentpath:"$AGENT_PATH" "${JAVA_OPTS[@]}")
+    echo "=== JVMTI agent enabled: $AGENT_PATH ==="
+else
+    echo "=== JVMTI agent disabled (set USE_AGENT=1 to enable) ==="
+fi
 
 echo ""
 echo "=== Running VThreadTest ==="
 "$JAVA_HOME/bin/java" \
-    --enable-preview \
-    --enable-native-access=ALL-UNNAMED \
-    -cp "$CP" \
+    "${JAVA_OPTS[@]}" \
+    -cp "$JAR" \
     uk.ac.ncl.jensen.VThreadTest

@@ -55,10 +55,25 @@ else
     CP="target/classes"
 fi
 
+# Optional JVMTI agent (Plan A): set USE_AGENT=1 to have the agent allocate the
+# per-vthread trace buffer. Default (USE_AGENT unset/0) runs in degraded mode.
+JAVA_OPTS=(--enable-preview --enable-native-access=ALL-UNNAMED)
+if [[ "${USE_AGENT:-0}" == "1" ]]; then
+    if [[ -z "${AGENT_PATH:-}" ]]; then
+        echo "error: USE_AGENT=1 but AGENT_PATH is not set in $CONFIG" >&2
+        exit 1
+    fi
+    if [[ ! -f "$AGENT_PATH" ]]; then
+        echo "error: AGENT_PATH=$AGENT_PATH does not exist — build it with 'cd JVMTI-agent && make'" >&2
+        exit 1
+    fi
+    JAVA_OPTS=(-agentpath:"$AGENT_PATH" "${JAVA_OPTS[@]}")
+    echo "JVMTI agent enabled: $AGENT_PATH"
+fi
+
 echo "Running $FQCN ..."
 echo ""
 "$JAVA_HOME/bin/java" \
-    --enable-preview \
-    --enable-native-access=ALL-UNNAMED \
+    "${JAVA_OPTS[@]}" \
     -cp "$CP" \
     "$FQCN"
