@@ -38,6 +38,8 @@ static jclass    g_vthread_class      = NULL;   /* GlobalRef */
 static jfieldID  g_trace_buf_field    = NULL;   /* VirtualThread.traceBufferAddress */
 static jmethodID g_thread_id_method   = NULL;   /* Thread.threadId() */
 
+static int g_verbose = 0;
+
 static void log_msg(const char *fmt, ...) {
     va_list args;
     va_start(args, fmt);
@@ -77,18 +79,22 @@ on_vthread_start(jvmtiEnv *jvmti, JNIEnv *jni, jthread vthread) {
      * The field is volatile in VirtualThread.java; SetLongField provides a
      * release-style write that any subsequent Java/JIT read will see. */
     (*jni)->SetLongField(jni, vthread, g_trace_buf_field, (jlong)(intptr_t)buf);
-
-    jlong readback = (*jni)->GetLongField(jni, vthread, g_trace_buf_field);
-    log_msg("VT start: tid=%ld vthread_obj=%p buf=%p readback=0x%lx %s",
+    if(g_verbose){
+        jlong readback = (*jni)->GetLongField(jni, vthread, g_trace_buf_field);
+        log_msg("VT start: tid=%ld vthread_obj=%p buf=%p readback=0x%lx %s",
             (long)tid, (void *)vthread, buf, (long)readback,
             (readback == (jlong)(intptr_t)buf) ? "OK" : "MISMATCH!");
+    }
+    
 }
 
 static void JNICALL
 on_vthread_end(jvmtiEnv *jvmti, JNIEnv *jni, jthread vthread) {
     (void)jvmti;
     jlong addr = (*jni)->GetLongField(jni, vthread, g_trace_buf_field);
-    log_msg("VT end: vthread_obj=%p addr=0x%lx", (void *)vthread, (long)addr);
+    if(g_verbose){
+        log_msg("VT end: vthread_obj=%p addr=0x%lx", (void *)vthread, (long)addr);
+    }
     if (addr != 0) {
         free((void *)(intptr_t)addr);
         /* Zero the field so any racing read (shouldn't happen, but defensive)
@@ -157,6 +163,11 @@ on_vm_init(jvmtiEnv *jvmti, JNIEnv *jni, jthread thread) {
 JNIEXPORT jint JNICALL
 Agent_OnLoad(JavaVM *vm, char *options, void *reserved) {
     (void)reserved;
+
+    if (options != NULL && strstr(options, "verbose") != NULL) {
+        g_verbose = 1;
+    }
+
     log_msg("loading, options=%s", options ? options : "(none)");
 
     jint rc = (*vm)->GetEnv(vm, (void **)&g_jvmti, JVMTI_VERSION_21);

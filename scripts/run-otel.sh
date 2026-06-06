@@ -62,7 +62,7 @@ if [[ "${USE_AGENT:-0}" == "1" ]]; then
         echo "error: AGENT_PATH=$AGENT_PATH does not exist — build it with 'cd JVMTI-agent && make'" >&2
         exit 1
     fi
-    JAVA_OPTS=(-agentpath:"$AGENT_PATH" "${JAVA_OPTS[@]}")
+    JAVA_OPTS=(-agentpath:"$AGENT_PATH${AGENT_OPTS:+=$AGENT_OPTS}"  "${JAVA_OPTS[@]}")
     echo "=== JVMTI agent enabled: $AGENT_PATH ==="
 else
     echo "=== JVMTI agent disabled (set USE_AGENT=1 to enable) ==="
