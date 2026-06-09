@@ -2,25 +2,23 @@
 //
 // correlate.bt — correlate virtual thread lifecycle events with syscalls.
 //
-// Requires USDT probes compiled into libjvm:
-//   hotspot:vthread__thaw(uintptr_t vthread_id, int thaw_kind, uintptr_t trace_buffer_addr)
+// USDT probes (compiled into libjvm):
+//   hotspot:vthread__thaw(uintptr_t vthread_id, int thaw_kind,     uintptr_t trace_buffer_addr)
 //   hotspot:vthread__freeze(uintptr_t vthread_id, int freeze_result, uintptr_t trace_buffer_addr)
 //
 // LIBJVM_PATH is replaced at runtime by run.sh before bpftrace sees this file.
 //
-// Maps:
-//   @vthread[(uint64)curtask] = vthread_id
-//   @vtbuf[(uint64)curtask]   = trace_buffer_address
+// Buffer layout (matches BufferSyncContextStorage):
+//   [0-15]  OTel traceId
+//   [16-23] OTel spanId
+//   [24]    valid
+//   [25]    _reserved          (reserved for future)
+//   [26-27] attrs-data-size
+//   [28-]   attrs-data
 //
-// Buffer layout (64 bytes, allocated per virtual thread):
-//   [0-7]   virtual thread ID (int64, written at construction)
-//   [8-23]  OTel traceId (16 bytes / 128-bit, written byte-by-byte big-endian)
-//   [24-31] OTel spanId  (8 bytes / 64-bit, written byte-by-byte big-endian)
-//   [32-63] reserved
-//
-// Endianness: Java writes traceId/spanId byte-by-byte (big-endian / network order).
-// eBPF reads raw uint64 (little-endian on ARM64 LE / x86_64), then bswap() at
-// printf time converts back to big-endian so the hex matches the OTel string.
+// Endianness: Java writes traceId/spanId as opaque W3C byte arrays (network order).
+// eBPF reads each as a uint64 (LE on ARM64/x86_64), then bswap() at printf time
+// restores the original hex order so it matches the OTel string.
 //
 
 BEGIN
@@ -39,7 +37,7 @@ BEGIN
     printf("ebpf-vthread-correlate: tracing started\n");
     printf("  USDT source: LIBJVM_PATH\n");
     printf("  Watching: vthread__thaw, vthread__freeze, sys_enter_write\n");
-    printf("  Buffer layout: [0-7] vtId  [8-23] traceId  [24-31] spanId\n\n");
+    printf("  Buffer layout: [0-15] traceId  [16-23] spanId  [24] valid\n\n");
 }
 
 usdt:LIBJVM_PATH:hotspot:vthread__thaw
@@ -48,15 +46,19 @@ usdt:LIBJVM_PATH:hotspot:vthread__thaw
     $thaw_kind    = arg1;
     $trace_buffer = arg2;
 
-    $trace_hi = *(uint64 *)uptr($trace_buffer + 8);
-    $trace_lo = *(uint64 *)uptr($trace_buffer + 16);
-    $span_id  = *(uint64 *)uptr($trace_buffer + 24);
-
     @vthread[(uint64)curtask] = $vthread_id;
     @vtbuf[(uint64)curtask]   = $trace_buffer;
 
-    printf("[thaw]   carrier tid=%-6d  vthread_id=0x%lx  kind=%-18s  traceId=%016lx%016lx  spanId=%016lx\n",
-           tid, $vthread_id, @thaw_name[(int64)$thaw_kind], bswap($trace_hi), bswap($trace_lo), bswap($span_id));
+    if ($trace_buffer != 0) {
+        $valid = *(uint8 *)uptr($trace_buffer + 24);
+        if ($valid == 1) {
+            $trace_hi = *(uint64 *)uptr($trace_buffer + 0);
+            $trace_lo = *(uint64 *)uptr($trace_buffer + 8);
+            $span_id  = *(uint64 *)uptr($trace_buffer + 16);
+            printf("[thaw]   carrier tid=%-6d  vthread_id=0x%lx  kind=%-18s  traceId=%016lx%016lx  spanId=%016lx\n",
+                   tid, $vthread_id, @thaw_name[(int64)$thaw_kind], bswap($trace_hi), bswap($trace_lo), bswap($span_id));
+        }
+    }
 }
 
 usdt:LIBJVM_PATH:hotspot:vthread__freeze
@@ -65,12 +67,16 @@ usdt:LIBJVM_PATH:hotspot:vthread__freeze
     $freeze_result = arg1;
     $trace_buffer  = arg2;
 
-    $trace_hi = *(uint64 *)uptr($trace_buffer + 8);
-    $trace_lo = *(uint64 *)uptr($trace_buffer + 16);
-    $span_id  = *(uint64 *)uptr($trace_buffer + 24);
-
-    printf("[freeze] carrier tid=%-6d  vthread_id=0x%lx  result=%-16s  traceId=%016lx%016lx  spanId=%016lx\n",
-           tid, $vthread_id, @freeze_name[(int64)$freeze_result], bswap($trace_hi), bswap($trace_lo), bswap($span_id));
+    if ($trace_buffer != 0) {
+        $valid = *(uint8 *)uptr($trace_buffer + 24);
+        if ($valid == 1) {
+            $trace_hi = *(uint64 *)uptr($trace_buffer + 0);
+            $trace_lo = *(uint64 *)uptr($trace_buffer + 8);
+            $span_id  = *(uint64 *)uptr($trace_buffer + 16);
+            printf("[freeze] carrier tid=%-6d  vthread_id=0x%lx  result=%-16s  traceId=%016lx%016lx  spanId=%016lx\n",
+                   tid, $vthread_id, @freeze_name[(int64)$freeze_result], bswap($trace_hi), bswap($trace_lo), bswap($span_id));
+        }
+    }
 
     $carrier = (uint64)curtask;
     if (@vthread[$carrier]) {
@@ -83,12 +89,16 @@ tracepoint:syscalls:sys_enter_write
 {
     if (@vthread[(uint64)curtask]) {
         $buf = @vtbuf[(uint64)curtask];
-        $trace_hi = *(uint64 *)uptr($buf + 8);
-        $trace_lo = *(uint64 *)uptr($buf + 16);
-        $span_id  = *(uint64 *)uptr($buf + 24);
-
-        printf("[write]  carrier tid=%-6d  vthread_id=0x%lx  fd=%d  count=%d  traceId=%016lx%016lx  spanId=%016lx\n",
-               tid, @vthread[(uint64)curtask], args->fd, args->count, bswap($trace_hi), bswap($trace_lo), bswap($span_id));
+        if ($buf != 0) {
+            $valid = *(uint8 *)uptr($buf + 24);
+            if ($valid == 1) {
+                $trace_hi = *(uint64 *)uptr($buf + 0);
+                $trace_lo = *(uint64 *)uptr($buf + 8);
+                $span_id  = *(uint64 *)uptr($buf + 16);
+                printf("[write]  carrier tid=%-6d  vthread_id=0x%lx  fd=%d  count=%d  traceId=%016lx%016lx  spanId=%016lx\n",
+                       tid, @vthread[(uint64)curtask], args->fd, args->count, bswap($trace_hi), bswap($trace_lo), bswap($span_id));
+            }
+        }
     }
 }
 

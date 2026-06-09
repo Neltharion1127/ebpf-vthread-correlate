@@ -16,11 +16,14 @@
  * platform-thread ThreadLocal path, and bpftrace's null-guard skips the read.
  * Result: zero residual overhead on the JVM when nobody is observing.
  *
- * Buffer layout (matches existing convention; see ebpf-vthread-correlate README):
- *   [0-7]   virtual thread ID (written here on Start, replaces former JVM write)
- *   [8-23]  OTel traceId   (written by BufferSyncContextStorage)
- *   [24-31] OTel spanId    (written by BufferSyncContextStorage)
- *   [32-63] reserved
+ * Buffer layout (matches existing convention:
+ *   [0-15]  OTel traceId   (written by BufferSyncContextStorage)
+ *   [16-23] OTel spanId    (written by BufferSyncContextStorage)
+ *   [24] valid
+ *   reversed for future
+ *   [25] _reserved
+ *   [26-27] attrs-data-size
+ *   [28-33] attrs-data      
  */
 
 #include <jvmti.h>
@@ -37,7 +40,7 @@ static jvmtiEnv *g_jvmti              = NULL;
 static jclass    g_vthread_class      = NULL;   /* GlobalRef */
 static jfieldID  g_trace_buf_field    = NULL;   /* VirtualThread.traceBufferAddress */
 static jmethodID g_thread_id_method   = NULL;   /* Thread.threadId() */
-
+// log on/off
 static int g_verbose = 0;
 
 static void log_msg(const char *fmt, ...) {
@@ -54,9 +57,7 @@ static void log_msg(const char *fmt, ...) {
 static void JNICALL
 on_vthread_start(jvmtiEnv *jvmti, JNIEnv *jni, jthread vthread) {
     (void)jvmti;
-    /* calloc zeroes the buffer; offset 0-7 will be overwritten with threadId,
-     * 8-31 will be filled by BufferSyncContextStorage at OTel scope changes,
-     * 32-63 stays zero (reserved). */
+    // allocate memory only
     void *buf = calloc(1, BUFFER_SIZE);
     if (buf == NULL) {
         /* Out of memory. Leave field at 0; both BufferSyncContextStorage and
@@ -65,25 +66,12 @@ on_vthread_start(jvmtiEnv *jvmti, JNIEnv *jni, jthread vthread) {
         return;
     }
 
-    /* Write threadId at offset 0 (preserves prior buffer semantics —
-     * matches what the removed `U.putLong(traceBufferAddress, threadId())`
-     * used to do in the Java constructor). */
-    jlong tid = (*jni)->CallLongMethod(jni, vthread, g_thread_id_method);
-    if ((*jni)->ExceptionCheck(jni)) {
-        (*jni)->ExceptionClear(jni);
-        tid = 0;  /* fall through; buffer still usable for trace context */
-    }
-    *((jlong *)buf) = tid;
+    (*jni)->SetLongField(jni, vthread, g_trace_buf_field,(jlong)(intptr_t)buf);
 
-    /* Attach buffer to the vthread.
-     * The field is volatile in VirtualThread.java; SetLongField provides a
-     * release-style write that any subsequent Java/JIT read will see. */
-    (*jni)->SetLongField(jni, vthread, g_trace_buf_field, (jlong)(intptr_t)buf);
     if(g_verbose){
         jlong readback = (*jni)->GetLongField(jni, vthread, g_trace_buf_field);
-        log_msg("VT start: tid=%ld vthread_obj=%p buf=%p readback=0x%lx %s",
-            (long)tid, (void *)vthread, buf, (long)readback,
-            (readback == (jlong)(intptr_t)buf) ? "OK" : "MISMATCH!");
+        log_msg("VT start: vthread_obj=%p buf=%p readback=0x%lx %s",
+            (void *)vthread, buf, (long)readback);
     }
     
 }

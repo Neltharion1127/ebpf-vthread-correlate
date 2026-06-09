@@ -2,9 +2,9 @@
 
 Proof of concept: use eBPF (bpftrace) to attribute Linux syscalls to specific
 Java virtual threads, and correlate those syscalls with their OpenTelemetry
-trace/span IDs — all without modifying application code.
+trace/span IDs without changing the application's syscall call sites.
 
-The system has two parts:
+The system has three moving parts:
 
 1. **eBPF side** (`bpf/correlate.bt`): a bpftrace script that hooks USDT probes
    in a modified JDK to track which virtual thread is mounted on each carrier OS
@@ -14,6 +14,12 @@ The system has two parts:
 2. **Java side** (`BufferSyncContextStorage`): a custom OTel `ContextStorage`
    wrapper that keeps the per-vthread off-heap buffer in sync with the current
    OTel span whenever a scope is opened or closed.
+
+3. **JVMTI agent** (`JVMTI-agent/vthread_trace_agent.c`): an optional runtime
+   agent that allocates and frees a 64-byte trace buffer for each virtual thread
+   and stores the raw address in the patched `VirtualThread.traceBufferAddress`
+   field. Without the agent the Java program still runs, but the USDT probe
+   reports `trace_buffer_addr=0`, so `correlate.bt` skips trace-context reads.
 
 ## How it works
 
@@ -30,7 +36,7 @@ The modified JDK fires two USDT probes on the virtual thread carrier path:
 ```
 thaw  → @vthread[curtask] = vthread_id
         @vtbuf[curtask]   = trace_buffer_addr
-write → if @vthread[curtask]: read traceId/spanId from @vtbuf[curtask] and print
+write → if @vthread[curtask] and buffer valid: read traceId/spanId and print
 freeze → delete @vthread[curtask], delete @vtbuf[curtask]
 ```
 
@@ -40,34 +46,43 @@ and on bare-metal Linux.
 
 ### Off-heap trace buffer layout
 
-Each virtual thread has a 64-byte off-heap buffer allocated by the JVM. The
-`BufferSyncContextStorage` wrapper keeps this buffer in sync with the active OTel
-span. `correlate.bt` reads the buffer on every probe and syscall event.
+Each virtual thread can have a 64-byte off-heap buffer allocated by the JVMTI
+agent. The `BufferSyncContextStorage` wrapper keeps this buffer in sync with the
+active OTel span. `correlate.bt` reads the buffer on probe/syscall events only
+when the probe address is non-zero and the `valid` byte is set.
 
 | Offset | Size | Field |
 |---|---|---|
-| 0–7 | 8 bytes | Virtual thread ID (int64, written by JVM at construction) |
-| 8–23 | 16 bytes | OTel `traceId` (128-bit, written big-endian byte-by-byte) |
-| 24–31 | 8 bytes | OTel `spanId` (64-bit, written big-endian byte-by-byte) |
-| 32–63 | 32 bytes | Reserved |
+| 0–15 | 16 bytes | OTel `traceId` (128-bit, written byte-by-byte in W3C/network order) |
+| 16–23 | 8 bytes | OTel `spanId` (64-bit, written byte-by-byte in W3C/network order) |
+| 24 | 1 byte | `valid` flag: `1` means trace/span fields contain a current valid span |
+| 25 | 1 byte | Reserved |
+| 26–27 | 2 bytes | Reserved for future attribute-data size |
+| 28–63 | 36 bytes | Reserved for future attribute data |
 
-**Endianness note:** Java writes traceId/spanId byte-by-byte (big-endian /
-network order). eBPF reads raw `uint64` values (little-endian on ARM64 LE /
-x86_64), then `bswap()` at print time converts back to big-endian so the hex
-output matches the OTel canonical string representation.
+The virtual-thread ID is not stored in the buffer. It comes from the
+`vthread_id` USDT argument and is tracked separately in the `@vthread` BPF map.
+
+**Endianness note:** Java writes traceId/spanId byte-by-byte in the same order as
+the canonical OTel hex strings. eBPF reads the fields as raw `uint64` values
+(little-endian on ARM64 LE / x86_64), then `bswap()` at print time restores the
+display order.
 
 ### OTel context synchronisation (`BufferSyncContextStorage`)
 
 `BufferSyncContextStorage` wraps the default OTel `ContextStorage`. On every
-`attach()` call it writes the current span's `traceId` and `spanId` into the
-thread's trace buffer:
+`attach()` call it clears the `valid` byte, writes the current span's `traceId`
+and `spanId`, publishes those writes with a release fence, then sets `valid=1`.
+When there is no valid span it clears bytes `0..23` and leaves `valid=0`.
 
-- **Virtual thread**: the JVM allocates the buffer internally; its address is
-  retrieved via `Thread.getTraceBufferAddress()` and wrapped into a
-  `MemorySegment` without copying.
-- **Platform thread**: no JVM-internal buffer exists, so a 64-byte buffer is
-  allocated per platform thread on demand using `Arena.global()` and stored in a
-  `ThreadLocal`.
+- **Virtual thread with the JVMTI agent**: the agent allocates the buffer and
+  stores its address in `VirtualThread.traceBufferAddress`. Java retrieves the
+  address via `Thread.getTraceBufferAddress()` and wraps it in a `MemorySegment`
+  without copying.
+- **Platform thread, or virtual thread without the agent**: the address is zero,
+  so Java falls back to a per-thread `ThreadLocal` buffer. This keeps the Java
+  wrapper usable, but eBPF cannot see that fallback buffer because the USDT probe
+  still carries `trace_buffer_addr=0`.
 
 When the scope is closed the wrapper re-syncs the buffer to whatever span is now
 current (the enclosing span), so nested spans are handled correctly.
@@ -101,9 +116,10 @@ human-readable strings using BPF maps initialised in `BEGIN`:
 - Linux kernel ≥ 5.8 with BTF enabled
 - bpftrace ≥ 0.16
 - Maven ≥ 3.8 (for building the Java side)
+- `make` and a C compiler such as `gcc` (for building the JVMTI agent)
 - Self-built OpenJDK with `vthread__thaw` / `vthread__freeze` USDT probes and
-  `Thread.getTraceBufferAddress()` (requires `--enable-dtrace` at configure time
-  — see Build section)
+  `Thread.getTraceBufferAddress()` plus a `VirtualThread.traceBufferAddress`
+  field (requires `--enable-dtrace` at configure time — see Build section)
 
 ## Build the JDK with USDT probes
 
@@ -148,7 +164,21 @@ readelf -n build/.../images/jdk/lib/server/libjvm.so | grep vthread
 
 ```bash
 cp config/env.sh.example config/env.sh
-# Set LIBJVM_PATH and JAVA_HOME to your JDK build paths
+```
+
+Edit `config/env.sh` and set `JAVA_HOME` and `LIBJVM_PATH` to your patched JDK
+build paths. For agent mode, also set `AGENT_PATH` if it is not already present:
+
+```bash
+export AGENT_PATH="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)/JVMTI-agent/libvthread_trace_agent.so"
+```
+
+Build the JVMTI agent if you want eBPF to read live OTel trace context:
+
+```bash
+source config/env.sh
+cd JVMTI-agent
+make
 ```
 
 ## Running
@@ -164,12 +194,33 @@ bash scripts/run.sh
 **Terminal 2 — run a Java test:**
 
 ```bash
-# OTel-instrumented virtual threads (normal freeze/thaw, with traceId/spanId output)
+# OTel-instrumented virtual threads with the JVMTI trace-buffer agent enabled.
+bash scripts/run-otel-agent.sh
+
+# Equivalent explicit form:
+USE_AGENT=1 bash scripts/run-otel.sh
+
+# Degraded mode: Java still runs, but the USDT probe reports trace_buffer_addr=0,
+# so correlate.bt cannot print traceId/spanId from the virtual-thread buffer.
 bash scripts/run-otel.sh
 
-# Pinned virtual threads (demonstrates pinned_monitor detection)
+# Run a specific test class.
 bash scripts/test.sh PinnedTest
 ```
+
+`scripts/test.sh` accepts either a short class name such as `PinnedTest` or a
+fully-qualified name. It also honours `USE_AGENT=1`.
+
+### Script reference
+
+- `scripts/run.sh`: substitutes `LIBJVM_PATH` into `bpf/correlate.bt` and starts
+  `sudo bpftrace`.
+- `scripts/run-otel.sh`: builds the shaded jar with Maven and runs
+  `uk.ac.ncl.jensen.VThreadTest` with the patched JDK.
+- `scripts/run-otel-agent.sh`: wrapper for `USE_AGENT=1 scripts/run-otel.sh`.
+- `scripts/test.sh`: compiles the project and runs a selected Java class from
+  `target/classes`; defaults to `uk.ac.ncl.jensen.VThreadTest`.
+- `config/env.sh`: local machine-specific paths used by all scripts.
 
 ## Expected output
 
@@ -177,15 +228,15 @@ bash scripts/test.sh PinnedTest
 
 Each virtual thread parks via `LockSupport.parkNanos`, triggering a real
 freeze/thaw cycle. `BufferSyncContextStorage` keeps the trace buffer up to date
-as child and inner spans open and close, so every `[write]` line carries the
-correct OTel `traceId` and `spanId` for the span active at the time of the
-syscall.
+as child and inner spans open and close. Once the buffer has `valid=1`, `[write]`
+lines carry the `traceId` and `spanId` for the span active at the time of the
+syscall. Early mount events can be skipped if the virtual thread has not entered
+an OTel scope yet.
 
 ```
-[thaw]   carrier tid=267464  vthread_id=0x14  kind=top                traceId=4bf92f3577b34da6a3ce929d0e0e4736  spanId=00f067aa0ba902b7
 [write]  carrier tid=267464  vthread_id=0x14  fd=1  count=80          traceId=4bf92f3577b34da6a3ce929d0e0e4736  spanId=00f067aa0ba902b7
 [freeze] carrier tid=267464  vthread_id=0x14  result=ok               traceId=4bf92f3577b34da6a3ce929d0e0e4736  spanId=00f067aa0ba902b7
-[thaw]   carrier tid=267464  vthread_id=0x17  kind=top                traceId=4bf92f3577b34da6a3ce929d0e0e4736  spanId=00f067aa0ba902b7
+[thaw]   carrier tid=267464  vthread_id=0x14  kind=return_barrier     traceId=4bf92f3577b34da6a3ce929d0e0e4736  spanId=00f067aa0ba902b7
 [write]  carrier tid=267464  vthread_id=0x17  fd=1  count=75          traceId=4bf92f3577b34da6a3ce929d0e0e4736  spanId=00f067aa0ba902b7
 ...
 ```
@@ -196,7 +247,8 @@ Key observations:
   of the span active at the time of the syscall, read directly from the
   off-heap buffer — no JVM cooperation at syscall time.
 - `freeze_result=ok` on normal park; `thaw_kind=top` on first mount,
-  `return_barrier` on subsequent thaws.
+  `return_barrier` on subsequent thaws. Events with `trace_buffer_addr=0` or
+  `valid=0` are intentionally not printed.
 - When a nested inner span is active, the `spanId` on `[write]` events matches
   the inner span, not the child span, confirming the buffer is updated correctly
   on scope open/close.
@@ -204,18 +256,16 @@ Key observations:
 ### PinnedTest — pinned virtual threads
 
 Virtual threads inside a `synchronized` block cannot be unmounted from their
-carrier. The freeze probe fires with `result=pinned_monitor`, and no thaw
-events are generated, so writes are **not** attributed to any vthread:
+carrier. `PinnedTest` creates this workload by parking inside a monitor. The JVM
+freeze probe reports `result=pinned_monitor`, but the current bpftrace script
+prints only events whose trace buffer has `valid=1`.
 
-```
-[freeze] carrier tid=269571  vthread_id=0x14  result=pinned_monitor   traceId=0000000000000000000000000000000000  spanId=0000000000000000
-[freeze] carrier tid=269572  vthread_id=0x16  result=pinned_monitor   traceId=0000000000000000000000000000000000  spanId=0000000000000000
-...
-(no [thaw] events, no [write] attributions)
-```
-
-This contrast demonstrates that the correlation layer correctly handles both
-the normal mount/unmount path and the pinned path without false positives.
+Because `PinnedTest` does not create OTel spans or install
+`BufferSyncContextStorage`, a plain `bash scripts/test.sh PinnedTest` run may
+produce no bpftrace lines. That is expected with the current valid-flag guard:
+there is no valid trace context to print. If you instrument a pinned workload
+with OTel context, pinned freeze events should appear with `result=pinned_monitor`
+when the buffer is valid.
 
 ## Benchmarking
 
@@ -232,6 +282,45 @@ mvn clean package -q
 
 The benchmark runs `makeCurrent()` + child span creation + `close()` in a tight
 loop for both `useBufferSync=false` (baseline) and `useBufferSync=true` (with
-buffer writes). The overhead is dominated by two `MemorySegment` byte-by-byte
-writes (16 + 8 bytes) per scope attach/close, executed on the critical path of
-every OTel scope transition.
+buffer writes). In buffer-sync mode each scope transition clears `valid`, writes
+16 bytes of trace ID and 8 bytes of span ID, publishes with release fences, and
+sets `valid=1` when the span context is valid.
+
+## Running with the JVMTI agent (Plan A)
+
+The current implementation uses **Plan A**: the JVM exposes an empty
+`VirtualThread.traceBufferAddress` field and the USDT probes, while the JVMTI
+agent owns buffer allocation. On `VirtualThreadStart` the agent allocates a
+zeroed 64-byte buffer and stores its address in the field; on
+`VirtualThreadEnd` it frees the buffer and clears the field. The JVM does not
+know about OpenTelemetry or the buffer layout.
+
+**1. Build the agent** (once, or after editing the agent source):
+
+```bash
+source config/env.sh
+make -C JVMTI-agent         # produces libvthread_trace_agent.so
+```
+
+**2. Run the Java side with the agent attached:**
+
+```bash
+# Explicit toggle:
+USE_AGENT=1 bash scripts/run-otel.sh
+
+# Or the convenience wrapper (same thing):
+bash scripts/run-otel-agent.sh
+
+# Verbose agent logging is supported by run-otel.sh:
+AGENT_OPTS=verbose USE_AGENT=1 bash scripts/run-otel.sh
+
+# test.sh honours the same toggle (e.g. for PinnedTest):
+USE_AGENT=1 bash scripts/test.sh PinnedTest
+```
+
+The agent path comes from `AGENT_PATH` in `config/env.sh`. The local
+configuration in this repo points it at `JVMTI-agent/libvthread_trace_agent.so`.
+
+**Agent mode vs default mode:** with `USE_AGENT=1` the agent allocates the
+per-vthread buffer so eBPF can read live `traceId`/`spanId`; without it the JVM
+runs in degraded mode (no buffer allocated, so eBPF sees no trace context).

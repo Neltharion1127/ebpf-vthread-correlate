@@ -15,6 +15,17 @@ public class BufferSyncContextStorage implements ContextStorage {
 
     private static final int BUFFER_SIZE = 64;
 
+    private static final long OFFSET_TRACE_ID = 0;
+    private static final long OFFSET_SPAN_ID = 16;
+    private static final long OFFSET_VALID = 24;
+    /*
+        Intentionally reserved for future
+        https://github.com/scottgerring/opentelemetry-specification/blob/4e8cfd3cb4bb594042b42ad71c36f778ceefff3f/oteps/profiles/4947-thread-ctx.md
+    */ 
+    private static final long OFFSET_RESERVED = 25;
+    private static final long OFFSET_ATTRS_SIZE = 26;
+    private static final long OFFSET_ATTRS_DATA = 28;
+
     // Platform threads do not have a JVM-internal buffer, so allocate one on demand per thread.
     private static final ThreadLocal<PlatformThreadBuffer> platformThreadBuffer =
             ThreadLocal.withInitial(PlatformThreadBuffer::new);
@@ -61,29 +72,35 @@ public class BufferSyncContextStorage implements ContextStorage {
     private void syncToBuffer(Context ctx) {
         MemorySegment seg = getBufferSegment();
 
-        Span span = Span.fromContext(ctx);
+        seg.set(ValueLayout.JAVA_BYTE, OFFSET_VALID, (byte) 0);
+        VarHandle.releaseFence();
+
+        Span span = (ctx ==null) ? Span.getInvalid():Span.fromContext(ctx);
         SpanContext sc = span.getSpanContext();
 
         if (sc.isValid()) {
             writeTraceId(seg, sc.getTraceId());
             writeSpanId(seg, sc.getSpanId());
+
+            VarHandle.releaseFence();
+            seg.set(ValueLayout.JAVA_BYTE, OFFSET_VALID, (byte) 1);
         } else {
-            for (int i = 8; i < 32; i++) {
+            for (int i = (int) OFFSET_TRACE_ID; i < OFFSET_VALID; i++) {
                 seg.set(ValueLayout.JAVA_BYTE, i, (byte) 0);
             }
         }
-        VarHandle.releaseFence();
     }
+
 
     private void writeTraceId(MemorySegment seg, String traceId) {
         for (int i = 0; i < 16; i++) {
-            seg.set(ValueLayout.JAVA_BYTE, 8 + i, hexToByte(traceId, i * 2));
+            seg.set(ValueLayout.JAVA_BYTE, OFFSET_TRACE_ID + i, hexToByte(traceId, i * 2));
         }
     }
 
     private void writeSpanId(MemorySegment seg, String spanId) {
         for (int i = 0; i < 8; i++) {
-            seg.set(ValueLayout.JAVA_BYTE, 24 + i, hexToByte(spanId, i * 2));
+            seg.set(ValueLayout.JAVA_BYTE, OFFSET_SPAN_ID + i, hexToByte(spanId, i * 2));
         }
     }
 
@@ -99,7 +116,6 @@ public class BufferSyncContextStorage implements ContextStorage {
         private PlatformThreadBuffer() {
             seg = Arena.global().allocate(BUFFER_SIZE);
             seg.fill((byte) 0);
-            seg.set(ValueLayout.JAVA_LONG, 0, Thread.currentThread().threadId());
         }
 
         private MemorySegment segment() {
