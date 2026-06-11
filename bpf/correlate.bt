@@ -3,7 +3,7 @@
 // correlate.bt — correlate virtual thread lifecycle events with syscalls.
 //
 // USDT probes (compiled into libjvm):
-//   hotspot:vthread__thaw(uintptr_t vthread_id, int thaw_kind,     uintptr_t trace_buffer_addr)
+//   hotspot:vthread__thaw(uintptr_t vthread_id, int thaw_kind,      uintptr_t trace_buffer_addr)
 //   hotspot:vthread__freeze(uintptr_t vthread_id, int freeze_result, uintptr_t trace_buffer_addr)
 //
 // LIBJVM_PATH is replaced at runtime by run.sh before bpftrace sees this file.
@@ -19,6 +19,47 @@
 // Endianness: Java writes traceId/spanId as opaque W3C byte arrays (network order).
 // eBPF reads each as a uint64 (LE on ARM64/x86_64), then bswap() at printf time
 // restores the original hex order so it matches the OTel string.
+//
+// ── Modes ────────────────────────────────────────────────────────────────────
+//
+//   $1 == 0 (default): PERF MODE. Map-only hot path, no per-event output.
+//                      Counters dumped once at END. Use this for all
+//                      measurement runs (configs 4 and 6 of the matrix).
+//
+//   $1 == 1:           VERBOSE MODE. Per-event printf for correctness
+//                      validation only. Output goes through the perf buffer
+//                      and WILL drop events at high rates — never use the
+//                      numbers from a verbose run.
+//
+//   Usage:   bpftrace correlate.bt "${VERBOSE:-0}"
+//
+//   $1 is substituted at parse time, so in perf mode the printf branches
+//   (and their buffer reads) are constant-false and eliminated — zero
+//   residual cost on the hot path.
+//
+// ── Counters (dumped at END) ─────────────────────────────────────────────────
+//
+//   @thaw_total / @freeze_total   raw probe firings (normalisation divisors)
+//   @thaw_kind[k]                 thaw distribution by kind code
+//   @freeze_result[r]             freeze distribution by result code
+//   @pinned_total                 freeze results 2..4 (pinned_cs/native/monitor).
+//                                 Must be ~0 for a clean W2 run on JDK 21.
+//   @thaw_nullbuf                 thaws with trace_buffer == 0.
+//                                 JVMTI branch, no agent: expect == @thaw_total.
+//                                 JVMTI branch, agent loaded: expect ~0.
+//   @cache_insert / @cache_delete carrier-cache pairing; (insert - delete) =
+//                                 entries still live at exit.
+//   @freeze_unmatched             freeze with no cached thaw on this carrier.
+//                                 NOT an error: a vthread's first unmount has
+//                                 no preceding thaw, so this approximates the
+//                                 number of distinct vthreads that ran.
+//   @write_on_vthread             write(2) calls issued while a vthread was
+//                                 mounted on the calling carrier
+//   @write_correlated             ... of which had a valid trace context
+//   @write_invalid_ctx            ... of which had a buffer but valid != 1
+//
+// Cache maps are keyed by curtask (carrier), so their size is bounded by the
+// carrier pool, not by vthread count — safe under W1 churn.
 //
 
 BEGIN
@@ -37,44 +78,57 @@ BEGIN
     printf("ebpf-vthread-correlate: tracing started\n");
     printf("  USDT source: LIBJVM_PATH\n");
     printf("  Watching: vthread__thaw, vthread__freeze, sys_enter_write\n");
-    printf("  Buffer layout: [0-15] traceId  [16-23] spanId  [24] valid\n\n");
+
+    if ($1 == 1) {
+        printf("  Mode: VERBOSE (per-event output; validation only, do not measure)\n\n");
+    }
+    if ($1 == 0) {
+        printf("  Mode: PERF (map-only hot path; summary at END)\n\n");
+    }
 }
 
 usdt:LIBJVM_PATH:hotspot:vthread__thaw
 {
-    $vthread_id   = arg0;
-    $thaw_kind    = arg1;
-    $trace_buffer = arg2;
+    @thaw_total = count();
+    @thaw_kind[(int64)arg1] = count();
 
-    @vthread[(uint64)curtask] = $vthread_id;
-    @vtbuf[(uint64)curtask]   = $trace_buffer;
+    if (arg2 == 0) {
+        @thaw_nullbuf = count();
+    }
 
-    if ($trace_buffer != 0) {
-        $valid = *(uint8 *)uptr($trace_buffer + 24);
+    @vthread[(uint64)curtask] = arg0;
+    @vtbuf[(uint64)curtask]   = arg2;
+    @cache_insert = count();
+
+    if ($1 == 1 && arg2 != 0) {
+        $valid = *(uint8 *)uptr(arg2 + 24);
         if ($valid == 1) {
-            $trace_hi = *(uint64 *)uptr($trace_buffer + 0);
-            $trace_lo = *(uint64 *)uptr($trace_buffer + 8);
-            $span_id  = *(uint64 *)uptr($trace_buffer + 16);
+            $trace_hi = *(uint64 *)uptr(arg2 + 0);
+            $trace_lo = *(uint64 *)uptr(arg2 + 8);
+            $span_id  = *(uint64 *)uptr(arg2 + 16);
             printf("[thaw]   carrier tid=%-6d  vthread_id=0x%lx  kind=%-18s  traceId=%016lx%016lx  spanId=%016lx\n",
-                   tid, $vthread_id, @thaw_name[(int64)$thaw_kind], bswap($trace_hi), bswap($trace_lo), bswap($span_id));
+                   tid, arg0, @thaw_name[(int64)arg1], bswap($trace_hi), bswap($trace_lo), bswap($span_id));
         }
     }
 }
 
 usdt:LIBJVM_PATH:hotspot:vthread__freeze
 {
-    $vthread_id    = arg0;
-    $freeze_result = arg1;
-    $trace_buffer  = arg2;
+    @freeze_total = count();
+    @freeze_result[(int64)arg1] = count();
 
-    if ($trace_buffer != 0) {
-        $valid = *(uint8 *)uptr($trace_buffer + 24);
+    if (arg1 >= 2 && arg1 <= 4) {
+        @pinned_total = count();
+    }
+
+    if ($1 == 1 && arg2 != 0) {
+        $valid = *(uint8 *)uptr(arg2 + 24);
         if ($valid == 1) {
-            $trace_hi = *(uint64 *)uptr($trace_buffer + 0);
-            $trace_lo = *(uint64 *)uptr($trace_buffer + 8);
-            $span_id  = *(uint64 *)uptr($trace_buffer + 16);
+            $trace_hi = *(uint64 *)uptr(arg2 + 0);
+            $trace_lo = *(uint64 *)uptr(arg2 + 8);
+            $span_id  = *(uint64 *)uptr(arg2 + 16);
             printf("[freeze] carrier tid=%-6d  vthread_id=0x%lx  result=%-16s  traceId=%016lx%016lx  spanId=%016lx\n",
-                   tid, $vthread_id, @freeze_name[(int64)$freeze_result], bswap($trace_hi), bswap($trace_lo), bswap($span_id));
+                   tid, arg0, @freeze_name[(int64)arg1], bswap($trace_hi), bswap($trace_lo), bswap($span_id));
         }
     }
 
@@ -82,21 +136,34 @@ usdt:LIBJVM_PATH:hotspot:vthread__freeze
     if (@vthread[$carrier]) {
         delete(@vthread[$carrier]);
         delete(@vtbuf[$carrier]);
+        @cache_delete = count();
+    } else {
+        @freeze_unmatched = count();
     }
 }
 
 tracepoint:syscalls:sys_enter_write
 {
-    if (@vthread[(uint64)curtask]) {
-        $buf = @vtbuf[(uint64)curtask];
+    $carrier = (uint64)curtask;
+    if (@vthread[$carrier]) {
+        @write_on_vthread = count();
+
+        $buf = @vtbuf[$carrier];
         if ($buf != 0) {
             $valid = *(uint8 *)uptr($buf + 24);
             if ($valid == 1) {
-                $trace_hi = *(uint64 *)uptr($buf + 0);
-                $trace_lo = *(uint64 *)uptr($buf + 8);
-                $span_id  = *(uint64 *)uptr($buf + 16);
-                printf("[write]  carrier tid=%-6d  vthread_id=0x%lx  fd=%d  count=%d  traceId=%016lx%016lx  spanId=%016lx\n",
-                       tid, @vthread[(uint64)curtask], args->fd, args->count, bswap($trace_hi), bswap($trace_lo), bswap($span_id));
+                @write_correlated = count();
+
+                if ($1 == 1) {
+                    $trace_hi = *(uint64 *)uptr($buf + 0);
+                    $trace_lo = *(uint64 *)uptr($buf + 8);
+                    $span_id  = *(uint64 *)uptr($buf + 16);
+                    printf("[write]  carrier tid=%-6d  vthread_id=0x%lx  fd=%d  count=%d  traceId=%016lx%016lx  spanId=%016lx\n",
+                           tid, @vthread[$carrier], args->fd, args->count,
+                           bswap($trace_hi), bswap($trace_lo), bswap($span_id));
+                }
+            } else {
+                @write_invalid_ctx = count();
             }
         }
     }
@@ -104,9 +171,15 @@ tracepoint:syscalls:sys_enter_write
 
 END
 {
-    printf("\nebpf-vthread-correlate: tracing stopped\n");
-    clear(@vthread);
-    clear(@vtbuf);
+    printf("\nebpf-vthread-correlate: tracing stopped — summary follows\n");
+
+    // Lookup tables are display-only; drop them so the auto-printed
+    // summary contains counters only.
     clear(@freeze_name);
     clear(@thaw_name);
+
+    // Residual cache entries = @cache_insert - @cache_delete; the raw
+    // per-carrier maps add no information beyond that, so drop them too.
+    clear(@vthread);
+    clear(@vtbuf);
 }

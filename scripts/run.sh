@@ -41,4 +41,4 @@ echo "Starting bpftrace (requires root)..."
 echo "Press Ctrl-C to stop."
 echo ""
 
-sudo bpftrace "$TMP_BT"
+sudo bpftrace "$TMP_BT" "${VERBOSE:-1}"
