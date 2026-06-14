@@ -62,6 +62,8 @@
 // carrier pool, not by vthread count — safe under W1 churn.
 //
 
+
+
 BEGIN
 {
     @freeze_name[0] = "ok";
@@ -76,6 +78,7 @@ BEGIN
     @thaw_name[2] = "return_barrier_ex";
 
     printf("ebpf-vthread-correlate: tracing started\n");
+    printf("  Script: v2 (pinned-freeze cache guard enabled)\n");
     printf("  USDT source: LIBJVM_PATH\n");
     printf("  Watching: vthread__thaw, vthread__freeze, sys_enter_write\n");
 
@@ -87,6 +90,9 @@ BEGIN
     }
 }
 
+// arg0 = vthread_id        (uintptr_t) 
+// arg1 = thaw_kind         (int) 
+// arg2 = trace_buffer_addr (uintptr_t) off-heap buffer address
 usdt:LIBJVM_PATH:hotspot:vthread__thaw
 {
     @thaw_total = count();
@@ -95,7 +101,7 @@ usdt:LIBJVM_PATH:hotspot:vthread__thaw
     if (arg2 == 0) {
         @thaw_nullbuf = count();
     }
-
+    // key: carrier thread id, indicate that which vthread is running on carrier thread and the buffer address 
     @vthread[(uint64)curtask] = arg0;
     @vtbuf[(uint64)curtask]   = arg2;
     @cache_insert = count();
@@ -112,6 +118,9 @@ usdt:LIBJVM_PATH:hotspot:vthread__thaw
     }
 }
 
+// arg0 = vthread_id        (uintptr_t) 
+// arg1 = freeze_result     (int) 
+// arg2 = trace_buffer_addr (uintptr_t) off-heap buffer address
 usdt:LIBJVM_PATH:hotspot:vthread__freeze
 {
     @freeze_total = count();
@@ -133,12 +142,16 @@ usdt:LIBJVM_PATH:hotspot:vthread__freeze
     }
 
     $carrier = (uint64)curtask;
-    if (@vthread[$carrier]) {
-        delete(@vthread[$carrier]);
-        delete(@vtbuf[$carrier]);
-        @cache_delete = count();
+    if (arg1 <= 1) {
+        if (@vthread[$carrier]) {
+            delete(@vthread[$carrier]);
+            delete(@vtbuf[$carrier]);
+            @cache_delete = count();
+        } else {
+            @freeze_unmatched = count();
+        }
     } else {
-        @freeze_unmatched = count();
+        @freeze_failed_kept = count();
     }
 }
 
