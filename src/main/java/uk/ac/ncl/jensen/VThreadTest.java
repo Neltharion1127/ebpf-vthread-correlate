@@ -41,6 +41,7 @@ public class VThreadTest {
             String parentTraceId = parentSpan.getSpanContext().getTraceId();
             System.out.println("[Main] traceId=" + parentTraceId);
 
+            // ── Phase 1: normal freeze/thaw lifecycle ────────────────────────
             List<Thread> vts = new ArrayList<>();
             for (int i = 0; i < 3; i++) {
                 final int id = i;
@@ -80,6 +81,66 @@ public class VThreadTest {
                 vts.add(vt);
             }
             for (Thread vt : vts) vt.join();
+
+            // ── Phase 2: pinned-monitor lifecycle (JDK 21 only; JEP 491
+            //    removes monitor pinning in JDK 24+) ───────────────────────────
+            //
+            // Regression test for the correlator's cache-eviction fix.
+            // Required event order, per vthread:
+            //
+            //   (a) plain park        -> freeze ok, unmount; the thaw on resume
+            //                            inserts this carrier's cache entry.
+            //   (b) park inside a     -> freeze attempt FAILS with
+            //       synchronized block   pinned_monitor (result=4); the vthread
+            //                            stays mounted and the carrier blocks.
+            //   (c) write(2) after    -> SAME mount window as (b). This write
+            //       the pinned park     must still be correlated. The unfixed
+            //                            correlator evicted the cache at (b)
+            //                            and loses this write.
+            //
+            // Step (a) is essential: a vthread's FIRST mount has no thaw event,
+            // so without it there is no cache entry for (b) to wrongly evict
+            // and the fix is not exercised.
+            //
+            // Each task uses its own lock: the monitor must be uncontended so
+            // the only park inside it is the explicit parkNanos (a clean
+            // pinned_monitor, not contended-monitorenter noise).
+            List<Thread> pinnedVts = new ArrayList<>();
+            for (int i = 0; i < 2; i++) {
+                final int id = i;
+                final Context parentCtx = Context.current();
+                final Object lock = new Object();
+
+                Thread vt = Thread.ofVirtual().start(() -> {
+                    try (Scope s = parentCtx.makeCurrent()) {
+
+                        Span span = tracer.spanBuilder("vt-pinned-" + id).startSpan();
+                        try (Scope sc = span.makeCurrent()) {
+
+                            System.out.println("PIN-" + id
+                                    + " threadId=" + Thread.currentThread().threadId()
+                                    + " spanId=" + span.getSpanContext().getSpanId());
+
+                            // (a) unpinned park: freeze ok -> thaw populates the cache.
+                            LockSupport.parkNanos(200_000_000L);
+
+                            synchronized (lock) {
+                                // (b) pinned park: freeze fails, vthread stays mounted.
+                                LockSupport.parkNanos(200_000_000L);
+
+                                // (c) the write that proves the fix.
+                                System.out.println("PIN-" + id
+                                        + " after pinned park, spanId="
+                                        + Span.current().getSpanContext().getSpanId());
+                            }
+                        } finally {
+                            span.end();
+                        }
+                    }
+                });
+                pinnedVts.add(vt);
+            }
+            for (Thread vt : pinnedVts) vt.join();
 
         } finally {
             parentSpan.end();
