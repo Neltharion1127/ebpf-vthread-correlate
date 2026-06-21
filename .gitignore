@@ -13,3 +13,7 @@ target/
 
 .claude
 .vscode
+
+# External helper clones
+tools/
+result/

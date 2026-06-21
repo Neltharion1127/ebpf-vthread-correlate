@@ -97,7 +97,7 @@ usdt:LIBJVM_PATH:hotspot:vthread__thaw
 {
     @thaw_total = count();
     @thaw_kind[(int64)arg1] = count();
-
+    @carriers[tid] = count();
     if (arg2 == 0) {
         @thaw_nullbuf = count();
     }
