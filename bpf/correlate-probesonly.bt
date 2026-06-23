@@ -1,0 +1,88 @@
+#!/usr/bin/env bpftrace
+//
+// correlate-probesonly.bt — CROPPED consumer for the OS-level overhead measurement
+// (scripts/measure-oslevel.sh, state B). Derived from bpf/correlate.bt; that file is
+// the source of truth and is left untouched.
+//
+// Scope of this crop (L4 / eBPF-consumer overhead cell):
+//   * KEEP : usdt vthread__freeze + vthread__thaw, PERF-mode map path only —
+//            @vthread/@vtbuf carrier cache (insert on thaw, delete on freeze) plus the
+//            firing / result / pinned counters. This is real per-event hashmap work
+//            keyed by curtask, NOT a degenerate @f=count().
+//   * DROP : tracepoint:syscalls:sys_enter_write entirely — syscall correlation is out
+//            of scope for this measurement (explicit decision).
+//   * DROP : every verbose ($1==1) printf branch AND its arg2 buffer deref. This is
+//            faithful to bpf/correlate.bt PERF mode, whose freeze/thaw do NOT deref the
+//            trace buffer — that deref lives only in the verbose branch and in the
+//            now-removed sys_enter_write handler. So there is NO buffer read here, by
+//            design (chosen over lifting the verbose deref in).
+//
+// LIBJVM_PATH is a placeholder. measure-oslevel.sh sed-substitutes the real libjvm.so
+// path before handing this file to bpftrace, so the USDT probes attach by FILE PATH
+// (not PID) and therefore catch the JMH `-f 2` forked child JVM.
+//
+// BEGIN prints "tracing started" — measure-oslevel.sh polls for that line as the
+// attach-complete marker before launching JMH. END dumps the counters; the script
+// reads @freeze_total / @thaw_total from there to confirm the probes fired in the
+// forked JVM (otherwise B is meaningless and the script FAILs).
+//
+
+BEGIN
+{
+    printf("ebpf-vthread-correlate: tracing started\n");
+    printf("  Program: correlate-probesonly (freeze/thaw perf path: cache + counters, no buffer deref)\n");
+    printf("  USDT source: LIBJVM_PATH\n");
+}
+
+// arg0 = vthread_id        (uintptr_t)
+// arg1 = thaw_kind         (int)
+// arg2 = trace_buffer_addr (uintptr_t) off-heap buffer address
+usdt:LIBJVM_PATH:hotspot:vthread__thaw
+{
+    @thaw_total = count();
+    @thaw_kind[(int64)arg1] = count();
+    @carriers[tid] = count();
+    if (arg2 == 0) {
+        @thaw_nullbuf = count();
+    }
+    // carrier-cache insert: which vthread (and its buffer addr) is mounted on this carrier
+    @vthread[(uint64)curtask] = arg0;
+    @vtbuf[(uint64)curtask]   = arg2;
+    @cache_insert = count();
+}
+
+// arg0 = vthread_id        (uintptr_t)
+// arg1 = freeze_result     (int)
+// arg2 = trace_buffer_addr (uintptr_t) off-heap buffer address
+usdt:LIBJVM_PATH:hotspot:vthread__freeze
+{
+    @freeze_total = count();
+    @freeze_result[(int64)arg1] = count();
+
+    if (arg1 >= 2 && arg1 <= 4) {
+        @pinned_total = count();
+    }
+
+    $carrier = (uint64)curtask;
+    if (arg1 <= 1) {
+        if (@vthread[$carrier]) {
+            delete(@vthread[$carrier]);
+            delete(@vtbuf[$carrier]);
+            @cache_delete = count();
+        } else {
+            @freeze_unmatched = count();
+        }
+    } else {
+        @freeze_failed_kept = count();
+    }
+}
+
+END
+{
+    printf("\nebpf-vthread-correlate: tracing stopped — summary follows\n");
+
+    // Residual cache entries = @cache_insert - @cache_delete; the raw per-carrier maps
+    // add no information beyond that, so drop them from the auto-printed summary.
+    clear(@vthread);
+    clear(@vtbuf);
+}

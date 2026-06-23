@@ -15,7 +15,7 @@
 #   DRY_RUN=1 scripts/profile-matrix.sh      # print the matrix without running anything
 #   ITIMER_ARGS="-f 1 -wi 5 -i 10" scripts/profile-matrix.sh
 #
-# Env knobs: PROF_DIR RESULTS OUT_DIR ASPROF ITIMER_ARGS DRY_RUN QUICK
+# Env knobs: PROF_DIR RESULTS OUT_DIR ASPROF ITIMER_ARGS DRY_RUN QUICK NPARAM
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -33,6 +33,7 @@ OUT_DIR="${OUT_DIR:-$REPO_ROOT/result/figures}"
 ITIMER_ARGS="${ITIMER_ARGS:--f 1 -wi 5 -i 10}"
 DRY_RUN="${DRY_RUN:-0}"
 QUICK="${QUICK:-0}"
+NPARAM="${NPARAM:-}"   # e.g. NPARAM="yieldsPerVthread=1000,10000,100000"; empty = source @Param default
 
 # ---- the matrix: "Bench|variant|<jvm arg to append, empty for baseline>" ----
 # The intentional per-benchmark variant selection.
@@ -78,13 +79,14 @@ for cell in "${CELLS[@]}"; do
     say "$bench / $variant"
 
     append=(); [ -n "$arg" ] && append=(-jvmArgsAppend "$arg")
+    pflag=(); [ -n "$NPARAM" ] && pflag=(-p "$NPARAM")
     if [ "$QUICK" != 1 ]; then
         celldir="$PROF_DIR/${bench}_${variant}"
         run rm -rf "$celldir"
     fi
 
     # (1) clean time + heap — annotation @Fork/@Warmup defaults, no profiler perturbation
-    run "$JAVA" -Djmh.ignoreLock=true -jar "$JAR" "$bench" "${append[@]}" \
+    run "$JAVA" -Djmh.ignoreLock=true -jar "$JAR" "$bench" "${append[@]}" "${pflag[@]}" \
         -prof gc  \
         -rf json -rff "$RESULTS/${bench}_${variant}_gc.json"
 
@@ -121,7 +123,16 @@ for f in sorted(glob.glob(os.path.join(results, "*_gc.json"))):
         div, lab = 1, "op"
         for key, d, l in NOM:
             if key in bench: div, lab = d, l; break
-        rows.append((bench.replace("Benchmark",""), variant, f"{score:.3f} {unit}",
+        out_variant = variant
+        if "Transition" in bench:
+            n = r.get("params", {}).get("yieldsPerVthread")
+            if n is not None:
+                try:
+                    div = int(n)
+                    out_variant = f"{variant} N={n}"
+                except ValueError:
+                    pass
+        rows.append((bench.replace("Benchmark",""), out_variant, f"{score:.3f} {unit}",
                      f"{anorm:.1f} B/op", f"{score/div:.4f} /{lab}"))
 w = [max(len(r[i]) for r in rows+[("Benchmark","Variant","Score","alloc.norm","per nominal")]) for i in range(5)]
 hdr = ("Benchmark","Variant","Score","alloc.norm","per nominal")
