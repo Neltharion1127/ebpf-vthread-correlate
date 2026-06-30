@@ -13,7 +13,23 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
 cd "$REPO_ROOT"
 
-JDK="${JDK:-/home/jie/csc8499/jdk21u/build/release-flag/images/jdk}"
+# Resolve the vthread-trace JDK by priority — and never silently fall back to
+# the system JDK (an ordinary JDK has no -XX:+VThreadTraceProbes and would
+# quietly produce wrong data):
+#   1. an explicit JDK= on the command line wins over everything
+#   2. otherwise read config/env.sh (written by ./setup.sh)
+#   3. neither set -> fail loudly; do NOT use the system JAVA_HOME
+if [[ -z "${JDK:-}" && -f "$REPO_ROOT/config/env.sh" ]]; then
+    # shellcheck source=/dev/null
+    source "$REPO_ROOT/config/env.sh"
+fi
+if [[ -z "${JDK:-}" ]]; then
+    echo "ERROR: no vthread-trace JDK configured." >&2
+    echo "       Run ./setup.sh first (downloads the JDK + writes config/env.sh)," >&2
+    echo "       or pass one explicitly: JDK=/path/to/jdk $0" >&2
+    echo "       (Refusing to use the system JAVA_HOME — it lacks -XX:+VThreadTraceProbes.)" >&2
+    exit 1
+fi
 JAVA="${JAVA:-$JDK/bin/java}"
 LIBJVM="${LIBJVM:-$JDK/lib/server/libjvm.so}"
 
