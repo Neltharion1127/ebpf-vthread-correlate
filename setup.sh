@@ -66,8 +66,9 @@ else
     || die "sha256 download failed: ${BASE_URL}/${ASSET}.sha256"
 
   say "verify SHA256"
-  # the .sha256 file contains only the hash; rebuild the "hash  filename" form
-  echo "$(cat "${ASSET}.sha256")  ${ASSET}" | sha256sum -c - \
+  # the .sha256 file is in standard `sha256sum` format ("hash  filename"),
+  # so it can be fed to -c directly.
+  sha256sum -c "${ASSET}.sha256" \
     || die "SHA256 mismatch — download corrupted or release was modified"
   ok "checksum verified"
 
