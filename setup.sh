@@ -9,7 +9,7 @@
 #   4. Generates config/env.sh with JAVA_HOME / LIBJVM_PATH / JDK filled in,
 #      so every script in this repo finds the JDK with zero manual editing.
 #   5. Checks for the external tools the benchmarks need (bpftrace,
-#      async-profiler, systemtap, maven) and reports what is missing.
+#      async-profiler, maven) and reports what is missing.
 #
 # The pre-built JDK is OpenJDK 21u with -XX:+VThreadTraceProbes, built in an
 # ubuntu:20.04 container (glibc 2.31) so it runs on any Linux with glibc >= 2.31.
@@ -115,6 +115,11 @@ export LIBJVM_PATH="$LIBJVM"
 
 # Convenience alias used by run-usdt.sh / measure-oslevel.sh.
 export JDK="$JDK_DIR"
+
+# JVMTI agent shared object (built by: make -C JVMTI-agent). profile-matrix.sh
+# references \$AGENT_PATH for the agent / jvmtipublish cells; resolved relative to
+# this file so the repo can move without re-running setup.sh.
+export AGENT_PATH="\$(cd "\$(dirname "\${BASH_SOURCE[0]}")/.." && pwd)/JVMTI-agent/libvthread_trace_agent.so"
 EOF
 ok "wrote $ENV_FILE"
 
@@ -129,7 +134,10 @@ chk() {
 }
 chk mvn       "maven, for building the benchmark jar (apt install maven)"
 chk bpftrace  "apt install bpftrace / dnf install bpftrace (needs root to run)"
-chk stap      "systemtap, apt install systemtap"
+# NOTE: systemtap (stap) is intentionally NOT checked here. It is only needed to
+# *build* a USDT-probe JDK yourself (--enable-dtrace wants sys/sdt.h +
+# /usr/bin/dtrace). Test machines use the pre-built release JDK downloaded above
+# and read USDT via bpftrace's BTF/uprobes, so systemtap is not a runtime dep.
 
 ASPROF="$REPO_ROOT/lib/libasyncProfiler.so"
 if [ -f "$ASPROF" ]; then
