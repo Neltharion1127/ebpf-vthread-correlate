@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-# scripts/aws-bootstrap.sh — one-shot dependency bootstrap for running the
-# ebpf-vthread-correlate benchmark matrix on a fresh AWS bare-metal instance.
+# scripts/env-bootstrap.sh — one-shot dependency bootstrap for running the
+# ebpf-vthread-correlate benchmark matrix on a fresh bare-metal instance.
 #
 # setup.sh downloads the JDK and checks only wget/mvn/bpftrace. This script fills
 # in the rest of the toolchain that the other scripts silently assume is already
@@ -13,11 +13,11 @@
 # already present is skipped, so it is safe to re-run.
 #
 # Usage:
-#   scripts/aws-bootstrap.sh                # install packages + fetch async-profiler + self-check
-#   CHECK_ONLY=1 scripts/aws-bootstrap.sh   # self-check only (no sudo, no install, no download)
-#   ASPROF_VERSION=4.4 scripts/aws-bootstrap.sh
+#   scripts/env-bootstrap.sh                # install packages + fetch async-profiler + self-check
+#   CHECK_ONLY=1 scripts/env-bootstrap.sh   # self-check only (no sudo, no install, no download)
+#   ASPROF_VERSION=4.4 scripts/env-bootstrap.sh
 #
-# Fresh-box order:  scripts/aws-bootstrap.sh  ->  ./setup.sh  ->  scripts/profile-matrix.sh
+# Fresh-box order:  scripts/env-bootstrap.sh  ->  ./setup.sh  ->  scripts/profile-matrix.sh
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"

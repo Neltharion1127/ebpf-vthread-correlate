@@ -1,5 +1,9 @@
 # Local configuration — contains machine-specific paths, never commit.
+# (config/env.sh.example IS tracked; only the generated config/env.sh is ignored.)
 config/env.sh
+
+# Pre-built vthread-trace JDK downloaded + extracted by setup.sh
+/.vthread-jdk/
 
 # Java compilation output
 java/out/
@@ -16,4 +20,4 @@ target/
 
 # External helper clones
 tools/
-result/
+# result/
