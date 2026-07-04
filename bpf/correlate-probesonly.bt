@@ -37,8 +37,9 @@
 //
 // BEGIN prints "tracing started" — measure-oslevel.sh polls for that line as the
 // attach-complete marker before launching JMH. END dumps the counters; the script
-// reads @freeze_total / @thaw_total from there to confirm the probes fired in the
-// forked JVM (otherwise B is meaningless and the script FAILs).
+// reads @freeze_total / @thaw_total / @start_total / @end_total (all must be > 0)
+// and @end_unmatched (must be 0) from there to confirm the probes fired cleanly in
+// the forked JVM (otherwise B is meaningless and the script FAILs).
 //
 
 BEGIN
@@ -128,9 +129,9 @@ END
 {
     printf("\nebpf-vthread-correlate: tracing stopped — summary follows\n");
 
-    // @cache_insert - @cache_delete is an EVENT delta (kind=1 thaws re-insert the
-    // same key), not a live-entry count; drop the raw per-carrier maps from the
-    // auto-printed summary.
+    // @cache_insert - @cache_delete is an EVENT delta (a start onto a carrier
+    // that already holds an entry overwrites it), not a live-entry count; drop
+    // the raw per-carrier maps from the auto-printed summary.
     clear(@vthread);
     clear(@vtbuf);
 }

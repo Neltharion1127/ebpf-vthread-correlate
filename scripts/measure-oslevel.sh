@@ -23,7 +23,8 @@
 #   JMH `-f 2` forks a child JVM and runs the benchmark there; a PID-scoped `-c` probe
 #   binds to the parent and would miss the child. Path attach catches the forked JVM
 #   regardless of PID. We poll the bpftrace log for the BEGIN "tracing started" marker
-#   before launching JMH (no bare sleep), and self-check @freeze_total/@thaw_total > 0
+#   before launching JMH (no bare sleep), and self-check all four probes
+#   (@freeze_total/@thaw_total/@start_total/@end_total > 0, @end_unmatched == 0)
 #   afterwards — if the probes did not fire in the child we FAIL loudly rather than
 #   print a fake good-looking number.
 #
@@ -231,6 +232,9 @@ A_SCORE="$(score_num_from_log "$A_LOG")"
 B_SCORE="$(score_num_from_log "$B_LOG")"
 FREEZE_TOTAL="$(count_from_log "@freeze_total" "$BT_LOG")"
 THAW_TOTAL="$(count_from_log "@thaw_total" "$BT_LOG")"
+START_TOTAL="$(count_from_log "@start_total" "$BT_LOG")"
+END_TOTAL="$(count_from_log "@end_total" "$BT_LOG")"
+END_UNMATCHED="$(count_from_log "@end_unmatched" "$BT_LOG")"
 C_SCORE=""
 
 FAIL=0
@@ -240,9 +244,13 @@ if [[ "$RUN_C" == "1" ]]; then
     C_SCORE="$(score_num_from_log "$C_LOG")"
     [[ -n "$C_SCORE" ]] || { echo "FAIL: could not parse C JMH score from $C_LOG" >&2; FAIL=1; }
 fi
-if [[ "${FREEZE_TOTAL:-0}" -le 0 || "${THAW_TOTAL:-0}" -le 0 ]]; then
-    echo "FAIL: USDT probes did not fire in the forked JVM (@freeze_total=$FREEZE_TOTAL @thaw_total=$THAW_TOTAL)." >&2
+if [[ "${FREEZE_TOTAL:-0}" -le 0 || "${THAW_TOTAL:-0}" -le 0 || "${START_TOTAL:-0}" -le 0 || "${END_TOTAL:-0}" -le 0 ]]; then
+    echo "FAIL: USDT probes did not fire in the forked JVM (@freeze_total=$FREEZE_TOTAL @thaw_total=$THAW_TOTAL @start_total=$START_TOTAL @end_total=$END_TOTAL)." >&2
     echo "      B is meaningless — likely the fork/attach pitfall. NOT emitting a fake number." >&2
+    FAIL=1
+fi
+if [[ "${END_UNMATCHED:-0}" -ne 0 ]]; then
+    echo "FAIL: @end_unmatched=$END_UNMATCHED (expected 0 — tracer attached mid-lifetime, or a cache-protocol anomaly; see bpf/correlate.bt header)." >&2
     FAIL=1
 fi
 
@@ -265,7 +273,7 @@ elif [[ -n "$A_SCORE" && -n "$B_SCORE" ]]; then
     printf '  B - A  publish+observe  : %s us/op   (directional, VM-only — not citable)\n' "$BA"
 fi
 echo
-echo "  probe firings in forked JVM: @freeze_total=$FREEZE_TOTAL  @thaw_total=$THAW_TOTAL"
+echo "  probe firings in forked JVM: @freeze_total=$FREEZE_TOTAL  @thaw_total=$THAW_TOTAL  @start_total=$START_TOTAL  @end_total=$END_TOTAL  @end_unmatched=$END_UNMATCHED"
 
 if [[ "$FAIL" != "0" ]]; then
     echo

@@ -297,9 +297,9 @@ END
     clear(@freeze_name);
     clear(@thaw_name);
 
-    // @cache_insert - @cache_delete is an EVENT delta (kind=1 thaws re-insert
-    // the same key), not a live-entry count; the raw per-carrier maps are
-    // display-only, so drop them too.
+    // @cache_insert - @cache_delete is an EVENT delta (a start onto a carrier
+    // that already holds an entry overwrites it), not a live-entry count; the
+    // raw per-carrier maps are display-only, so drop them too.
     clear(@vthread);
     clear(@vtbuf);
 }
