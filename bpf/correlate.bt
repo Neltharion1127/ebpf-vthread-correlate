@@ -39,7 +39,16 @@
 //
 // ── Counters (dumped at END) ─────────────────────────────────────────────────
 //
-//   @thaw_total / @freeze_total   raw probe firings (normalisation divisors)
+//   @thaw_total / @freeze_total   raw PROBE-EVENT counts — NOT logical
+//                                 transitions. One logical remount fires
+//                                 1x kind=0 + Nx kind=1 (N grows with stack
+//                                 depth; e.g. 12 events on a shallow stack in
+//                                 a single measurement, see
+//                                 result/blindspot/FINDINGS.md), and a
+//                                 vthread's FIRST mount fires no thaw at all.
+//   @thaw_top                     kind==0 thaws only — the logical-remount
+//                                 normalisation divisor. Use THIS, never
+//                                 @thaw_total, for per-transition arithmetic.
 //   @thaw_kind[k]                 thaw distribution by kind code
 //   @freeze_result[r]             freeze distribution by result code
 //   @pinned_total                 freeze results 2..4 (pinned_cs/native/monitor).
@@ -47,12 +56,19 @@
 //   @thaw_nullbuf                 thaws with trace_buffer == 0.
 //                                 JVMTI branch, no agent: expect == @thaw_total.
 //                                 JVMTI branch, agent loaded: expect ~0.
-//   @cache_insert / @cache_delete carrier-cache pairing; (insert - delete) =
-//                                 entries still live at exit.
+//   @cache_insert / @cache_delete carrier-cache EVENT counts. insert fires per
+//                                 thaw event (kind=1 re-inserts the same key),
+//                                 so (insert - delete) is an event delta, NOT
+//                                 the number of entries live at exit
+//                                 (measured: 12 - 1 = 11 vs 1 real entry).
 //   @freeze_unmatched             freeze with no cached thaw on this carrier.
-//                                 NOT an error: a vthread's first unmount has
-//                                 no preceding thaw, so this approximates the
-//                                 number of distinct vthreads that ran.
+//                                 NOT an error, but NOT a vthread count either:
+//                                 termination leaves a stale cache entry (no
+//                                 freeze fires on exit), so the NEXT vthread's
+//                                 first freeze on that carrier hits the stale
+//                                 entry and is counted as matched. Under churn
+//                                 this approximates the number of CARRIERS,
+//                                 not vthreads (result/blindspot/FINDINGS.md).
 //   @write_on_vthread             write(2) calls issued while a vthread was
 //                                 mounted on the calling carrier
 //   @write_correlated             ... of which had a valid trace context
@@ -97,6 +113,11 @@ usdt:LIBJVM_PATH:hotspot:vthread__thaw
 {
     @thaw_total = count();
     @thaw_kind[(int64)arg1] = count();
+    if (arg1 == 0) {
+        @thaw_top = count();
+    }
+    // key set = carriers that ever ran a vthread; VALUES are thaw-event counts
+    // (inflated per logical remount) — do not read them as mount counts.
     @carriers[tid] = count();
     if (arg2 == 0) {
         @thaw_nullbuf = count();
@@ -191,8 +212,9 @@ END
     clear(@freeze_name);
     clear(@thaw_name);
 
-    // Residual cache entries = @cache_insert - @cache_delete; the raw
-    // per-carrier maps add no information beyond that, so drop them too.
+    // @cache_insert - @cache_delete is an EVENT delta (kind=1 thaws re-insert
+    // the same key), not a live-entry count; the raw per-carrier maps are
+    // display-only, so drop them too.
     clear(@vthread);
     clear(@vtbuf);
 }

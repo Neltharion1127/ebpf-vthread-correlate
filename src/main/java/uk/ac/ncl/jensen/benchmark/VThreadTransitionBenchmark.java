@@ -10,7 +10,10 @@ import java.util.concurrent.TimeUnit;
  *
  * Workload (W2): one virtual thread performs N {@code Thread.yield()} calls. On a
  * virtual thread, yield() unmounts the continuation (freeze) and remounts it
- * (thaw), so N yields == N freeze/thaw cycles with near-zero blocking wall time.
+ * (thaw), so N yields == N LOGICAL freeze/thaw cycles with near-zero blocking
+ * wall time. (Probe-event counts differ: one logical thaw fires 1+k
+ * vthread__thaw events, k stack-depth-dependent — reconcile against
+ * @thaw_kind[0], never @thaw_total.)
  * This is the right primitive for isolating per-transition cost — Thread.sleep
  * would bury an ns/us-scale signal under milliseconds of timer wait.
  *

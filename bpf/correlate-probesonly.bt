@@ -17,6 +17,13 @@
 //            now-removed sys_enter_write handler. So there is NO buffer read here, by
 //            design (chosen over lifting the verbose deref in).
 //
+// Counter semantics: @thaw_total counts PROBE EVENTS, not logical transitions —
+// one logical remount fires 1x kind=0 + Nx kind=1 (N grows with stack depth;
+// e.g. 12 events on a shallow stack in a single measurement, see
+// result/blindspot/FINDINGS.md), and a vthread's FIRST mount fires no thaw at
+// all. @thaw_top counts kind==0 only and is the logical-remount normalisation
+// divisor — use it, never @thaw_total, for per-transition arithmetic.
+//
 // LIBJVM_PATH is a placeholder. measure-oslevel.sh sed-substitutes the real libjvm.so
 // path before handing this file to bpftrace, so the USDT probes attach by FILE PATH
 // (not PID) and therefore catch the JMH `-f 2` forked child JVM.
@@ -41,6 +48,9 @@ usdt:LIBJVM_PATH:hotspot:vthread__thaw
 {
     @thaw_total = count();
     @thaw_kind[(int64)arg1] = count();
+    if (arg1 == 0) {
+        @thaw_top = count();
+    }
     @carriers[tid] = count();
     if (arg2 == 0) {
         @thaw_nullbuf = count();
@@ -81,8 +91,9 @@ END
 {
     printf("\nebpf-vthread-correlate: tracing stopped — summary follows\n");
 
-    // Residual cache entries = @cache_insert - @cache_delete; the raw per-carrier maps
-    // add no information beyond that, so drop them from the auto-printed summary.
+    // @cache_insert - @cache_delete is an EVENT delta (kind=1 thaws re-insert the
+    // same key), not a live-entry count; drop the raw per-carrier maps from the
+    // auto-printed summary.
     clear(@vthread);
     clear(@vtbuf);
 }

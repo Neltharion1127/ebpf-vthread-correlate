@@ -276,9 +276,11 @@ Key observations:
 - Each `[write]` carries the `vthread_id` **and** the OTel `traceId`/`spanId`
   of the span active at the time of the syscall, read directly from the
   off-heap buffer — no JVM cooperation at syscall time.
-- `freeze_result=ok` on normal park; `thaw_kind=top` on first mount,
-  `return_barrier` on subsequent thaws. Events with `trace_buffer_addr=0` or
-  `valid=0` are intentionally not printed.
+- `freeze_result=ok` on normal park; a vthread's FIRST mount emits no thaw at
+  all. Each remount emits one `thaw_kind=top` followed by a stack-depth-
+  dependent number of `return_barrier` thaws (e.g. 12 events on a shallow
+  stack in a single measurement — see `result/blindspot/FINDINGS.md`). Events
+  with `trace_buffer_addr=0` or `valid=0` are intentionally not printed.
 - When a nested inner span is active, the `spanId` on `[write]` events matches
   the inner span, not the child span, confirming the buffer is updated correctly
   on scope open/close.
@@ -467,7 +469,7 @@ The modified JDK fires two USDT probes on the virtual thread carrier path:
 
 | Probe | When | Args |
 |---|---|---|
-| `hotspot:vthread__thaw` | Virtual thread mounts onto a carrier thread | `vthread_id`, `thaw_kind`, `trace_buffer_addr` |
+| `hotspot:vthread__thaw` | Fires on the thaw path of a remount: once with `kind=top`, then once per return-barrier re-entry (multiple events per logical mount; none on first mount) | `vthread_id`, `thaw_kind`, `trace_buffer_addr` |
 | `hotspot:vthread__freeze` | Virtual thread yields the carrier thread | `vthread_id`, `freeze_result`, `trace_buffer_addr` |
 
 `correlate.bt` maintains two BPF maps keyed by `(uint64)curtask` (the
@@ -555,7 +557,7 @@ human-readable strings using BPF maps initialised in `BEGIN`:
 
 | Value | Name | Meaning |
 |---|---|---|
-| 0 | `top` | Initial thaw, mounting vthread for the first time |
+| 0 | `top` | First thaw event of a remount (fires once per logical remount; a vthread's first mount emits no thaw) |
 | 1 | `return_barrier` | Thaw triggered by return barrier |
 | 2 | `return_barrier_ex` | Return barrier thaw with exception |
 
