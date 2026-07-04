@@ -1,0 +1,95 @@
+#!/usr/bin/env bpftrace
+//
+// blindspot.bt — first-mount blind-spot reproducer consumer.
+//
+// Derived from bpf/correlate.bt (source of truth); the carrier-cache semantics
+// are IDENTICAL on purpose — this script must demonstrate the blind spot of the
+// CURRENT logic, not of an improved variant:
+//   * thaw   : @vt[(uint64)curtask] = arg0          (unconditional insert)
+//   * freeze : delete only when freeze_result <= 1  (ok / ok_bottom)
+//
+// USDT probes (same layout as bpf/correlate.bt):
+//   hotspot:vthread__thaw  (uintptr_t vthread_id, int thaw_kind,     uintptr_t trace_buffer_addr)
+//   hotspot:vthread__freeze(uintptr_t vthread_id, int freeze_result, uintptr_t trace_buffer_addr)
+//
+// vthread_id is java_lang_Thread::thread_id, i.e. Java's Thread.threadId() —
+// printed in DECIMAL here to match the Java-side stderr line VTHREAD_ID=<n>.
+//
+// sys_enter_write is filtered to count == 101 (PHASE_A, before first park),
+// count == 103 (PHASE_B, after first thaw), and count == 107 (VT2's first-mount
+// write in MisattributionRepro). If the calling carrier has no map entry, the
+// event prints UNMAPPED — that is the blind spot.
+//
+// LIBJVM_PATH is a placeholder; run-blindspot.sh sed-substitutes the real
+// libjvm.so path so USDT attaches by FILE PATH (same convention as the other
+// scripts). BEGIN prints "tracing started" as the attach-complete marker.
+//
+
+BEGIN
+{
+    printf("ebpf-vthread-correlate: tracing started\n");
+    printf("  Program: blindspot (first-mount attribution check)\n");
+    printf("  USDT source: LIBJVM_PATH\n");
+    printf("  Watching: vthread__thaw, vthread__freeze, sys_enter_write(count==101|103|107)\n\n");
+}
+
+// arg0 = vthread_id, arg1 = thaw_kind, arg2 = trace_buffer_addr
+usdt:LIBJVM_PATH:hotspot:vthread__thaw
+{
+    @thaw_total = count();
+    @thaw_kind[(int64)arg1] = count();
+
+    // carrier-cache insert — same semantics as bpf/correlate.bt
+    @vt[(uint64)curtask] = arg0;
+
+    printf("[thaw]   carrier tid=%-6d  vthread_id=%lu  kind=%d\n",
+           tid, arg0, arg1);
+}
+
+// arg0 = vthread_id, arg1 = freeze_result, arg2 = trace_buffer_addr
+usdt:LIBJVM_PATH:hotspot:vthread__freeze
+{
+    @freeze_total = count();
+    @freeze_result[(int64)arg1] = count();
+    if (arg1 >= 2 && arg1 <= 4) {
+        @pinned_total = count();
+    }
+
+    printf("[freeze] carrier tid=%-6d  vthread_id=%lu  result=%d\n",
+           tid, arg0, arg1);
+
+    // carrier-cache delete — same semantics as bpf/correlate.bt:
+    // only successful freezes (ok / ok_bottom) clear the mapping
+    $carrier = (uint64)curtask;
+    if (arg1 <= 1) {
+        if (@vt[$carrier]) {
+            delete(@vt[$carrier]);
+        } else {
+            @freeze_unmatched = count();
+        }
+    } else {
+        @freeze_failed_kept = count();
+    }
+}
+
+tracepoint:syscalls:sys_enter_write
+/args->count == 101 || args->count == 103 || args->count == 107/
+{
+    $carrier = (uint64)curtask;
+    if (@vt[$carrier]) {
+        printf("[write]  carrier tid=%-6d  comm=%-16s count=%-4d -> vthread_id=%lu\n",
+               tid, comm, args->count, @vt[$carrier]);
+    } else {
+        printf("[write]  carrier tid=%-6d  comm=%-16s count=%-4d -> UNMAPPED\n",
+               tid, comm, args->count);
+    }
+}
+
+END
+{
+    printf("\nebpf-vthread-correlate: tracing stopped — summary follows\n");
+    // Self-check convention from measure-oslevel.sh: @freeze_total / @thaw_total
+    // must be > 0 or the run is meaningless. Drop the raw carrier map from the
+    // auto-printed summary (counters only).
+    clear(@vt);
+}

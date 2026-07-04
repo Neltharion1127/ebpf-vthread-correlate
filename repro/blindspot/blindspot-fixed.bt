@@ -1,0 +1,155 @@
+#!/usr/bin/env bpftrace
+//
+// blindspot-fixed.bt — lifecycle-probe FIX verification consumer.
+//
+// Derived from blindspot.bt, which is deliberately left byte-for-byte
+// unchanged as the recorded-defect baseline. This variant consumes the two
+// per-lifetime probes added on the jdk21u vthread-lifecycle-probes branch
+// (55ca8535411) and applies the fixed carrier-cache protocol, identical to
+// the lifecycle-probes branch of bpf/correlate.bt:
+//
+//   event                  | cache action on @vt[curtask]
+//   -----------------------+--------------------------------------------------
+//   vthread__start         | insert — closes the first-mount blind spot
+//                          | (completeness fix)
+//   vthread__thaw  kind==0 | insert
+//   vthread__thaw  kind!=0 | count only, NO insert: JDK-side measurement
+//                          | (55ca8535411 self-check 4) shows return-barrier
+//                          | thaws firing AFTER vthread__end on the
+//                          | termination path; an unconditional insert would
+//                          | resurrect the mapping end just cleared and reopen
+//                          | silent misattribution
+//   vthread__freeze res<=1 | delete if present
+//   vthread__end           | unconditional delete — kills the stale-entry
+//                          | silent misattribution (soundness fix)
+//
+// USDT layout (verified via readelf -n on the lifecycle-probes libjvm.so):
+//   hotspot:vthread__start (uintptr_t vthread_id, uintptr_t trace_buffer_addr)
+//   hotspot:vthread__end   (uintptr_t vthread_id)
+//   thaw/freeze unchanged from blindspot.bt.
+//
+// Diagnostics (all dumped at END):
+//   @start_total / @end_total   one each per vthread lifetime
+//   @end_unmatched              end with no mapping — expect 0 (start precedes)
+//   @post_end_freeze            freeze on a carrier AFTER its end event, before
+//                               the next start/kind==0-thaw insert — expect 0
+//   @post_end_thaw              thaws in that same post-end window — expect >=0
+//   @post_end_thaw_kind[k]      ... their kind distribution — expect only k==1
+//                               (termination-path return barriers)
+//
+// LIBJVM_PATH is a placeholder; run-blindspot.sh sed-substitutes the real
+// libjvm.so path. BEGIN prints "tracing started" as the attach marker.
+//
+
+BEGIN
+{
+    printf("ebpf-vthread-correlate: tracing started\n");
+    printf("  Program: blindspot-fixed (lifecycle-probe cache protocol)\n");
+    printf("  USDT source: LIBJVM_PATH\n");
+    printf("  Watching: vthread__start, vthread__end, vthread__thaw, vthread__freeze, sys_enter_write(count==101|103|107)\n\n");
+}
+
+// arg0 = vthread_id, arg1 = trace_buffer_addr
+usdt:LIBJVM_PATH:hotspot:vthread__start
+{
+    @start_total = count();
+
+    $carrier = (uint64)curtask;
+    @vt[$carrier] = arg0;
+    if (@post_end[$carrier]) {
+        delete(@post_end[$carrier]);
+    }
+
+    printf("[start]  carrier tid=%-6d  vthread_id=%lu  buf=0x%lx\n",
+           tid, arg0, arg1);
+}
+
+// arg0 = vthread_id
+usdt:LIBJVM_PATH:hotspot:vthread__end
+{
+    @end_total = count();
+
+    $carrier = (uint64)curtask;
+    if (@vt[$carrier]) {
+        delete(@vt[$carrier]);
+    } else {
+        @end_unmatched = count();
+    }
+    @post_end[$carrier] = 1;
+
+    printf("[end]    carrier tid=%-6d  vthread_id=%lu\n", tid, arg0);
+}
+
+// arg0 = vthread_id, arg1 = thaw_kind, arg2 = trace_buffer_addr
+usdt:LIBJVM_PATH:hotspot:vthread__thaw
+{
+    @thaw_total = count();
+    @thaw_kind[(int64)arg1] = count();
+
+    $carrier = (uint64)curtask;
+    if (@post_end[$carrier]) {
+        @post_end_thaw = count();
+        @post_end_thaw_kind[(int64)arg1] = count();
+    }
+
+    // carrier-cache insert — kind==0 (top) only (see header)
+    if (arg1 == 0) {
+        @vt[$carrier] = arg0;
+        if (@post_end[$carrier]) {
+            delete(@post_end[$carrier]);
+        }
+    }
+
+    printf("[thaw]   carrier tid=%-6d  vthread_id=%lu  kind=%d\n",
+           tid, arg0, arg1);
+}
+
+// arg0 = vthread_id, arg1 = freeze_result, arg2 = trace_buffer_addr
+usdt:LIBJVM_PATH:hotspot:vthread__freeze
+{
+    @freeze_total = count();
+    @freeze_result[(int64)arg1] = count();
+    if (arg1 >= 2 && arg1 <= 4) {
+        @pinned_total = count();
+    }
+
+    $carrier = (uint64)curtask;
+    if (@post_end[$carrier]) {
+        @post_end_freeze = count();
+    }
+
+    printf("[freeze] carrier tid=%-6d  vthread_id=%lu  result=%d\n",
+           tid, arg0, arg1);
+
+    // delete semantics unchanged from blindspot.bt: successful freezes only
+    if (arg1 <= 1) {
+        if (@vt[$carrier]) {
+            delete(@vt[$carrier]);
+        } else {
+            @freeze_unmatched = count();
+        }
+    } else {
+        @freeze_failed_kept = count();
+    }
+}
+
+tracepoint:syscalls:sys_enter_write
+/args->count == 101 || args->count == 103 || args->count == 107/
+{
+    $carrier = (uint64)curtask;
+    if (@vt[$carrier]) {
+        printf("[write]  carrier tid=%-6d  comm=%-16s count=%-4d -> vthread_id=%lu\n",
+               tid, comm, args->count, @vt[$carrier]);
+    } else {
+        printf("[write]  carrier tid=%-6d  comm=%-16s count=%-4d -> UNMAPPED\n",
+               tid, comm, args->count);
+    }
+}
+
+END
+{
+    printf("\nebpf-vthread-correlate: tracing stopped — summary follows\n");
+    // counters only in the auto-printed summary
+    clear(@vt);
+    clear(@post_end);
+}
