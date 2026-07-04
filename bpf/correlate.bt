@@ -5,8 +5,37 @@
 // USDT probes (compiled into libjvm):
 //   hotspot:vthread__thaw(uintptr_t vthread_id, int thaw_kind,      uintptr_t trace_buffer_addr)
 //   hotspot:vthread__freeze(uintptr_t vthread_id, int freeze_result, uintptr_t trace_buffer_addr)
+//   hotspot:vthread__start(uintptr_t vthread_id, uintptr_t trace_buffer_addr)   [lifecycle-probes JDK only]
+//   hotspot:vthread__end(uintptr_t vthread_id)                                  [lifecycle-probes JDK only]
 //
 // LIBJVM_PATH is replaced at runtime by run.sh before bpftrace sees this file.
+//
+// ── Carrier-cache protocol (lifecycle-probes branch) ─────────────────────────
+//
+// Insert/delete responsibilities on @vthread/@vtbuf[curtask]:
+//
+//   event                  | cache action
+//   -----------------------+---------------------------------------------------
+//   vthread__start         | insert (id + buffer) — closes the first-mount
+//                          | blind spot: fresh entry never passes through thaw
+//                          | (completeness fix)
+//   vthread__thaw  kind==0 | insert (id + buffer)
+//   vthread__thaw  kind!=0 | count only — NO insert (see below)
+//   vthread__freeze res<=1 | delete if present
+//   vthread__end           | unconditional delete — freeze-less termination no
+//                          | longer leaves a stale entry that silently
+//                          | misattributes the next vthread (soundness fix)
+//
+// All four events fire on the carrier they describe, so inserts/deletes hit
+// the right key with no cross-event ordering assumptions. This fixes the two
+// defects recorded in result/blindspot/FINDINGS.md.
+//
+// kind==1 (return_barrier) thaws no longer insert (behaviour change vs main,
+// this branch only; main keeps the old semantics as the recorded-defect
+// baseline): JDK-side measurement (jdk21u 55ca8535411, self-check 4) shows
+// return-barrier thaws firing on the termination path AFTER vthread__end
+// (buf=0 under the JVMTI allocation variant). An unconditional insert would
+// resurrect the mapping end just cleared and reopen silent misattribution.
 //
 // Buffer layout (matches BufferSyncContextStorage):
 //   [0-15]  OTel traceId
@@ -56,19 +85,29 @@
 //   @thaw_nullbuf                 thaws with trace_buffer == 0.
 //                                 JVMTI branch, no agent: expect == @thaw_total.
 //                                 JVMTI branch, agent loaded: expect ~0.
-//   @cache_insert / @cache_delete carrier-cache EVENT counts. insert fires per
-//                                 thaw event (kind=1 re-inserts the same key),
-//                                 so (insert - delete) is an event delta, NOT
-//                                 the number of entries live at exit
-//                                 (measured: 12 - 1 = 11 vs 1 real entry).
-//   @freeze_unmatched             freeze with no cached thaw on this carrier.
-//                                 NOT an error, but NOT a vthread count either:
-//                                 termination leaves a stale cache entry (no
-//                                 freeze fires on exit), so the NEXT vthread's
-//                                 first freeze on that carrier hits the stale
-//                                 entry and is counted as matched. Under churn
-//                                 this approximates the number of CARRIERS,
-//                                 not vthreads (result/blindspot/FINDINGS.md).
+//   @start_total / @end_total     per-lifetime probe EVENT counts (exactly one
+//                                 of each per vthread lifetime).
+//   @end_unmatched                end with no cached mapping on this carrier.
+//                                 Should stay 0: start fires before end on the
+//                                 same lifetime and establishes the mapping.
+//                                 Nonzero = attach started mid-lifetime, or a
+//                                 protocol anomaly worth investigating.
+//   @cache_insert / @cache_delete carrier-cache EVENT counts. insert fires on
+//                                 start and kind==0 thaw only (kind==1 thaws
+//                                 no longer insert), so (insert - delete)
+//                                 tracks live entries far more closely than on
+//                                 main, but treat it as an event delta, not an
+//                                 exact live-entry count.
+//   @freeze_unmatched             freeze with no cached mapping on this carrier.
+//                                 NEW SEMANTICS on this branch: every freeze
+//                                 should be preceded by a start or kind==0
+//                                 thaw insert on the same carrier, and end now
+//                                 clears mappings at termination, so the old
+//                                 stale-entry masking (which made this count
+//                                 approximate CARRIERS under churn) is gone.
+//                                 Expect 0 in steady state; nonzero means the
+//                                 tracer attached mid-lifetime and missed the
+//                                 insert-side event for that vthread.
 //   @write_on_vthread             write(2) calls issued while a vthread was
 //                                 mounted on the calling carrier
 //   @write_correlated             ... of which had a valid trace context
@@ -94,9 +133,9 @@ BEGIN
     @thaw_name[2] = "return_barrier_ex";
 
     printf("ebpf-vthread-correlate: tracing started\n");
-    printf("  Script: v2 (pinned-freeze cache guard enabled)\n");
+    printf("  Script: v3 (lifecycle probes: start/end cache protocol)\n");
     printf("  USDT source: LIBJVM_PATH\n");
-    printf("  Watching: vthread__thaw, vthread__freeze, sys_enter_write\n");
+    printf("  Watching: vthread__start, vthread__end, vthread__thaw, vthread__freeze, sys_enter_write\n");
 
     if ($1 == 1) {
         printf("  Mode: VERBOSE (per-event output; validation only, do not measure)\n\n");
@@ -122,10 +161,14 @@ usdt:LIBJVM_PATH:hotspot:vthread__thaw
     if (arg2 == 0) {
         @thaw_nullbuf = count();
     }
-    // key: carrier thread id, indicate that which vthread is running on carrier thread and the buffer address 
-    @vthread[(uint64)curtask] = arg0;
-    @vtbuf[(uint64)curtask]   = arg2;
-    @cache_insert = count();
+    // carrier-cache insert — kind==0 (top) thaws only. return_barrier thaws
+    // fire on the termination path after vthread__end and must not resurrect
+    // the mapping end just cleared (see header protocol table).
+    if (arg1 == 0) {
+        @vthread[(uint64)curtask] = arg0;
+        @vtbuf[(uint64)curtask]   = arg2;
+        @cache_insert = count();
+    }
 
     if ($1 == 1 && arg2 != 0) {
         $valid = *(uint8 *)uptr(arg2 + 24);
@@ -173,6 +216,48 @@ usdt:LIBJVM_PATH:hotspot:vthread__freeze
         }
     } else {
         @freeze_failed_kept = count();
+    }
+}
+
+// arg0 = vthread_id        (uintptr_t)
+// arg1 = trace_buffer_addr (uintptr_t) off-heap buffer address
+// Fires once per vthread lifetime, from VirtualThread.run(task) on the
+// carrier, after the first mount and strictly before any user code.
+usdt:LIBJVM_PATH:hotspot:vthread__start
+{
+    @start_total = count();
+
+    // carrier-cache insert — isomorphic to the kind==0 thaw insert
+    @vthread[(uint64)curtask] = arg0;
+    @vtbuf[(uint64)curtask]   = arg1;
+    @cache_insert = count();
+
+    if ($1 == 1) {
+        printf("[start]  carrier tid=%-6d  vthread_id=0x%lx  buf=0x%lx\n",
+               tid, arg0, arg1);
+    }
+}
+
+// arg0 = vthread_id (uintptr_t)
+// Fires once per vthread lifetime, from VirtualThread.run(task)'s finally on
+// the final carrier, on both normal and exceptional termination.
+usdt:LIBJVM_PATH:hotspot:vthread__end
+{
+    @end_total = count();
+
+    // unconditional delete: termination fires no freeze, so this is the only
+    // event that can clear the mapping of a vthread that never parks again
+    $carrier = (uint64)curtask;
+    if (@vthread[$carrier]) {
+        delete(@vthread[$carrier]);
+        delete(@vtbuf[$carrier]);
+        @cache_delete = count();
+    } else {
+        @end_unmatched = count();
+    }
+
+    if ($1 == 1) {
+        printf("[end]    carrier tid=%-6d  vthread_id=0x%lx\n", tid, arg0);
     }
 }
 

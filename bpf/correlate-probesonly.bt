@@ -24,6 +24,13 @@
 // all. @thaw_top counts kind==0 only and is the logical-remount normalisation
 // divisor — use it, never @thaw_total, for per-transition arithmetic.
 //
+// Lifecycle probes (this branch): vthread__start/vthread__end are consumed
+// with the same cache protocol as bpf/correlate.bt — start inserts, end
+// deletes unconditionally, and thaw inserts only on kind==0 (return-barrier
+// thaws fire after end on the termination path and must not resurrect the
+// cleared mapping; see bpf/correlate.bt header). Counter set kept consistent:
+// @start_total / @end_total / @end_unmatched.
+//
 // LIBJVM_PATH is a placeholder. measure-oslevel.sh sed-substitutes the real libjvm.so
 // path before handing this file to bpftrace, so the USDT probes attach by FILE PATH
 // (not PID) and therefore catch the JMH `-f 2` forked child JVM.
@@ -55,10 +62,12 @@ usdt:LIBJVM_PATH:hotspot:vthread__thaw
     if (arg2 == 0) {
         @thaw_nullbuf = count();
     }
-    // carrier-cache insert: which vthread (and its buffer addr) is mounted on this carrier
-    @vthread[(uint64)curtask] = arg0;
-    @vtbuf[(uint64)curtask]   = arg2;
-    @cache_insert = count();
+    // carrier-cache insert — kind==0 (top) thaws only (see header)
+    if (arg1 == 0) {
+        @vthread[(uint64)curtask] = arg0;
+        @vtbuf[(uint64)curtask]   = arg2;
+        @cache_insert = count();
+    }
 }
 
 // arg0 = vthread_id        (uintptr_t)
@@ -84,6 +93,34 @@ usdt:LIBJVM_PATH:hotspot:vthread__freeze
         }
     } else {
         @freeze_failed_kept = count();
+    }
+}
+
+// arg0 = vthread_id        (uintptr_t)
+// arg1 = trace_buffer_addr (uintptr_t)
+usdt:LIBJVM_PATH:hotspot:vthread__start
+{
+    @start_total = count();
+
+    // carrier-cache insert — isomorphic to the kind==0 thaw insert
+    @vthread[(uint64)curtask] = arg0;
+    @vtbuf[(uint64)curtask]   = arg1;
+    @cache_insert = count();
+}
+
+// arg0 = vthread_id (uintptr_t)
+usdt:LIBJVM_PATH:hotspot:vthread__end
+{
+    @end_total = count();
+
+    // unconditional delete: termination fires no freeze
+    $carrier = (uint64)curtask;
+    if (@vthread[$carrier]) {
+        delete(@vthread[$carrier]);
+        delete(@vtbuf[$carrier]);
+        @cache_delete = count();
+    } else {
+        @end_unmatched = count();
     }
 }
 
