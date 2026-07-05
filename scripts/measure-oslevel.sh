@@ -116,6 +116,8 @@ WI="${WI:-3}"                         # warmup iterations (small: VM orchestrati
 I="${I:-5}"                           # measurement iterations (small: VM orchestration check)
 MI="${MI:-$I}"                        # COUNT-mode measurement iterations override
 RUN_C="${RUN_C:-1}"                   # 1 = run C so publish residual / observation cost split
+RUN_B="${RUN_B:-1}"                   # 0 = skip B (A/C only — publish pricing without a consumer;
+                                      #     no probe self-check in that case, pair it with a COUNT run)
 COUNT="${COUNT:-0}"                   # 1 = counters-only mode: B state only, -f 1 -wi 0
 DRY_RUN="${DRY_RUN:-0}"               # 1 = print the states' commands and exit
 ATTACH_TIMEOUT="${ATTACH_TIMEOUT:-30}" # seconds to wait for bpftrace USDT attach
@@ -183,6 +185,8 @@ require_runtime() {
 ensure_jar
 require_runtime
 
+[[ "$COUNT" == "1" && "$RUN_B" == "0" ]] && die "COUNT=1 runs ONLY the B state; RUN_B=0 contradicts it"
+
 # All states share the SAME JMH invocation; states differ ONLY by the flag value
 # and by whether bpftrace is attached. That keeps C-A a pure publish delta and B-C a pure
 # observation delta. NOTE: -f 2 (forked), never -f 0. COUNT mode is the one sanctioned
@@ -218,7 +222,7 @@ if [[ "$DRY_RUN" != "1" ]]; then
     exec > >(tee "$MAIN_LOG") 2>&1
     RUNINFO_FILE="$(write_runinfo "$OUT" "measure-oslevel.sh" "$JAVA" \
         "BENCH=$BENCH" "CLASS=$CLASS" "COUNT=$COUNT" "WI=$WI" "I=$I" "MI=$MI" \
-        "RUN_C=$RUN_C" "EXTRA_JVMARGS=$EXTRA_JVMARGS" "ATTACH_TIMEOUT=$ATTACH_TIMEOUT" \
+        "RUN_C=$RUN_C" "RUN_B=$RUN_B" "EXTRA_JVMARGS=$EXTRA_JVMARGS" "ATTACH_TIMEOUT=$ATTACH_TIMEOUT" \
         "JDK=$JDK" "JAVA=$JAVA" "LIBJVM=$LIBJVM" "OUT=$OUT" "TAG=$TAG")"
 fi
 
@@ -235,6 +239,7 @@ if [[ "$COUNT" == "1" ]]; then
     echo "MODE:    COUNT MODE — time figures meaningless, counters only (B state only, -f 1 -wi 0 -i $MI)"
 else
     echo "WI/I:    $WI / $I   (small — orchestration check only)"
+    [[ "$RUN_B" == "0" ]] && echo "RUN_B:   0   (A/C only — no observed state, no probe self-check this run)"
 fi
 [[ -n "$EXTRA_JVMARGS" ]] && echo "EXTRA:   $EXTRA_JVMARGS   (via -jvmArgsAppend, all states)"
 echo "OUT:     $OUT"
@@ -344,16 +349,22 @@ else
     fi
 fi
 
-echo "B — observed (flag on, cropped bpftrace attached by libjvm path)"
-run_b
+if [[ "$RUN_B" == "1" ]]; then
+    echo "B — observed (flag on, cropped bpftrace attached by libjvm path)"
+    run_b
+fi
 
 # --- parse + self-check ----------------------------------------------------------------
-FREEZE_TOTAL="$(count_from_log "@freeze_total" "$BT_LOG")"
-THAW_TOTAL="$(count_from_log "@thaw_total" "$BT_LOG")"
-THAW_TOP="$(count_from_log "@thaw_kind[0]" "$BT_LOG")"
-START_TOTAL="$(count_from_log "@start_total" "$BT_LOG")"
-END_TOTAL="$(count_from_log "@end_total" "$BT_LOG")"
-END_UNMATCHED="$(count_from_log "@end_unmatched" "$BT_LOG")"
+if [[ "$RUN_B" == "1" ]]; then
+    FREEZE_TOTAL="$(count_from_log "@freeze_total" "$BT_LOG")"
+    THAW_TOTAL="$(count_from_log "@thaw_total" "$BT_LOG")"
+    THAW_TOP="$(count_from_log "@thaw_kind[0]" "$BT_LOG")"
+    START_TOTAL="$(count_from_log "@start_total" "$BT_LOG")"
+    END_TOTAL="$(count_from_log "@end_total" "$BT_LOG")"
+    END_UNMATCHED="$(count_from_log "@end_unmatched" "$BT_LOG")"
+else
+    FREEZE_TOTAL=0; THAW_TOTAL=0; THAW_TOP=0; START_TOTAL=0; END_TOTAL=0; END_UNMATCHED=0
+fi
 
 FAIL=0
 
@@ -434,16 +445,21 @@ if [[ "$COUNT" == "1" ]]; then
 fi
 
 A_SCORE="$(score_num_from_log "$A_LOG")"
-B_SCORE="$(score_num_from_log "$B_LOG")"
+B_SCORE=""
 C_SCORE=""
 
 [[ -n "$A_SCORE" ]] || { echo "FAIL: could not parse A JMH score from $A_LOG" >&2; FAIL=1; }
-[[ -n "$B_SCORE" ]] || { echo "FAIL: could not parse B JMH score from $B_LOG" >&2; FAIL=1; }
+if [[ "$RUN_B" == "1" ]]; then
+    B_SCORE="$(score_num_from_log "$B_LOG")"
+    [[ -n "$B_SCORE" ]] || { echo "FAIL: could not parse B JMH score from $B_LOG" >&2; FAIL=1; }
+fi
 if [[ "$RUN_C" == "1" ]]; then
     C_SCORE="$(score_num_from_log "$C_LOG")"
     [[ -n "$C_SCORE" ]] || { echo "FAIL: could not parse C JMH score from $C_LOG" >&2; FAIL=1; }
 fi
-check_probe_counts
+# Probe liveness self-check needs the B-state counters; with RUN_B=0 there is
+# nothing to check (pair the run with a COUNT run for the counter evidence).
+[[ "$RUN_B" == "1" ]] && check_probe_counts
 
 echo "============================================================"
 echo "Summary — DIRECTIONAL, VM-only — NOT citable as absolute overhead"
@@ -451,20 +467,26 @@ echo "  C - A = publish residual (expected ~0);  B - C = observation cost"
 echo
 printf '  A  baseline   : %s us/op   (directional, VM-only — not citable)\n' "${A_SCORE:-?}"
 [[ "$RUN_C" == "1" ]] && printf '  C  publish-on : %s us/op   (directional, VM-only — not citable)\n' "${C_SCORE:-?}"
-printf '  B  observed   : %s us/op   (directional, VM-only — not citable)\n' "${B_SCORE:-?}"
+[[ "$RUN_B" == "1" ]] && printf '  B  observed   : %s us/op   (directional, VM-only — not citable)\n' "${B_SCORE:-?}"
 echo
-if [[ "$RUN_C" == "1" && -n "$A_SCORE" && -n "$C_SCORE" && -n "$B_SCORE" ]]; then
+if [[ "$RUN_C" == "1" && -n "$A_SCORE" && -n "$C_SCORE" ]]; then
     PUB="$(awk -v a="$A_SCORE" -v c="$C_SCORE" 'BEGIN { printf "%.3f", c - a }')"
-    OBS="$(awk -v c="$C_SCORE" -v b="$B_SCORE" 'BEGIN { printf "%.3f", b - c }')"
     printf '  C - A  publish residual : %s us/op   (directional, VM-only — not citable)\n' "$PUB"
+fi
+if [[ "$RUN_B" == "1" && "$RUN_C" == "1" && -n "$C_SCORE" && -n "$B_SCORE" ]]; then
+    OBS="$(awk -v c="$C_SCORE" -v b="$B_SCORE" 'BEGIN { printf "%.3f", b - c }')"
     printf '  B - C  observation cost : %s us/op   (directional, VM-only — not citable)\n' "$OBS"
-elif [[ -n "$A_SCORE" && -n "$B_SCORE" ]]; then
+elif [[ "$RUN_B" == "1" && "$RUN_C" != "1" && -n "$A_SCORE" && -n "$B_SCORE" ]]; then
     BA="$(awk -v a="$A_SCORE" -v b="$B_SCORE" 'BEGIN { printf "%.3f", b - a }')"
     echo "  (RUN_C=0: cannot split publish vs observation)"
     printf '  B - A  publish+observe  : %s us/op   (directional, VM-only — not citable)\n' "$BA"
 fi
 echo
-echo "  probe firings in forked JVM: @freeze_total=$FREEZE_TOTAL  @thaw_total=$THAW_TOTAL  @start_total=$START_TOTAL  @end_total=$END_TOTAL  @end_unmatched=$END_UNMATCHED"
+if [[ "$RUN_B" == "1" ]]; then
+    echo "  probe firings in forked JVM: @freeze_total=$FREEZE_TOTAL  @thaw_total=$THAW_TOTAL  @start_total=$START_TOTAL  @end_total=$END_TOTAL  @end_unmatched=$END_UNMATCHED"
+else
+    echo "  (RUN_B=0: no observed state — no probe-firing counters this run)"
+fi
 
 if [[ "$FAIL" != "0" ]]; then
     echo
@@ -472,4 +494,8 @@ if [[ "$FAIL" != "0" ]]; then
     exit 1
 fi
 echo
-echo "RESULT: OK — orchestration validated (probes fired in the -f 2 child). Still directional/VM-only."
+if [[ "$RUN_B" == "1" ]]; then
+    echo "RESULT: OK — orchestration validated (probes fired in the -f 2 child). Still directional/VM-only."
+else
+    echo "RESULT: OK — A/C states completed (RUN_B=0: B skipped, no probe self-check — pair with a COUNT run). Still directional/VM-only."
+fi

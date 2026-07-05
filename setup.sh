@@ -77,6 +77,19 @@ else
   tar -xzf "$ASSET"
   [ -x "$JDK_DIR/bin/java" ] || die "extract failed: $JDK_DIR/bin/java not found"
   ok "extracted to $JDK_DIR"
+
+  # Provenance record: scripts/lib/runinfo.sh reads this into every RUNINFO so
+  # a batch can prove which release asset (and sha256) produced .vthread-jdk.
+  # Written only on a fresh verified download; installs that predate this file
+  # are recorded by runinfo.sh as "unknown, pre-provenance install".
+  SHA256_VAL="$(awk '{print $1}' "${ASSET}.sha256")"
+  cat > "$JDK_HOME_DIR/PROVENANCE.txt" <<EOF
+source    : ${GH_OWNER}/${GH_REPO} release ${RELEASE_TAG}
+asset     : ${ASSET}
+sha256    : ${SHA256_VAL} (verified by sha256sum -c at install time)
+installed : $(date -u +%Y-%m-%dT%H:%M:%SZ)
+EOF
+  ok "wrote $JDK_HOME_DIR/PROVENANCE.txt"
   cd "$REPO_ROOT"
 fi
 
