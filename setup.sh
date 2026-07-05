@@ -22,7 +22,7 @@ set -euo pipefail
 # ----- pin the release (single place to bump when you cut a new JDK) -----
 GH_OWNER="Neltharion1127"
 GH_REPO="jdk21u"
-RELEASE_TAG="vthread-probes-v1"
+RELEASE_TAG="vthread-probes-v2"
 # ------------------------------------------------------------------------
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
