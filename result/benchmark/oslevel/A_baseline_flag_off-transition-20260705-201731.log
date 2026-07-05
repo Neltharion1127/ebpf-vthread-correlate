@@ -1,0 +1,58 @@
+# JMH version: 1.37
+# VM version: JDK 21.0.12-internal, OpenJDK 64-Bit Server VM, 21.0.12-internal-adhoc.root.src
+# VM invoker: /home/ubuntu/ebpf-vthread-correlate/.vthread-jdk/jdk/bin/java
+# VM options: --enable-preview --enable-native-access=ALL-UNNAMED -XX:-VThreadTraceProbes
+# Blackhole mode: compiler (auto-detected, use -Djmh.blackhole.autoDetect=false to disable)
+# Warmup: 3 iterations, 1 s each
+# Measurement: 5 iterations, 1 s each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Average time, time/op
+# Benchmark: uk.ac.ncl.jensen.benchmark.VThreadTransitionBenchmark.transition_yield
+# Parameters: (yieldsPerVthread = 10000)
+
+# Run progress: 0.00% complete, ETA 00:00:16
+# Fork: 1 of 2
+# Warmup Iteration   1: 11421.878 us/op
+# Warmup Iteration   2: 8966.087 us/op
+# Warmup Iteration   3: 8511.884 us/op
+Iteration   1: 8540.179 us/op
+Iteration   2: 8602.647 us/op
+Iteration   3: 8603.257 us/op
+Iteration   4: 8660.513 us/op
+Iteration   5: 8646.143 us/op
+
+# Run progress: 50.00% complete, ETA 00:00:08
+# Fork: 2 of 2
+# Warmup Iteration   1: 10504.140 us/op
+# Warmup Iteration   2: 8539.911 us/op
+# Warmup Iteration   3: 8597.916 us/op
+Iteration   1: 8644.324 us/op
+Iteration   2: 8739.119 us/op
+Iteration   3: 8865.969 us/op
+Iteration   4: 8824.585 us/op
+Iteration   5: 8862.845 us/op
+
+
+Result "uk.ac.ncl.jensen.benchmark.VThreadTransitionBenchmark.transition_yield":
+  8698.958 ±(99.9%) 176.775 us/op [Average]
+  (min, avg, max) = (8540.179, 8698.958, 8865.969), stdev = 116.926
+  CI (99.9%): [8522.183, 8875.733] (assumes normal distribution)
+
+
+# Run complete. Total time: 00:00:16
+
+REMEMBER: The numbers below are just data. To gain reusable insights, you need to follow up on
+why the numbers are the way they are. Use profilers (see -prof, -lprof), design factorial
+experiments, perform baseline and negative tests that provide experimental control, make sure
+the benchmarking environment is safe on JVM/OS/HW level, ask for reviews from the domain experts.
+Do not assume the numbers tell you what you want them to tell.
+
+NOTE: Current JVM experimentally supports Compiler Blackholes, and they are in use. Please exercise
+extra caution when trusting the results, look into the generated code to check the benchmark still
+works, and factor in a small probability of new VM bugs. Additionally, while comparisons between
+different JVMs are already problematic, the performance difference caused by different Blackhole
+modes can be very significant. Please make sure you use the consistent Blackhole mode for comparisons.
+
+Benchmark                                    (yieldsPerVthread)  Mode  Cnt     Score     Error  Units
+VThreadTransitionBenchmark.transition_yield               10000  avgt   10  8698.958 ± 176.775  us/op

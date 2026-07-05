@@ -1,0 +1,11 @@
+run-batch: formal batch definition (SKIP_MATRIX=0)
+RUNINFO: /home/ubuntu/ebpf-vthread-correlate/result/benchmark/RUNINFO-20260705-201648.txt
+LOG:     /home/ubuntu/ebpf-vthread-correlate/result/benchmark/run-batch-20260705-201648.log
+
+make: Entering directory '/home/ubuntu/ebpf-vthread-correlate/JVMTI-agent'
+cc -shared -fPIC -O2 -Wall -Wextra -I/home/ubuntu/ebpf-vthread-correlate/.vthread-jdk/jdk/include -I/home/ubuntu/ebpf-vthread-correlate/.vthread-jdk/jdk/include/linux -o libvthread_trace_agent.so vthread_trace_agent.c
+built libvthread_trace_agent.so
+make: Leaving directory '/home/ubuntu/ebpf-vthread-correlate/JVMTI-agent'
+
+[1m==== batch step 1/8 oslevel Transition A/C/B  (#13 publish residual, #14 observation cost, sentinel) ====[0m
+ERROR: JMH jar missing: /home/ubuntu/ebpf-vthread-correlate/target/benchmarks.jar (and no /home/ubuntu/ebpf-vthread-correlate/target/ebpf-vthread-correlate-1.0-SNAPSHOT.jar). Build it first: 'source config/env.sh && mvn -q clean package' (or run scripts/run-usdt.sh once).
