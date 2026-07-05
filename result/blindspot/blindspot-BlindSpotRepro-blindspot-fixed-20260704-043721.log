@@ -1,0 +1,23 @@
+Attached 53 probes
+ebpf-vthread-correlate: tracing started
+  Program: blindspot-fixed (lifecycle-probe cache protocol)
+  USDT source: /home/jie/csc8499/jdk21u/build/linux-aarch64-server-release/images/jdk/lib/server/libjvm.so
+  Watching: vthread__start, vthread__end, vthread__thaw, vthread__freeze, sys_enter_write(count==101|103|107)
+
+[write]  carrier tid=237685  comm=bpftrace         count=107  -> UNMAPPED
+[write]  carrier tid=237713  comm=ForkJoinPool-1-  count=101  -> UNMAPPED
+[write]  carrier tid=237713  comm=ForkJoinPool-1-  count=103  -> UNMAPPED
+
+ebpf-vthread-correlate: tracing stopped — summary follows
+
+
+@end_total: 0
+@end_unmatched: 0
+@freeze_failed_kept: 0
+@freeze_total: 0
+@freeze_unmatched: 0
+@pinned_total: 0
+@post_end_freeze: 0
+@post_end_thaw: 0
+@start_total: 0
+@thaw_total: 0

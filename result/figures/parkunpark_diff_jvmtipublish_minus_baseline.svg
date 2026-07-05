@@ -423,7 +423,7 @@
 ]]>
 </script>
 <rect x="0.0" y="0" width="1600.0" height="582.0" fill="url(#background)"  />
-<text id="title" x="800.00" y="24" >VThreadParkUnparkBenchmark Î Â· jvmtipublish â baseline Â· red = added by jvmtipublish (SPARSE, indicative only)</text>
+<text id="title" x="800.00" y="24" >VThreadParkUnparkBenchmark Î Â· jvmtipublish â baseline Â· red = added by jvmtipublish</text>
 <text id="details" x="10.00" y="565" > </text>
 <text id="unzoom" x="10.00" y="24" class="hide">Reset Zoom</text>
 <text id="search" x="1490.00" y="24" >Search</text>
@@ -431,1612 +431,1388 @@
 <text id="matched" x="1490.00" y="565" > </text>
 <g id="frames">
 <g >
-<title>jdk/internal/misc/Unsafe.unpark (70 samples, 4.20%; -0.06%)</title><rect x="1518.9" y="85" width="66.4" height="15.0" fill="rgb(202,202,255)" rx="2" ry="2" />
-<text  x="1521.87" y="95.5" >jdk/int..</text>
+<title>java/util/concurrent/ForkJoinPool$WorkQueue.casSlotToNull (1 samples, 0.03%; +0.03%)</title><rect x="1174.4" y="437" width="0.4" height="15.0" fill="rgb(255,205,205)" rx="2" ry="2" />
+<text  x="1177.35" y="447.5" ></text>
 </g>
 <g >
-<title>java/lang/VirtualThread.run (23 samples, 1.38%; 0.00%)</title><rect x="1361.4" y="309" width="21.9" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="1364.44" y="319.5" >j..</text>
+<title>Parker::unpark (1 samples, 0.03%; 0.00%)</title><rect x="1557.7" y="53" width="0.4" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
+<text  x="1560.68" y="63.5" ></text>
 </g>
 <g >
-<title>jdk/internal/misc/VirtualThreads.unpark (402 samples, 24.13%; 0.00%)</title><rect x="92.5" y="469" width="381.3" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="95.51" y="479.5" >jdk/internal/misc/VirtualThreads.unpark</text>
+<title>java/util/concurrent/ForkJoinPool.scan (2,109 samples, 59.91%; -0.37%)</title><rect x="643.3" y="485" width="946.7" height="15.0" fill="rgb(150,150,255)" rx="2" ry="2" />
+<text  x="646.35" y="495.5" >java/util/concurrent/ForkJoinPool.scan</text>
 </g>
 <g >
-<title>__GI___futex_abstimed_wait_cancelable64 (201 samples, 12.06%; +0.24%)</title><rect x="1076.0" y="389" width="190.6" height="15.0" fill="rgb(255,178,178)" rx="2" ry="2" />
-<text  x="1078.98" y="399.5" >__GI___futex_abstimed_wa..</text>
+<title>jdk/internal/vm/Continuation.yield (12 samples, 0.34%; 0.00%)</title><rect x="1343.1" y="165" width="5.4" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
+<text  x="1346.12" y="175.5" ></text>
 </g>
 <g >
-<title>java/util/concurrent/ForkJoinPool.signalWork (47 samples, 2.82%; 0.00%)</title><rect x="1465.8" y="117" width="44.5" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="1468.76" y="127.5" >java..</text>
+<title>java_lang_Thread::set_thread_status (1 samples, 0.03%; 0.00%)</title><rect x="642.9" y="421" width="0.4" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
+<text  x="645.90" y="431.5" ></text>
 </g>
 <g >
-<title>_notify_jvmti_vthread_unmount (2 samples, 0.12%; 0.00%)</title><rect x="479.4" y="405" width="1.9" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="482.45" y="415.5" ></text>
+<title>__tls_get_addr@plt (1 samples, 0.03%; +0.03%)</title><rect x="1265.5" y="325" width="0.4" height="15.0" fill="rgb(255,205,205)" rx="2" ry="2" />
+<text  x="1268.47" y="335.5" ></text>
 </g>
 <g >
-<title>jdk/internal/misc/VirtualThreads.park (8 samples, 0.48%; 0.00%)</title><rect x="1456.3" y="229" width="7.6" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="1459.28" y="239.5" ></text>
+<title>java_lang_Thread::set_is_in_VTMS_transition (3 samples, 0.09%; -0.03%)</title><rect x="1341.3" y="101" width="1.4" height="15.0" fill="rgb(205,205,255)" rx="2" ry="2" />
+<text  x="1344.33" y="111.5" ></text>
 </g>
 <g >
-<title>Compiler::compile_method (1 samples, 0.06%; 0.00%)</title><rect x="1588.1" y="405" width="1.0" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="1591.10" y="415.5" ></text>
+<title>java/lang/VirtualThread.setState (1 samples, 0.03%; +0.03%)</title><rect x="1176.1" y="373" width="0.5" height="15.0" fill="rgb(255,205,205)" rx="2" ry="2" />
+<text  x="1179.15" y="383.5" ></text>
 </g>
 <g >
-<title>Unsafe_Unpark (14 samples, 0.84%; -0.06%)</title><rect x="1361.4" y="69" width="13.3" height="15.0" fill="rgb(202,202,255)" rx="2" ry="2" />
-<text  x="1364.44" y="79.5" ></text>
+<title>Thaw&lt;Config&lt;(oop_kind)0, G1BarrierSet&gt; &gt;::thaw_fast (73 samples, 2.07%; -0.06%)</title><rect x="28.4" y="485" width="32.8" height="15.0" fill="rgb(200,200,255)" rx="2" ry="2" />
+<text  x="31.40" y="495.5" >Th..</text>
 </g>
 <g >
-<title>oopDesc::address_field (1 samples, 0.06%; 0.00%)</title><rect x="66.0" y="325" width="0.9" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="68.95" y="335.5" ></text>
+<title>java/lang/Thread.run (1 samples, 0.03%; 0.00%)</title><rect x="61.2" y="517" width="0.4" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
+<text  x="64.17" y="527.5" ></text>
 </g>
 <g >
-<title>__aarch64_ldeor8_rel (1 samples, 0.06%; +0.06%)</title><rect x="1373.8" y="37" width="0.9" height="15.0" fill="rgb(255,202,202)" rx="2" ry="2" />
-<text  x="1376.77" y="47.5" ></text>
+<title>int freeze&lt;Config&lt;(oop_kind)0, G1BarrierSet&gt; &gt; (24 samples, 0.68%; 0.00%)</title><rect x="1283.0" y="357" width="10.8" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
+<text  x="1285.98" y="367.5" ></text>
 </g>
 <g >
-<title>Unsafe_Unpark (70 samples, 4.20%; +0.06%)</title><rect x="1518.9" y="69" width="66.4" height="15.0" fill="rgb(255,202,202)" rx="2" ry="2" />
-<text  x="1521.87" y="79.5" >Unsafe_..</text>
+<title>jdk/internal/misc/Unsafe.park (36 samples, 1.02%; 0.00%)</title><rect x="627.2" y="453" width="16.1" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
+<text  x="630.19" y="463.5" ></text>
 </g>
 <g >
-<title>java/util/concurrent/locks/LockSupport.park (8 samples, 0.48%; 0.00%)</title><rect x="1456.3" y="245" width="7.6" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="1459.28" y="255.5" ></text>
+<title>java/lang/System$2.getContinuation (2 samples, 0.06%; 0.00%)</title><rect x="1470.2" y="149" width="0.9" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
+<text  x="1473.15" y="159.5" ></text>
 </g>
 <g >
-<title>jdk/internal/misc/Unsafe.getAndSetByte (1 samples, 0.06%; -0.18%)</title><rect x="96.3" y="389" width="1.0" height="15.0" fill="rgb(186,186,255)" rx="2" ry="2" />
-<text  x="99.30" y="399.5" ></text>
+<title>HandleMark::~HandleMark (2 samples, 0.06%; +0.06%)</title><rect x="1220.6" y="325" width="0.9" height="15.0" fill="rgb(255,200,200)" rx="2" ry="2" />
+<text  x="1223.59" y="335.5" ></text>
 </g>
 <g >
-<title>JavaThread::threadObj (1 samples, 0.06%; -0.12%)</title><rect x="971.7" y="421" width="0.9" height="15.0" fill="rgb(194,194,255)" rx="2" ry="2" />
-<text  x="974.66" y="431.5" ></text>
+<title>JavaThread::rebind_to_jvmti_thread_state_of (2 samples, 0.06%; 0.00%)</title><rect x="1335.9" y="133" width="0.9" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
+<text  x="1338.94" y="143.5" ></text>
 </g>
 <g >
-<title>HandleMark::pop_and_restore (1 samples, 0.06%; -0.24%)</title><rect x="966.9" y="421" width="1.0" height="15.0" fill="rgb(178,178,255)" rx="2" ry="2" />
-<text  x="969.91" y="431.5" ></text>
+<title>java/lang/Thread.runWith (1 samples, 0.03%; 0.00%)</title><rect x="61.2" y="501" width="0.4" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
+<text  x="64.17" y="511.5" ></text>
 </g>
 <g >
-<title>__pthread_mutex_trylock@GLIBC_2.17 (1 samples, 0.06%; -0.06%)</title><rect x="67.9" y="325" width="0.9" height="15.0" fill="rgb(202,202,255)" rx="2" ry="2" />
-<text  x="70.85" y="335.5" ></text>
+<title>java/util/concurrent/ForkJoinPool$WorkQueue.casSlotToNull (234 samples, 6.65%; -0.43%)</title><rect x="1047.3" y="469" width="105.1" height="15.0" fill="rgb(141,141,255)" rx="2" ry="2" />
+<text  x="1050.32" y="479.5" >java/util/co..</text>
 </g>
 <g >
-<title>FreezeBase::size_if_fast_freeze_available (1 samples, 0.06%; -0.12%)</title><rect x="91.6" y="341" width="0.9" height="15.0" fill="rgb(194,194,255)" rx="2" ry="2" />
-<text  x="94.56" y="351.5" ></text>
+<title>uk/ac/ncl/jensen/benchmark/jmh_generated/VThreadParkUnparkBenchmark_parkUnpark_pingPong_jmhTest.parkUnpark_pingPong_AverageTime (1 samples, 0.03%; 0.00%)</title><rect x="61.2" y="277" width="0.4" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
+<text  x="64.17" y="287.5" ></text>
 </g>
 <g >
-<title>JvmtiVTMSTransitionDisabler::VTMS_vthread_mount (10 samples, 0.60%; +0.06%)</title><rect x="61.2" y="373" width="9.5" height="15.0" fill="rgb(255,202,202)" rx="2" ry="2" />
-<text  x="64.21" y="383.5" ></text>
+<title>java/util/concurrent/ForkJoinPool.lazySubmit (1 samples, 0.03%; 0.00%)</title><rect x="1194.1" y="357" width="0.5" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
+<text  x="1197.10" y="367.5" ></text>
 </g>
 <g >
-<title>JvmtiThreadState::set_thread (1 samples, 0.06%; 0.00%)</title><rect x="480.4" y="357" width="0.9" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="483.40" y="367.5" ></text>
+<title>java/util/concurrent/ForkJoinTask$RunnableExecuteAction.exec (861 samples, 24.46%; +0.03%)</title><rect x="1180.2" y="437" width="386.5" height="15.0" fill="rgb(255,205,205)" rx="2" ry="2" />
+<text  x="1183.19" y="447.5" >java/util/concurrent/ForkJoinTask$RunnableExecuteAct..</text>
 </g>
 <g >
-<title>jdk/internal/misc/VirtualThreads.unpark (405 samples, 24.31%; 0.00%)</title><rect x="499.4" y="469" width="384.1" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="502.36" y="479.5" >jdk/internal/misc/VirtualThreads.unpark</text>
+<title>__tls_get_addr (1 samples, 0.03%; +0.03%)</title><rect x="1265.0" y="325" width="0.5" height="15.0" fill="rgb(255,205,205)" rx="2" ry="2" />
+<text  x="1268.02" y="335.5" ></text>
 </g>
 <g >
-<title>ThreadStateTransition::transition_from_native (1 samples, 0.06%; +0.06%)</title><rect x="103.9" y="293" width="0.9" height="15.0" fill="rgb(255,202,202)" rx="2" ry="2" />
-<text  x="106.89" y="303.5" ></text>
+<title>jdk/internal/vm/StackableScope.popAll (1 samples, 0.03%; 0.00%)</title><rect x="1560.8" y="293" width="0.5" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
+<text  x="1563.82" y="303.5" ></text>
 </g>
 <g >
-<title>pthread_cond_signal@plt (1 samples, 0.06%; +0.06%)</title><rect x="472.8" y="293" width="1.0" height="15.0" fill="rgb(255,202,202)" rx="2" ry="2" />
-<text  x="475.81" y="303.5" ></text>
+<title>oopDesc::address_field_acquire (1 samples, 0.03%; +0.03%)</title><rect x="1419.0" y="53" width="0.4" height="15.0" fill="rgb(255,205,205)" rx="2" ry="2" />
+<text  x="1421.98" y="63.5" ></text>
 </g>
 <g >
-<title>jdk/internal/vm/Continuation.yield (2 samples, 0.12%; 0.00%)</title><rect x="1517.0" y="165" width="1.9" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="1519.97" y="175.5" ></text>
+<title>jdk/internal/misc/Unsafe.getAndSetBoolean (2 samples, 0.06%; 0.00%)</title><rect x="1488.6" y="165" width="0.9" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
+<text  x="1491.56" y="175.5" ></text>
 </g>
 <g >
-<title>java/util/concurrent/ForkJoinPool.awaitWork (413 samples, 24.79%; +0.30%)</title><rect x="892.9" y="485" width="391.7" height="15.0" fill="rgb(255,171,171)" rx="2" ry="2" />
-<text  x="895.94" y="495.5" >java/util/concurrent/ForkJoinPool.awaitWork</text>
+<title>memcpy@plt (1 samples, 0.03%; +0.03%)</title><rect x="60.7" y="469" width="0.5" height="15.0" fill="rgb(255,205,205)" rx="2" ry="2" />
+<text  x="63.72" y="479.5" ></text>
 </g>
 <g >
-<title>ThawBase::recurse_thaw_interpreted_frame (1 samples, 0.06%; 0.00%)</title><rect x="54.6" y="469" width="0.9" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="57.57" y="479.5" ></text>
+<title>SharedRuntime::notify_jvmti_vthread_mount (73 samples, 2.07%; -0.03%)</title><rect x="1300.9" y="149" width="32.8" height="15.0" fill="rgb(205,205,255)" rx="2" ry="2" />
+<text  x="1303.93" y="159.5" >Sh..</text>
 </g>
 <g >
-<title>java/lang/VirtualThread.afterYield (3 samples, 0.18%; 0.00%)</title><rect x="1390.8" y="389" width="2.9" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="1393.84" y="399.5" ></text>
+<title>FastThreadsListHandle::FastThreadsListHandle (1 samples, 0.03%; +0.03%)</title><rect x="1418.5" y="53" width="0.5" height="15.0" fill="rgb(255,205,205)" rx="2" ry="2" />
+<text  x="1421.53" y="63.5" ></text>
 </g>
 <g >
-<title>JvmtiVTMSTransitionDisabler::finish_VTMS_transition (5 samples, 0.30%; 0.00%)</title><rect x="1423.1" y="341" width="4.7" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="1426.09" y="351.5" ></text>
+<title>JvmtiVTMSTransitionDisabler::VTMS_vthread_unmount (19 samples, 0.54%; 0.00%)</title><rect x="1460.7" y="133" width="8.6" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
+<text  x="1463.73" y="143.5" ></text>
 </g>
 <g >
-<title>Continuation::set_cont_fastpath_thread_state (2 samples, 0.12%; +0.12%)</title><rect x="1513.2" y="85" width="1.9" height="15.0" fill="rgb(255,194,194)" rx="2" ry="2" />
-<text  x="1516.18" y="95.5" ></text>
+<title>java_lang_Thread::set_is_in_VTMS_transition (1 samples, 0.03%; -0.03%)</title><rect x="1458.0" y="101" width="0.5" height="15.0" fill="rgb(205,205,255)" rx="2" ry="2" />
+<text  x="1461.03" y="111.5" ></text>
 </g>
 <g >
-<title>java/lang/VirtualThread.park (6 samples, 0.36%; 0.00%)</title><rect x="1513.2" y="197" width="5.7" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="1516.18" y="207.5" ></text>
+<title>java/util/concurrent/ForkJoinTask.setDone (50 samples, 1.42%; 0.00%)</title><rect x="1566.7" y="437" width="22.4" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
+<text  x="1569.66" y="447.5" >j..</text>
 </g>
 <g >
-<title>CodeCache::find_blob (1 samples, 0.06%; +0.06%)</title><rect x="54.6" y="453" width="0.9" height="15.0" fill="rgb(255,202,202)" rx="2" ry="2" />
-<text  x="57.57" y="463.5" ></text>
+<title>java/lang/Thread.getContinuation (1 samples, 0.03%; 0.00%)</title><rect x="1269.5" y="357" width="0.5" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
+<text  x="1272.51" y="367.5" ></text>
 </g>
 <g >
-<title>oopDesc::address_field_acquire (1 samples, 0.06%; +0.06%)</title><rect x="1508.4" y="53" width="1.0" height="15.0" fill="rgb(255,202,202)" rx="2" ry="2" />
-<text  x="1511.44" y="63.5" ></text>
+<title>_notify_jvmti_vthread_unmount (35 samples, 0.99%; 0.00%)</title><rect x="1252.5" y="373" width="15.7" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
+<text  x="1255.45" y="383.5" ></text>
 </g>
 <g >
-<title>Continuation::set_cont_fastpath_thread_state (2 samples, 0.12%; 0.00%)</title><rect x="64.1" y="325" width="1.9" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="67.06" y="335.5" ></text>
+<title>_notify_jvmti_vthread_mount (70 samples, 1.99%; 0.00%)</title><rect x="1427.1" y="165" width="31.4" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
+<text  x="1430.06" y="175.5" >_n..</text>
 </g>
 <g >
-<title>_dl_tlsdesc_return (1 samples, 0.06%; +0.06%)</title><rect x="1352.0" y="325" width="0.9" height="15.0" fill="rgb(255,202,202)" rx="2" ry="2" />
-<text  x="1354.96" y="335.5" ></text>
+<title>G1ParScanThreadState::steal_and_trim_queue (1 samples, 0.03%; +0.03%)</title><rect x="10.0" y="197" width="0.4" height="15.0" fill="rgb(255,205,205)" rx="2" ry="2" />
+<text  x="13.00" y="207.5" ></text>
 </g>
 <g >
-<title>__aarch64_ldadd4_rel (1 samples, 0.06%; +0.06%)</title><rect x="1268.5" y="373" width="0.9" height="15.0" fill="rgb(255,202,202)" rx="2" ry="2" />
-<text  x="1271.50" y="383.5" ></text>
+<title>JvmtiVTMSTransitionDisabler::finish_VTMS_transition (9 samples, 0.26%; 0.00%)</title><rect x="1454.4" y="117" width="4.1" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
+<text  x="1457.44" y="127.5" ></text>
 </g>
 <g >
-<title>java/util/concurrent/locks/LockSupport.unpark (9 samples, 0.54%; 0.00%)</title><rect x="1374.7" y="245" width="8.6" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="1377.72" y="255.5" ></text>
+<title>java/util/concurrent/ForkJoinPool$WorkQueue.getAndSetAccess (42 samples, 1.19%; +0.48%)</title><rect x="1493.5" y="117" width="18.8" height="15.0" fill="rgb(255,132,132)" rx="2" ry="2" />
+<text  x="1496.49" y="127.5" ></text>
 </g>
 <g >
-<title>__GI___pthread_mutex_unlock_usercnt (1 samples, 0.06%; +0.06%)</title><rect x="68.8" y="341" width="0.9" height="15.0" fill="rgb(255,202,202)" rx="2" ry="2" />
-<text  x="71.80" y="351.5" ></text>
+<title>java/lang/VirtualThread.submitRunContinuation (159 samples, 4.52%; +0.06%)</title><rect x="1489.5" y="181" width="71.3" height="15.0" fill="rgb(255,200,200)" rx="2" ry="2" />
+<text  x="1492.45" y="191.5" >java/lan..</text>
 </g>
 <g >
-<title>Cont thaw (46 samples, 2.76%; +0.06%)</title><rect x="10.0" y="517" width="43.6" height="15.0" fill="rgb(255,202,202)" rx="2" ry="2" />
-<text  x="13.00" y="527.5" >Cont..</text>
+<title>java/lang/invoke/LambdaForm$MH.0x....invokeExact_MT (1 samples, 0.03%; 0.00%)</title><rect x="61.2" y="325" width="0.4" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
+<text  x="64.17" y="335.5" ></text>
 </g>
 <g >
-<title>uk/ac/ncl/jensen/benchmark/VThreadParkUnparkBenchmark.lambda$parkUnpark_pingPong$1 (78 samples, 4.68%; +0.12%)</title><rect x="1511.3" y="261" width="74.0" height="15.0" fill="rgb(255,194,194)" rx="2" ry="2" />
-<text  x="1514.28" y="271.5" >uk/ac/nc..</text>
+<title>java/util/concurrent/ForkJoinPool.compareAndExchangeCtl (67 samples, 1.90%; +0.45%)</title><rect x="597.1" y="469" width="30.1" height="15.0" fill="rgb(255,136,136)" rx="2" ry="2" />
+<text  x="600.11" y="479.5" >ja..</text>
 </g>
 <g >
-<title>java/lang/VirtualThread.afterYield (3 samples, 0.18%; 0.00%)</title><rect x="1348.2" y="389" width="2.8" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="1351.16" y="399.5" ></text>
+<title>/usr/lib/x86_64-linux-gnu/libc.so.6 (2 samples, 0.06%; +0.06%)</title><rect x="641.1" y="373" width="0.9" height="15.0" fill="rgb(255,200,200)" rx="2" ry="2" />
+<text  x="644.10" y="383.5" ></text>
 </g>
 <g >
-<title>SharedRuntime::notify_jvmti_vthread_unmount (2 samples, 0.12%; 0.00%)</title><rect x="479.4" y="389" width="1.9" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="482.45" y="399.5" ></text>
+<title>java/util/concurrent/ForkJoinPool$WorkQueue.push (152 samples, 4.32%; 0.00%)</title><rect x="1492.6" y="133" width="68.2" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
+<text  x="1495.60" y="143.5" >java/ut..</text>
 </g>
 <g >
-<title>jdk/internal/misc/Unsafe.park (349 samples, 20.95%; +0.06%)</title><rect x="951.7" y="453" width="331.0" height="15.0" fill="rgb(255,202,202)" rx="2" ry="2" />
-<text  x="954.74" y="463.5" >jdk/internal/misc/Unsafe.park</text>
+<title>oopDesc::address_field_put (1 samples, 0.03%; +0.03%)</title><rect x="1287.5" y="325" width="0.4" height="15.0" fill="rgb(255,205,205)" rx="2" ry="2" />
+<text  x="1290.47" y="335.5" ></text>
 </g>
 <g >
-<title>JavaThread::rebind_to_jvmti_thread_state_of (2 samples, 0.12%; +0.06%)</title><rect x="1458.2" y="133" width="1.9" height="15.0" fill="rgb(255,202,202)" rx="2" ry="2" />
-<text  x="1461.18" y="143.5" ></text>
+<title>jdk/internal/misc/Unsafe.compareAndSetBoolean (12 samples, 0.34%; -0.11%)</title><rect x="1561.3" y="341" width="5.4" height="15.0" fill="rgb(191,191,255)" rx="2" ry="2" />
+<text  x="1564.27" y="351.5" ></text>
 </g>
 <g >
-<title>atomic entry points (4 samples, 0.24%; +0.24%)</title><rect x="1272.3" y="405" width="3.8" height="15.0" fill="rgb(255,178,178)" rx="2" ry="2" />
-<text  x="1275.29" y="415.5" ></text>
+<title>java/util/concurrent/ForkJoinPool.compareAndExchangeCtl (24 samples, 0.68%; +0.31%)</title><rect x="1546.9" y="101" width="10.8" height="15.0" fill="rgb(255,159,159)" rx="2" ry="2" />
+<text  x="1549.91" y="111.5" ></text>
 </g>
 <g >
-<title>java/lang/VirtualThread.submitRunContinuation (391 samples, 23.47%; 0.00%)</title><rect x="511.7" y="421" width="370.8" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="514.69" y="431.5" >java/lang/VirtualThread.submitRunContinuation</text>
+<title>jdk/internal/misc/Unsafe.unpark (7 samples, 0.20%; 0.00%)</title><rect x="1557.7" y="85" width="3.1" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
+<text  x="1560.68" y="95.5" ></text>
 </g>
 <g >
-<title>jdk/internal/vm/Continuation.doYield (6 samples, 0.36%; +0.06%)</title><rect x="86.8" y="373" width="5.7" height="15.0" fill="rgb(255,202,202)" rx="2" ry="2" />
-<text  x="89.82" y="383.5" ></text>
+<title>java/lang/System$2.setScopedValueCache (27 samples, 0.77%; +0.03%)</title><rect x="1270.0" y="373" width="12.1" height="15.0" fill="rgb(255,205,205)" rx="2" ry="2" />
+<text  x="1272.96" y="383.5" ></text>
 </g>
 <g >
-<title>java/util/concurrent/ForkJoinPool.execute (9 samples, 0.54%; 0.00%)</title><rect x="1374.7" y="165" width="8.6" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="1377.72" y="175.5" ></text>
+<title>StackWatermarkSet::after_unwind (1 samples, 0.03%; 0.00%)</title><rect x="1293.3" y="341" width="0.5" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
+<text  x="1296.30" y="351.5" ></text>
 </g>
 <g >
-<title>jdk/internal/vm/Continuation.doYield (11 samples, 0.66%; 0.00%)</title><rect x="488.9" y="373" width="10.5" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="491.93" y="383.5" ></text>
+<title>java/util/concurrent/ForkJoinPool.execute (1 samples, 0.03%; 0.00%)</title><rect x="1178.4" y="165" width="0.4" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
+<text  x="1181.39" y="175.5" ></text>
 </g>
 <g >
-<title>java/util/concurrent/Executors$RunnableAdapter.call (1 samples, 0.06%; 0.00%)</title><rect x="883.5" y="437" width="0.9" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="886.46" y="447.5" ></text>
+<title>java/util/concurrent/ForkJoinPool$WorkQueue.push (1 samples, 0.03%; 0.00%)</title><rect x="1178.4" y="133" width="0.4" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
+<text  x="1181.39" y="143.5" ></text>
 </g>
 <g >
-<title>java/lang/VirtualThread.unpark (401 samples, 24.07%; -0.06%)</title><rect x="93.5" y="437" width="380.3" height="15.0" fill="rgb(202,202,255)" rx="2" ry="2" />
-<text  x="96.46" y="447.5" >java/lang/VirtualThread.unpark</text>
+<title>uk/ac/ncl/jensen/benchmark/VThreadParkUnparkBenchmark.lambda$parkUnpark_pingPong$0 (5 samples, 0.14%; 0.00%)</title><rect x="1176.6" y="261" width="2.2" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
+<text  x="1179.60" y="271.5" ></text>
 </g>
 <g >
-<title>java/util/concurrent/locks/LockSupport.unpark (405 samples, 24.31%; 0.00%)</title><rect x="499.4" y="485" width="384.1" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="502.36" y="495.5" >java/util/concurrent/locks/LockSupport.unpark</text>
+<title>SharedRuntime::notify_jvmti_vthread_mount (2 samples, 0.06%; 0.00%)</title><rect x="1178.8" y="149" width="0.9" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
+<text  x="1181.84" y="159.5" ></text>
 </g>
 <g >
-<title>__GI_memcpy (1 samples, 0.06%; 0.00%)</title><rect x="1443.9" y="325" width="1.0" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="1446.95" y="335.5" ></text>
+<title>java/util/concurrent/ForkJoinPool.poolSubmit (1 samples, 0.03%; 0.00%)</title><rect x="1194.1" y="341" width="0.5" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
+<text  x="1197.10" y="351.5" ></text>
 </g>
 <g >
-<title>jdk/internal/vm/Continuation.run (29 samples, 1.74%; +0.12%)</title><rect x="1355.8" y="389" width="27.5" height="15.0" fill="rgb(255,194,194)" rx="2" ry="2" />
-<text  x="1358.75" y="399.5" >j..</text>
+<title>jdk/internal/misc/Unsafe.unpark (7 samples, 0.20%; 0.00%)</title><rect x="1418.5" y="85" width="3.2" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
+<text  x="1421.53" y="95.5" ></text>
 </g>
 <g >
-<title>JvmtiVTMSTransitionDisabler::VTMS_vthread_unmount (3 samples, 0.18%; 0.00%)</title><rect x="74.5" y="373" width="2.8" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="77.49" y="383.5" ></text>
+<title>java/util/concurrent/ThreadPoolExecutor$Worker.run (1 samples, 0.03%; 0.00%)</title><rect x="61.2" y="485" width="0.4" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
+<text  x="64.17" y="495.5" ></text>
 </g>
 <g >
-<title>ContinuationEntry::flush_stack_processing (1 samples, 0.06%; +0.06%)</title><rect x="491.8" y="325" width="0.9" height="15.0" fill="rgb(255,202,202)" rx="2" ry="2" />
-<text  x="494.78" y="335.5" ></text>
+<title>uk/ac/ncl/jensen/benchmark/jmh_generated/VThreadParkUnparkBenchmark_parkUnpark_pingPong_jmhTest.parkUnpark_pingPong_avgt_jmhStub (1 samples, 0.03%; 0.00%)</title><rect x="61.2" y="261" width="0.4" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
+<text  x="64.17" y="271.5" ></text>
 </g>
 <g >
-<title>LIR_Assembler::emit_code (1 samples, 0.06%; 0.00%)</title><rect x="1588.1" y="325" width="1.0" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="1591.10" y="335.5" ></text>
+<title>java/lang/System$2.parkVirtualThread (111 samples, 3.15%; 0.00%)</title><rect x="1426.2" y="213" width="49.8" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
+<text  x="1429.16" y="223.5" >java/..</text>
 </g>
 <g >
-<title>java/util/concurrent/ForkJoinPool.signalWork (396 samples, 23.77%; 0.00%)</title><rect x="98.2" y="357" width="375.6" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="101.20" y="367.5" >java/util/concurrent/ForkJoinPool.signalWork</text>
+<title>java/lang/VirtualThread.afterYield (9 samples, 0.26%; 0.00%)</title><rect x="1194.1" y="389" width="4.0" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
+<text  x="1197.10" y="399.5" ></text>
 </g>
 <g >
-<title>java/lang/VirtualThread.park (8 samples, 0.48%; 0.00%)</title><rect x="1456.3" y="197" width="7.6" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="1459.28" y="207.5" ></text>
+<title>uk/ac/ncl/jensen/benchmark/VThreadParkUnparkBenchmark.parkUnpark_pingPong (1 samples, 0.03%; 0.00%)</title><rect x="61.2" y="245" width="0.4" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
+<text  x="64.17" y="255.5" ></text>
 </g>
 <g >
-<title>G1ParCopyClosure&lt;(G1Barrier)1, false&gt;::do_oop (1 samples, 0.06%; 0.00%)</title><rect x="1589.1" y="325" width="0.9" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="1592.05" y="335.5" ></text>
+<title>__tls_get_addr (2 samples, 0.06%; +0.06%)</title><rect x="1330.1" y="101" width="0.9" height="15.0" fill="rgb(255,200,200)" rx="2" ry="2" />
+<text  x="1333.11" y="111.5" ></text>
 </g>
 <g >
-<title>SharedRuntime::notify_jvmti_vthread_unmount (4 samples, 0.24%; 0.00%)</title><rect x="1352.0" y="357" width="3.8" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="1354.96" y="367.5" ></text>
+<title>jdk/internal/vm/Continuation.currentCarrierThread (1 samples, 0.03%; 0.00%)</title><rect x="1282.1" y="373" width="0.4" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
+<text  x="1285.08" y="383.5" ></text>
 </g>
 <g >
-<title>pthread_mutex_unlock@plt (1 samples, 0.06%; -0.12%)</title><rect x="1276.1" y="405" width="0.9" height="15.0" fill="rgb(194,194,255)" rx="2" ry="2" />
-<text  x="1279.09" y="415.5" ></text>
+<title>java/lang/VirtualThread$$Lambda.0x....run (852 samples, 24.20%; -0.03%)</title><rect x="1184.2" y="421" width="382.5" height="15.0" fill="rgb(205,205,255)" rx="2" ry="2" />
+<text  x="1187.23" y="431.5" >java/lang/VirtualThread$$Lambda.0x....run</text>
 </g>
 <g >
-<title>java/util/concurrent/locks/LockSupport.park (33 samples, 1.98%; 0.00%)</title><rect x="61.2" y="485" width="31.3" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="64.21" y="495.5" >ja..</text>
+<title>java/util/concurrent/FutureTask.run (1 samples, 0.03%; 0.00%)</title><rect x="61.2" y="421" width="0.4" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
+<text  x="64.17" y="431.5" ></text>
 </g>
 <g >
-<title>java/util/concurrent/ForkJoinTask$AdaptedRunnableAction.&lt;init&gt; (1 samples, 0.06%; 0.00%)</title><rect x="1392.7" y="341" width="1.0" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="1395.74" y="351.5" ></text>
+<title>java/lang/VirtualThread.unpark (161 samples, 4.57%; +0.17%)</title><rect x="1349.4" y="197" width="72.3" height="15.0" fill="rgb(255,182,182)" rx="2" ry="2" />
+<text  x="1352.41" y="207.5" >java/lan..</text>
 </g>
 <g >
-<title>__aarch64_swp4_relax (1 samples, 0.06%; +0.06%)</title><rect x="471.9" y="277" width="0.9" height="15.0" fill="rgb(255,202,202)" rx="2" ry="2" />
-<text  x="474.86" y="287.5" ></text>
+<title>/usr/lib/x86_64-linux-gnu/libc.so.6 (4 samples, 0.11%; +0.06%)</title><rect x="1285.2" y="325" width="1.8" height="15.0" fill="rgb(255,200,200)" rx="2" ry="2" />
+<text  x="1288.22" y="335.5" ></text>
 </g>
 <g >
-<title>jdk/internal/misc/Unsafe.getAndSetByte (6 samples, 0.36%; +0.18%)</title><rect x="506.0" y="389" width="5.7" height="15.0" fill="rgb(255,186,186)" rx="2" ry="2" />
-<text  x="509.00" y="399.5" ></text>
+<title>JNIHandles::make_local (4 samples, 0.11%; +0.03%)</title><rect x="1303.2" y="133" width="1.8" height="15.0" fill="rgb(255,205,205)" rx="2" ry="2" />
+<text  x="1306.18" y="143.5" ></text>
 </g>
 <g >
-<title>_notify_jvmti_vthread_unmount (6 samples, 0.36%; 0.00%)</title><rect x="1422.1" y="373" width="5.7" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="1425.14" y="383.5" ></text>
+<title>jdk/internal/vm/Continuation.yield (15 samples, 0.43%; -0.06%)</title><rect x="1469.3" y="165" width="6.7" height="15.0" fill="rgb(200,200,255)" rx="2" ry="2" />
+<text  x="1472.26" y="175.5" ></text>
 </g>
 <g >
-<title>java_lang_Thread::set_is_in_VTMS_transition (1 samples, 0.06%; +0.06%)</title><rect x="1354.8" y="325" width="1.0" height="15.0" fill="rgb(255,202,202)" rx="2" ry="2" />
-<text  x="1357.80" y="335.5" ></text>
+<title>java_lang_Thread::set_is_in_VTMS_transition (5 samples, 0.14%; +0.03%)</title><rect x="1265.9" y="325" width="2.3" height="15.0" fill="rgb(255,205,205)" rx="2" ry="2" />
+<text  x="1268.92" y="335.5" ></text>
 </g>
 <g >
-<title>java/lang/VirtualThread.compareAndSetState (2 samples, 0.12%; +0.12%)</title><rect x="1390.8" y="373" width="1.9" height="15.0" fill="rgb(255,194,194)" rx="2" ry="2" />
-<text  x="1393.84" y="383.5" ></text>
+<title>jdk/internal/vm/Continuation.yield0 (11 samples, 0.31%; +0.06%)</title><rect x="1471.1" y="149" width="4.9" height="15.0" fill="rgb(255,200,200)" rx="2" ry="2" />
+<text  x="1474.05" y="159.5" ></text>
 </g>
 <g >
-<title>java/util/concurrent/ForkJoinTask.adapt (1 samples, 0.06%; 0.00%)</title><rect x="1392.7" y="357" width="1.0" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="1395.74" y="367.5" ></text>
+<title>java/util/concurrent/ForkJoinPool.poolSubmit (155 samples, 4.40%; +0.09%)</title><rect x="1491.2" y="149" width="69.6" height="15.0" fill="rgb(255,196,196)" rx="2" ry="2" />
+<text  x="1494.25" y="159.5" >java/ut..</text>
 </g>
 <g >
-<title>__aarch64_ldadd4_relax (1 samples, 0.06%; +0.06%)</title><rect x="1266.6" y="389" width="1.0" height="15.0" fill="rgb(255,202,202)" rx="2" ry="2" />
-<text  x="1269.60" y="399.5" ></text>
+<title>VM_G1CollectForAllocation::doit (1 samples, 0.03%; 0.00%)</title><rect x="10.0" y="389" width="0.4" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
+<text  x="13.00" y="399.5" ></text>
 </g>
 <g >
-<title>jdk/internal/vm/Continuation.enterSpecial (26 samples, 1.56%; 0.00%)</title><rect x="1358.6" y="373" width="24.7" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="1361.60" y="383.5" >j..</text>
+<title>JNIHandles::make_local (2 samples, 0.06%; +0.03%)</title><rect x="1204.9" y="341" width="0.9" height="15.0" fill="rgb(255,205,205)" rx="2" ry="2" />
+<text  x="1207.88" y="351.5" ></text>
 </g>
 <g >
-<title>pthread_cond_signal@plt (1 samples, 0.06%; +0.06%)</title><rect x="1509.4" y="53" width="0.9" height="15.0" fill="rgb(255,202,202)" rx="2" ry="2" />
-<text  x="1512.39" y="63.5" ></text>
+<title>java/util/concurrent/ForkJoinPool$WorkQueue.getAndClearSlot (2 samples, 0.06%; +0.06%)</title><rect x="1161.8" y="437" width="0.9" height="15.0" fill="rgb(255,200,200)" rx="2" ry="2" />
+<text  x="1164.78" y="447.5" ></text>
 </g>
 <g >
-<title>java/util/concurrent/ForkJoinPool.poolSubmit (391 samples, 23.47%; +0.06%)</title><rect x="511.7" y="389" width="370.8" height="15.0" fill="rgb(255,202,202)" rx="2" ry="2" />
-<text  x="514.69" y="399.5" >java/util/concurrent/ForkJoinPool.poolSubmit</text>
+<title>G1CollectedHeap::requires_barriers (6 samples, 0.17%; +0.17%)</title><rect x="25.7" y="485" width="2.7" height="15.0" fill="rgb(255,182,182)" rx="2" ry="2" />
+<text  x="28.71" y="495.5" ></text>
 </g>
 <g >
-<title>java/lang/VirtualThread.compareAndSetState (1 samples, 0.06%; +0.06%)</title><rect x="95.4" y="421" width="0.9" height="15.0" fill="rgb(255,202,202)" rx="2" ry="2" />
-<text  x="98.35" y="431.5" ></text>
+<title>StackWatermarkSet::lowest_watermark (1 samples, 0.03%; +0.03%)</title><rect x="1292.9" y="325" width="0.4" height="15.0" fill="rgb(255,205,205)" rx="2" ry="2" />
+<text  x="1295.85" y="335.5" ></text>
 </g>
 <g >
-<title>java/lang/Thread.run (1 samples, 0.06%; 0.00%)</title><rect x="883.5" y="517" width="0.9" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="886.46" y="527.5" ></text>
+<title>java/lang/VirtualThread.unpark (184 samples, 5.23%; +0.28%)</title><rect x="1478.2" y="197" width="82.6" height="15.0" fill="rgb(255,164,164)" rx="2" ry="2" />
+<text  x="1481.23" y="207.5" >java/lang..</text>
 </g>
 <g >
-<title>java/util/concurrent/locks/LockSupport.unpark (14 samples, 0.84%; 0.00%)</title><rect x="1361.4" y="101" width="13.3" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="1364.44" y="111.5" ></text>
+<title>java/lang/System$2.parkVirtualThread (4 samples, 0.11%; 0.00%)</title><rect x="1176.6" y="213" width="1.8" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
+<text  x="1179.60" y="223.5" ></text>
 </g>
 <g >
-<title>uk/ac/ncl/jensen/benchmark/jmh_generated/VThreadParkUnparkBenchmark_parkUnpark_pingPong_jmhTest.parkUnpark_pingPong_AverageTime (1 samples, 0.06%; 0.00%)</title><rect x="883.5" y="277" width="0.9" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="886.46" y="287.5" ></text>
+<title>jdk/internal/vm/Continuation.enter0 (596 samples, 16.93%; 0.00%)</title><rect x="1293.8" y="341" width="267.5" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
+<text  x="1296.75" y="351.5" >jdk/internal/vm/Continuation.enter0</text>
 </g>
 <g >
-<title>java/lang/VirtualThread.compareAndSetState (2 samples, 0.12%; +0.06%)</title><rect x="1393.7" y="389" width="1.9" height="15.0" fill="rgb(255,202,202)" rx="2" ry="2" />
-<text  x="1396.69" y="399.5" ></text>
+<title>SharedRuntime::notify_jvmti_vthread_unmount (1 samples, 0.03%; 0.00%)</title><rect x="1177.9" y="149" width="0.5" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
+<text  x="1180.94" y="159.5" ></text>
 </g>
 <g >
-<title>CompileBroker::compiler_thread_loop (1 samples, 0.06%; 0.00%)</title><rect x="1588.1" y="437" width="1.0" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="1591.10" y="447.5" ></text>
+<title>ReferenceProcessor::run_task (1 samples, 0.03%; 0.00%)</title><rect x="10.0" y="261" width="0.4" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
+<text  x="13.00" y="271.5" ></text>
 </g>
 <g >
-<title>ClassLoaderData::ChunkedHandleList::oops_do (1 samples, 0.06%; 0.00%)</title><rect x="1589.1" y="341" width="0.9" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="1592.05" y="351.5" ></text>
+<title>java/util/concurrent/CountDownLatch.await (1 samples, 0.03%; 0.00%)</title><rect x="61.2" y="181" width="0.4" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
+<text  x="64.17" y="191.5" ></text>
 </g>
 <g >
-<title>java/util/concurrent/ForkJoinPool.signalWork (9 samples, 0.54%; 0.00%)</title><rect x="1374.7" y="117" width="8.6" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="1377.72" y="127.5" ></text>
+<title>java/lang/System$2.currentCarrierThread (1 samples, 0.03%; +0.03%)</title><rect x="1282.1" y="357" width="0.4" height="15.0" fill="rgb(255,205,205)" rx="2" ry="2" />
+<text  x="1285.08" y="367.5" ></text>
 </g>
 <g >
-<title>jdk/internal/misc/Unsafe.unpark (9 samples, 0.54%; -0.06%)</title><rect x="1374.7" y="85" width="8.6" height="15.0" fill="rgb(202,202,255)" rx="2" ry="2" />
-<text  x="1377.72" y="95.5" ></text>
+<title>AccessInternal::PostRuntimeDispatch&lt;G1BarrierSet::AccessBarrier&lt;548964ul, G1BarrierSet&gt;, (AccessInternal::BarrierType)0, 548964ul&gt;::oop_access_barrier (1 samples, 0.03%; +0.03%)</title><rect x="1318.9" y="85" width="0.4" height="15.0" fill="rgb(255,205,205)" rx="2" ry="2" />
+<text  x="1321.89" y="95.5" ></text>
 </g>
 <g >
-<title>java/lang/System$2.parkVirtualThread (6 samples, 0.36%; 0.00%)</title><rect x="1513.2" y="213" width="5.7" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="1516.18" y="223.5" ></text>
+<title>java/lang/VirtualThread.park (4 samples, 0.11%; 0.00%)</title><rect x="1176.6" y="197" width="1.8" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
+<text  x="1179.60" y="207.5" ></text>
 </g>
 <g >
-<title>__GI_memcpy (1 samples, 0.06%; +0.06%)</title><rect x="1359.5" y="325" width="1.0" height="15.0" fill="rgb(255,202,202)" rx="2" ry="2" />
-<text  x="1362.54" y="335.5" ></text>
+<title>jdk/internal/misc/VirtualThreads.unpark (189 samples, 5.37%; 0.00%)</title><rect x="1476.0" y="229" width="84.8" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
+<text  x="1478.99" y="239.5" >jdk/inter..</text>
 </g>
 <g >
-<title>__GI___pthread_mutex_unlock_usercnt (1 samples, 0.06%; +0.06%)</title><rect x="1465.8" y="37" width="0.9" height="15.0" fill="rgb(255,202,202)" rx="2" ry="2" />
-<text  x="1468.76" y="47.5" ></text>
+<title>AccessInternal::PostRuntimeDispatch&lt;G1BarrierSet::AccessBarrier&lt;286822ul, G1BarrierSet&gt;, (AccessInternal::BarrierType)3, 286822ul&gt;::oop_access_barrier (2 samples, 0.06%; +0.06%)</title><rect x="1475.1" y="101" width="0.9" height="15.0" fill="rgb(255,200,200)" rx="2" ry="2" />
+<text  x="1478.09" y="111.5" ></text>
 </g>
 <g >
-<title>java/lang/VirtualThread.switchToCarrierThread (1 samples, 0.06%; +0.06%)</title><rect x="882.5" y="421" width="1.0" height="15.0" fill="rgb(255,202,202)" rx="2" ry="2" />
-<text  x="885.51" y="431.5" ></text>
+<title>Unsafe_Unpark (2 samples, 0.06%; 0.00%)</title><rect x="1589.1" y="421" width="0.9" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
+<text  x="1592.10" y="431.5" ></text>
 </g>
 <g >
-<title>_pthread_cleanup_pop@@GLIBC_2.34 (1 samples, 0.06%; +0.06%)</title><rect x="1271.3" y="389" width="1.0" height="15.0" fill="rgb(255,202,202)" rx="2" ry="2" />
-<text  x="1274.34" y="399.5" ></text>
+<title>java/util/concurrent/locks/LockSupport.unpark (1 samples, 0.03%; 0.00%)</title><rect x="1178.4" y="245" width="0.4" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
+<text  x="1181.39" y="255.5" ></text>
 </g>
 <g >
-<title>java/util/concurrent/ForkJoinPool.poolSubmit (70 samples, 4.20%; 0.00%)</title><rect x="1518.9" y="149" width="66.4" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="1521.87" y="159.5" >java/ut..</text>
+<title>pthread_mutex_trylock (1 samples, 0.03%; +0.03%)</title><rect x="1177.0" y="85" width="0.5" height="15.0" fill="rgb(255,205,205)" rx="2" ry="2" />
+<text  x="1180.05" y="95.5" ></text>
 </g>
 <g >
-<title>java/lang/VirtualThread.getAndSetParkPermit (1 samples, 0.06%; 0.00%)</title><rect x="96.3" y="421" width="1.0" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="99.30" y="431.5" ></text>
+<title>uk/ac/ncl/jensen/benchmark/VThreadParkUnparkBenchmark.lambda$parkUnpark_pingPong$1 (3 samples, 0.09%; 0.00%)</title><rect x="1178.8" y="261" width="1.4" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
+<text  x="1181.84" y="271.5" ></text>
 </g>
 <g >
-<title>uk/ac/ncl/jensen/benchmark/VThreadParkUnparkBenchmark.lambda$parkUnpark_pingPong$1 (432 samples, 25.93%; -0.06%)</title><rect x="473.8" y="501" width="409.7" height="15.0" fill="rgb(202,202,255)" rx="2" ry="2" />
-<text  x="476.76" y="511.5" >uk/ac/ncl/jensen/benchmark/VThreadParkUnparkBenchmark.l..</text>
+<title>_notify_jvmti_vthread_mount (70 samples, 1.99%; 0.00%)</title><rect x="1202.6" y="373" width="31.5" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
+<text  x="1205.63" y="383.5" >_n..</text>
 </g>
 <g >
-<title>java/util/concurrent/FutureTask.run (1 samples, 0.06%; 0.00%)</title><rect x="883.5" y="453" width="0.9" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="886.46" y="463.5" ></text>
+<title>__tls_get_addr (1 samples, 0.03%; +0.03%)</title><rect x="1335.0" y="117" width="0.5" height="15.0" fill="rgb(255,205,205)" rx="2" ry="2" />
+<text  x="1338.05" y="127.5" ></text>
 </g>
 <g >
-<title>java/lang/VirtualThread.lazySubmitRunContinuation (1 samples, 0.06%; 0.00%)</title><rect x="1392.7" y="373" width="1.0" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="1395.74" y="383.5" ></text>
+<title>java/util/concurrent/ForkJoinPool.execute (141 samples, 4.01%; 0.00%)</title><rect x="1358.4" y="165" width="63.3" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
+<text  x="1361.39" y="175.5" >java/u..</text>
 </g>
 <g >
-<title>JavaFrameAnchor::make_walkable (1 samples, 0.06%; +0.06%)</title><rect x="978.3" y="405" width="0.9" height="15.0" fill="rgb(255,202,202)" rx="2" ry="2" />
-<text  x="981.30" y="415.5" ></text>
+<title>SafepointMechanism::update_poll_values (12 samples, 0.34%; -0.03%)</title><rect x="1287.9" y="341" width="5.4" height="15.0" fill="rgb(205,205,255)" rx="2" ry="2" />
+<text  x="1290.91" y="351.5" ></text>
 </g>
 <g >
-<title>jdk/internal/vm/Continuation.yield0 (1 samples, 0.06%; 0.00%)</title><rect x="1517.9" y="149" width="1.0" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="1520.92" y="159.5" ></text>
+<title>java/util/concurrent/ForkJoinPool.poolSubmit (141 samples, 4.01%; +0.06%)</title><rect x="1358.4" y="149" width="63.3" height="15.0" fill="rgb(255,200,200)" rx="2" ry="2" />
+<text  x="1361.39" y="159.5" >java/u..</text>
 </g>
 <g >
-<title>java/util/concurrent/ForkJoinPool.poolSubmit (14 samples, 0.84%; 0.00%)</title><rect x="1361.4" y="149" width="13.3" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="1364.44" y="159.5" ></text>
+<title>java/lang/System$2.unparkVirtualThread (189 samples, 5.37%; +0.14%)</title><rect x="1476.0" y="213" width="84.8" height="15.0" fill="rgb(255,187,187)" rx="2" ry="2" />
+<text  x="1478.99" y="223.5" >java/lang..</text>
 </g>
 <g >
-<title>JavaThread::rebind_to_jvmti_thread_state_of (4 samples, 0.24%; +0.06%)</title><rect x="70.7" y="373" width="3.8" height="15.0" fill="rgb(255,202,202)" rx="2" ry="2" />
-<text  x="73.70" y="383.5" ></text>
+<title>java/lang/VirtualThread.yieldContinuation (2 samples, 0.06%; 0.00%)</title><rect x="1178.8" y="181" width="0.9" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
+<text  x="1181.84" y="191.5" ></text>
 </g>
 <g >
-<title>SafepointMechanism::update_poll_values (1 samples, 0.06%; +0.06%)</title><rect x="1360.5" y="341" width="0.9" height="15.0" fill="rgb(255,202,202)" rx="2" ry="2" />
-<text  x="1363.49" y="351.5" ></text>
+<title>Parker::park (33 samples, 0.94%; -0.03%)</title><rect x="628.1" y="421" width="14.8" height="15.0" fill="rgb(205,205,255)" rx="2" ry="2" />
+<text  x="631.09" y="431.5" ></text>
 </g>
 <g >
-<title>java/lang/VirtualThread.submitRunContinuation (397 samples, 23.83%; 0.00%)</title><rect x="97.3" y="421" width="376.5" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="100.25" y="431.5" >java/lang/VirtualThread.submitRunContinuation</text>
+<title>java/lang/VirtualThread$VThreadContinuation$1.run (8 samples, 0.23%; 0.00%)</title><rect x="1176.6" y="325" width="3.6" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
+<text  x="1179.60" y="335.5" ></text>
 </g>
 <g >
-<title>java/util/concurrent/ForkJoinPool.execute (14 samples, 0.84%; 0.00%)</title><rect x="1361.4" y="165" width="13.3" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="1364.44" y="175.5" ></text>
+<title>SharedRuntime::notify_jvmti_vthread_unmount (24 samples, 0.68%; +0.06%)</title><rect x="1458.5" y="149" width="10.8" height="15.0" fill="rgb(255,200,200)" rx="2" ry="2" />
+<text  x="1461.48" y="159.5" ></text>
 </g>
 <g >
-<title>java/lang/VirtualThread.unpark (403 samples, 24.19%; 0.00%)</title><rect x="501.3" y="437" width="382.2" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="504.26" y="447.5" >java/lang/VirtualThread.unpark</text>
+<title>G1EvacuateRegionsBaseTask::work (2 samples, 0.06%; 0.00%)</title><rect x="10.4" y="437" width="0.9" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
+<text  x="13.45" y="447.5" ></text>
 </g>
 <g >
-<title>LIR_Assembler::emit_lir_list (1 samples, 0.06%; 0.00%)</title><rect x="1588.1" y="309" width="1.0" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="1591.10" y="319.5" ></text>
+<title>__tls_get_addr (1 samples, 0.03%; +0.03%)</title><rect x="1221.5" y="325" width="0.4" height="15.0" fill="rgb(255,205,205)" rx="2" ry="2" />
+<text  x="1224.48" y="335.5" ></text>
 </g>
 <g >
-<title>java/lang/VirtualThread.afterDone (1 samples, 0.06%; 0.00%)</title><rect x="1389.9" y="373" width="0.9" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="1392.89" y="383.5" ></text>
+<title>org/openjdk/jmh/runner/BenchmarkHandler$BenchmarkTask.call (1 samples, 0.03%; 0.00%)</title><rect x="61.2" y="389" width="0.4" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
+<text  x="64.17" y="399.5" ></text>
 </g>
 <g >
-<title>__condvar_confirm_wakeup (1 samples, 0.06%; -0.06%)</title><rect x="1268.5" y="389" width="0.9" height="15.0" fill="rgb(202,202,255)" rx="2" ry="2" />
-<text  x="1271.50" y="399.5" ></text>
+<title>jdk/internal/misc/VirtualThreads.unpark (1 samples, 0.03%; 0.00%)</title><rect x="1179.7" y="229" width="0.5" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
+<text  x="1182.74" y="239.5" ></text>
 </g>
 <g >
-<title>java/util/concurrent/ForkJoinPool.execute (397 samples, 23.83%; 0.00%)</title><rect x="97.3" y="405" width="376.5" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="100.25" y="415.5" >java/util/concurrent/ForkJoinPool.execute</text>
+<title>java_lang_Thread::set_is_in_VTMS_transition (5 samples, 0.14%; +0.14%)</title><rect x="1467.0" y="101" width="2.3" height="15.0" fill="rgb(255,187,187)" rx="2" ry="2" />
+<text  x="1470.01" y="111.5" ></text>
 </g>
 <g >
-<title>__aarch64_ldadd4_relax (3 samples, 0.18%; -0.06%)</title><rect x="468.1" y="277" width="2.8" height="15.0" fill="rgb(202,202,255)" rx="2" ry="2" />
-<text  x="471.07" y="287.5" ></text>
+<title>JvmtiVTMSTransitionDisabler::VTMS_vthread_mount (1 samples, 0.03%; +0.03%)</title><rect x="1205.8" y="341" width="0.4" height="15.0" fill="rgb(255,205,205)" rx="2" ry="2" />
+<text  x="1208.77" y="351.5" ></text>
 </g>
 <g >
-<title>_notify_jvmti_vthread_mount (10 samples, 0.60%; 0.00%)</title><rect x="61.2" y="405" width="9.5" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="64.21" y="415.5" ></text>
+<title>java/util/concurrent/ForkJoinPool$WorkQueue.push (139 samples, 3.95%; +0.23%)</title><rect x="1359.3" y="133" width="62.4" height="15.0" fill="rgb(255,173,173)" rx="2" ry="2" />
+<text  x="1362.28" y="143.5" >java/u..</text>
 </g>
 <g >
-<title>java/util/concurrent/locks/LockSupport.park (351 samples, 21.07%; -0.06%)</title><rect x="949.8" y="469" width="332.9" height="15.0" fill="rgb(202,202,255)" rx="2" ry="2" />
-<text  x="952.84" y="479.5" >java/util/concurrent/locks/LockSupport.park</text>
+<title>__tls_get_addr@plt (2 samples, 0.06%; +0.06%)</title><rect x="1221.9" y="325" width="0.9" height="15.0" fill="rgb(255,200,200)" rx="2" ry="2" />
+<text  x="1224.93" y="335.5" ></text>
 </g>
 <g >
-<title>java/util/concurrent/ForkJoinPool$WorkQueue.push (47 samples, 2.82%; 0.00%)</title><rect x="1465.8" y="133" width="44.5" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="1468.76" y="143.5" >java..</text>
+<title>G1YoungCollector::collect (1 samples, 0.03%; 0.00%)</title><rect x="10.0" y="341" width="0.4" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
+<text  x="13.00" y="351.5" ></text>
 </g>
 <g >
-<title>java/util/concurrent/ForkJoinWorkerThread.run (742 samples, 44.54%; 0.00%)</title><rect x="884.4" y="517" width="703.7" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="887.41" y="527.5" >java/util/concurrent/ForkJoinWorkerThread.run</text>
+<title>java/util/concurrent/ThreadPoolExecutor.runWorker (1 samples, 0.03%; 0.00%)</title><rect x="61.2" y="469" width="0.4" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
+<text  x="64.17" y="479.5" ></text>
 </g>
 <g >
-<title>jdk/internal/misc/Unsafe.unpark (396 samples, 23.77%; -0.06%)</title><rect x="98.2" y="325" width="375.6" height="15.0" fill="rgb(202,202,255)" rx="2" ry="2" />
-<text  x="101.20" y="335.5" >jdk/internal/misc/Unsafe.unpark</text>
+<title>pthread_mutex_trylock (2 samples, 0.06%; +0.06%)</title><rect x="642.0" y="405" width="0.9" height="15.0" fill="rgb(255,200,200)" rx="2" ry="2" />
+<text  x="645.00" y="415.5" ></text>
 </g>
 <g >
-<title>java/lang/VirtualThread.park (33 samples, 1.98%; 0.00%)</title><rect x="61.2" y="437" width="31.3" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="64.21" y="447.5" >ja..</text>
+<title>jdk/internal/vm/Continuation.enter (596 samples, 16.93%; 0.00%)</title><rect x="1293.8" y="357" width="267.5" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
+<text  x="1296.75" y="367.5" >jdk/internal/vm/Continuation.enter</text>
 </g>
 <g >
-<title>java/util/concurrent/ForkJoinPool.signalWork (70 samples, 4.20%; 0.00%)</title><rect x="1518.9" y="117" width="66.4" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="1521.87" y="127.5" >java/ut..</text>
+<title>java/util/concurrent/ForkJoinPool.signalWork (1 samples, 0.03%; +0.03%)</title><rect x="1178.4" y="117" width="0.4" height="15.0" fill="rgb(255,205,205)" rx="2" ry="2" />
+<text  x="1181.39" y="127.5" ></text>
 </g>
 <g >
-<title>jdk/internal/vm/Continuation.enter (23 samples, 1.38%; 0.00%)</title><rect x="1361.4" y="357" width="21.9" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="1364.44" y="367.5" >j..</text>
+<title>JavaThread::rebind_to_jvmti_thread_state_of (1 samples, 0.03%; +0.03%)</title><rect x="1460.3" y="133" width="0.4" height="15.0" fill="rgb(255,205,205)" rx="2" ry="2" />
+<text  x="1463.28" y="143.5" ></text>
 </g>
 <g >
-<title>org/openjdk/jmh/runner/BenchmarkHandler$BenchmarkTask.call (1 samples, 0.06%; 0.00%)</title><rect x="883.5" y="405" width="0.9" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="886.46" y="415.5" ></text>
+<title>java_lang_Thread::jvmti_thread_state (1 samples, 0.03%; +0.03%)</title><rect x="1177.9" y="117" width="0.5" height="15.0" fill="rgb(255,205,205)" rx="2" ry="2" />
+<text  x="1180.94" y="127.5" ></text>
 </g>
 <g >
-<title>java/util/concurrent/ThreadPoolExecutor.runWorker (1 samples, 0.06%; 0.00%)</title><rect x="883.5" y="469" width="0.9" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="886.46" y="479.5" ></text>
+<title>long* thaw&lt;Config&lt;(oop_kind)0, G1BarrierSet&gt; &gt; (85 samples, 2.41%; +0.11%)</title><rect x="23.0" y="501" width="38.2" height="15.0" fill="rgb(255,191,191)" rx="2" ry="2" />
+<text  x="26.02" y="511.5" >lon..</text>
 </g>
 <g >
-<title>uk/ac/ncl/jensen/benchmark/VThreadParkUnparkBenchmark$$Lambda.0x....run (136 samples, 8.16%; 0.00%)</title><rect x="1456.3" y="277" width="129.0" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="1459.28" y="287.5" >uk/ac/ncl/jensen..</text>
+<title>jdk/internal/misc/VirtualThreads.unpark (163 samples, 4.63%; 0.00%)</title><rect x="1348.5" y="229" width="73.2" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
+<text  x="1351.51" y="239.5" >jdk/inte..</text>
 </g>
 <g >
-<title>java/util/concurrent/ForkJoinTask.setDone (3 samples, 0.18%; 0.00%)</title><rect x="1585.3" y="437" width="2.8" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="1588.26" y="447.5" ></text>
+<title>HandleMark::~HandleMark (1 samples, 0.03%; 0.00%)</title><rect x="1466.1" y="101" width="0.5" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
+<text  x="1469.11" y="111.5" ></text>
 </g>
 <g >
-<title>thread_start (2 samples, 0.12%; 0.00%)</title><rect x="1588.1" y="517" width="1.9" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="1591.10" y="527.5" ></text>
+<title>java/lang/Thread.join (1 samples, 0.03%; 0.00%)</title><rect x="61.2" y="229" width="0.4" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
+<text  x="64.17" y="239.5" ></text>
 </g>
 <g >
-<title>__GI___pthread_mutex_unlock_usercnt (1 samples, 0.06%; +0.06%)</title><rect x="1519.8" y="37" width="1.0" height="15.0" fill="rgb(255,202,202)" rx="2" ry="2" />
-<text  x="1522.82" y="47.5" ></text>
+<title>java/lang/VirtualThread.afterYield (1 samples, 0.03%; 0.00%)</title><rect x="1176.1" y="389" width="0.5" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
+<text  x="1179.15" y="399.5" ></text>
 </g>
 <g >
-<title>jdk/internal/misc/VirtualThreads.unpark (14 samples, 0.84%; 0.00%)</title><rect x="1361.4" y="229" width="13.3" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="1364.44" y="239.5" ></text>
+<title>java/util/concurrent/locks/LockSupport.park (2 samples, 0.06%; 0.00%)</title><rect x="1178.8" y="245" width="0.9" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
+<text  x="1181.84" y="255.5" ></text>
 </g>
 <g >
-<title>java/util/concurrent/ForkJoinPool$WorkQueue.push (14 samples, 0.84%; 0.00%)</title><rect x="1361.4" y="133" width="13.3" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="1364.44" y="143.5" ></text>
+<title>uk/ac/ncl/jensen/benchmark/VThreadParkUnparkBenchmark$$Lambda.0x....run (8 samples, 0.23%; 0.00%)</title><rect x="1176.6" y="277" width="3.6" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
+<text  x="1179.60" y="287.5" ></text>
 </g>
 <g >
-<title>JvmtiVTMSTransitionDisabler::VTMS_mount_end (3 samples, 0.18%; 0.00%)</title><rect x="1513.2" y="117" width="2.8" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="1516.18" y="127.5" ></text>
+<title>jdk/internal/misc/Unsafe.getAndBitwiseOrInt (48 samples, 1.36%; +0.11%)</title><rect x="1566.7" y="405" width="21.5" height="15.0" fill="rgb(255,191,191)" rx="2" ry="2" />
+<text  x="1569.66" y="415.5" >j..</text>
 </g>
 <g >
-<title>java/lang/System$2.parkVirtualThread (33 samples, 1.98%; 0.00%)</title><rect x="61.2" y="453" width="31.3" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="64.21" y="463.5" >ja..</text>
+<title>AccessInternal::PostRuntimeDispatch&lt;G1BarrierSet::AccessBarrier&lt;286822ul, G1BarrierSet&gt;, (AccessInternal::BarrierType)1, 286822ul&gt;::oop_access_barrier (3 samples, 0.09%; +0.09%)</title><rect x="1283.0" y="341" width="1.3" height="15.0" fill="rgb(255,196,196)" rx="2" ry="2" />
+<text  x="1285.98" y="351.5" ></text>
 </g>
 <g >
-<title>JNIHandleBlock::allocate_handle (1 samples, 0.06%; +0.06%)</title><rect x="1456.3" y="133" width="0.9" height="15.0" fill="rgb(255,202,202)" rx="2" ry="2" />
-<text  x="1459.28" y="143.5" ></text>
+<title>JvmtiVTMSTransitionDisabler::VTMS_vthread_mount (3 samples, 0.09%; 0.00%)</title><rect x="1176.6" y="133" width="1.3" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
+<text  x="1179.60" y="143.5" ></text>
 </g>
 <g >
-<title>java/util/concurrent/locks/LockSupport.unpark (70 samples, 4.20%; 0.00%)</title><rect x="1518.9" y="101" width="66.4" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="1521.87" y="111.5" >java/ut..</text>
+<title>pthread_mutex_trylock (13 samples, 0.37%; +0.09%)</title><rect x="1448.6" y="85" width="5.8" height="15.0" fill="rgb(255,196,196)" rx="2" ry="2" />
+<text  x="1451.61" y="95.5" ></text>
 </g>
 <g >
-<title>SharedRuntime::notify_jvmti_vthread_mount (3 samples, 0.18%; 0.00%)</title><rect x="1513.2" y="149" width="2.8" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="1516.18" y="159.5" ></text>
+<title>_notify_jvmti_vthread_mount (3 samples, 0.09%; 0.00%)</title><rect x="1176.6" y="165" width="1.3" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
+<text  x="1179.60" y="175.5" ></text>
 </g>
 <g >
-<title>JavaThread::rebind_to_jvmti_thread_state_of (4 samples, 0.24%; -0.06%)</title><rect x="63.1" y="341" width="3.8" height="15.0" fill="rgb(202,202,255)" rx="2" ry="2" />
-<text  x="66.11" y="351.5" ></text>
+<title>JavaThread::rebind_to_jvmti_thread_state_of (1 samples, 0.03%; +0.03%)</title><rect x="1178.8" y="101" width="0.5" height="15.0" fill="rgb(255,205,205)" rx="2" ry="2" />
+<text  x="1181.84" y="111.5" ></text>
 </g>
 <g >
-<title>pthread_cond_signal@plt (1 samples, 0.06%; 0.00%)</title><rect x="881.6" y="293" width="0.9" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="884.56" y="303.5" ></text>
+<title>__tls_get_addr@plt (1 samples, 0.03%; +0.03%)</title><rect x="1257.4" y="325" width="0.4" height="15.0" fill="rgb(255,205,205)" rx="2" ry="2" />
+<text  x="1260.39" y="335.5" ></text>
 </g>
 <g >
-<title>jdk/internal/vm/Continuation.enter (136 samples, 8.16%; 0.00%)</title><rect x="1456.3" y="357" width="129.0" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="1459.28" y="367.5" >jdk/internal/vm/..</text>
+<title>Mutex::lock (15 samples, 0.43%; 0.00%)</title><rect x="1319.8" y="101" width="6.7" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
+<text  x="1322.78" y="111.5" ></text>
 </g>
 <g >
-<title>java/util/concurrent/ThreadPoolExecutor$Worker.run (1 samples, 0.06%; 0.00%)</title><rect x="883.5" y="485" width="0.9" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="886.46" y="495.5" ></text>
+<title>JvmtiVTMSTransitionDisabler::VTMS_mount_end (1 samples, 0.03%; 0.00%)</title><rect x="1178.8" y="117" width="0.5" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
+<text  x="1181.84" y="127.5" ></text>
 </g>
 <g >
-<title>JvmtiVTMSTransitionDisabler::finish_VTMS_transition (1 samples, 0.06%; 0.00%)</title><rect x="478.5" y="357" width="0.9" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="481.50" y="367.5" ></text>
+<title>java/lang/VirtualThread.unpark (1 samples, 0.03%; 0.00%)</title><rect x="1178.4" y="197" width="0.4" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
+<text  x="1181.39" y="207.5" ></text>
 </g>
 <g >
-<title>int freeze&lt;Config&lt;(oop_kind)0, G1BarrierSet&gt; &gt; (3 samples, 0.18%; 0.00%)</title><rect x="1358.6" y="357" width="2.8" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="1361.60" y="367.5" ></text>
+<title>java/lang/VirtualThread.getAndSetParkPermit (4 samples, 0.11%; +0.11%)</title><rect x="1296.9" y="181" width="1.8" height="15.0" fill="rgb(255,191,191)" rx="2" ry="2" />
+<text  x="1299.89" y="191.5" ></text>
 </g>
 <g >
-<title>AccessInternal::PostRuntimeDispatch&lt;G1BarrierSet::AccessBarrier&lt;548964ul, G1BarrierSet&gt;, (AccessInternal::BarrierType)0, 548964ul&gt;::oop_access_barrier (1 samples, 0.06%; +0.06%)</title><rect x="479.4" y="357" width="1.0" height="15.0" fill="rgb(255,202,202)" rx="2" ry="2" />
-<text  x="482.45" y="367.5" ></text>
+<title>pthread_cond_signal (5 samples, 0.14%; -0.14%)</title><rect x="1419.4" y="53" width="2.3" height="15.0" fill="rgb(187,187,255)" rx="2" ry="2" />
+<text  x="1422.43" y="63.5" ></text>
 </g>
 <g >
-<title>jdk/internal/vm/Continuation.yield0 (14 samples, 0.84%; -0.06%)</title><rect x="79.2" y="389" width="13.3" height="15.0" fill="rgb(202,202,255)" rx="2" ry="2" />
-<text  x="82.23" y="399.5" ></text>
+<title>__tls_get_addr@plt (1 samples, 0.03%; +0.03%)</title><rect x="1205.3" y="325" width="0.5" height="15.0" fill="rgb(255,205,205)" rx="2" ry="2" />
+<text  x="1208.32" y="335.5" ></text>
 </g>
 <g >
-<title>jdk/internal/vm/Continuation.yield (19 samples, 1.14%; -0.18%)</title><rect x="481.3" y="405" width="18.1" height="15.0" fill="rgb(186,186,255)" rx="2" ry="2" />
-<text  x="484.34" y="415.5" ></text>
+<title>uk/ac/ncl/jensen/benchmark/VThreadParkUnparkBenchmark$$Lambda.0x....run (595 samples, 16.90%; 0.00%)</title><rect x="1293.8" y="277" width="267.0" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
+<text  x="1296.75" y="287.5" >uk/ac/ncl/jensen/benchmark/VThreadP..</text>
 </g>
 <g >
-<title>java/lang/System$2.parkVirtualThread (26 samples, 1.56%; 0.00%)</title><rect x="474.7" y="453" width="24.7" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="477.71" y="463.5" >j..</text>
+<title>_notify_jvmti_vthread_mount (2 samples, 0.06%; 0.00%)</title><rect x="1178.8" y="165" width="0.9" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
+<text  x="1181.84" y="175.5" ></text>
 </g>
 <g >
-<title>java/lang/VirtualThread$VThreadContinuation$1.run (23 samples, 1.38%; 0.00%)</title><rect x="1361.4" y="325" width="21.9" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="1364.44" y="335.5" >j..</text>
+<title>pthread_cond_signal (2 samples, 0.06%; +0.06%)</title><rect x="1589.1" y="405" width="0.9" height="15.0" fill="rgb(255,200,200)" rx="2" ry="2" />
+<text  x="1592.10" y="415.5" ></text>
 </g>
 <g >
-<title>jdk/internal/misc/Unsafe.getAndSetBoolean (1 samples, 0.06%; 0.00%)</title><rect x="1464.8" y="165" width="1.0" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="1467.81" y="175.5" ></text>
+<title>jdk/internal/vm/Continuation.mount (12 samples, 0.34%; 0.00%)</title><rect x="1561.3" y="373" width="5.4" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
+<text  x="1564.27" y="383.5" ></text>
 </g>
 <g >
-<title>Thread::call_run (2 samples, 0.12%; 0.00%)</title><rect x="1588.1" y="469" width="1.9" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="1591.10" y="479.5" ></text>
+<title>Unsafe_Park (36 samples, 1.02%; +0.06%)</title><rect x="627.2" y="437" width="16.1" height="15.0" fill="rgb(255,200,200)" rx="2" ry="2" />
+<text  x="630.19" y="447.5" ></text>
 </g>
 <g >
-<title>FreezeBase::freeze_fast_existing_chunk (1 samples, 0.06%; 0.00%)</title><rect x="492.7" y="341" width="1.0" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="495.73" y="351.5" ></text>
+<title>JvmtiVTMSTransitionDisabler::start_VTMS_transition (19 samples, 0.54%; +0.20%)</title><rect x="1460.7" y="117" width="8.6" height="15.0" fill="rgb(255,178,178)" rx="2" ry="2" />
+<text  x="1463.73" y="127.5" ></text>
 </g>
 <g >
-<title>JavaThread::rebind_to_jvmti_thread_state_of (2 samples, 0.12%; 0.00%)</title><rect x="479.4" y="373" width="1.9" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="482.45" y="383.5" ></text>
+<title>java/util/concurrent/ForkJoinWorkerThread.run (3,405 samples, 96.73%; 0.00%)</title><rect x="61.6" y="517" width="1528.4" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
+<text  x="64.62" y="527.5" >java/util/concurrent/ForkJoinWorkerThread.run</text>
 </g>
 <g >
-<title>JvmtiVTMSTransitionDisabler::VTMS_vthread_mount (3 samples, 0.18%; 0.00%)</title><rect x="1513.2" y="133" width="2.8" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="1516.18" y="143.5" ></text>
+<title>FreezeBase::freeze_fast_copy (8 samples, 0.23%; 0.00%)</title><rect x="1284.3" y="341" width="3.6" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
+<text  x="1287.32" y="351.5" ></text>
 </g>
 <g >
-<title>jdk/internal/misc/VirtualThreads.unpark (70 samples, 4.20%; 0.00%)</title><rect x="1518.9" y="229" width="66.4" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="1521.87" y="239.5" >jdk/int..</text>
+<title>java/lang/System$2.headStackableScope (1 samples, 0.03%; +0.03%)</title><rect x="1560.8" y="261" width="0.5" height="15.0" fill="rgb(255,205,205)" rx="2" ry="2" />
+<text  x="1563.82" y="271.5" ></text>
 </g>
 <g >
-<title>java/lang/VirtualThread.setState (1 samples, 0.06%; +0.06%)</title><rect x="1350.1" y="373" width="0.9" height="15.0" fill="rgb(255,202,202)" rx="2" ry="2" />
-<text  x="1353.06" y="383.5" ></text>
+<title>ReferenceProcessor::process_discovered_references (1 samples, 0.03%; 0.00%)</title><rect x="10.0" y="293" width="0.4" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
+<text  x="13.00" y="303.5" ></text>
 </g>
 <g >
-<title>oopDesc::address_field (1 samples, 0.06%; +0.06%)</title><rect x="73.5" y="357" width="1.0" height="15.0" fill="rgb(255,202,202)" rx="2" ry="2" />
-<text  x="76.54" y="367.5" ></text>
+<title>_notify_jvmti_vthread_unmount (21 samples, 0.60%; +0.03%)</title><rect x="1333.7" y="165" width="9.4" height="15.0" fill="rgb(255,205,205)" rx="2" ry="2" />
+<text  x="1336.70" y="175.5" ></text>
 </g>
 <g >
-<title>G1EvacuateRegionsBaseTask::work (1 samples, 0.06%; 0.00%)</title><rect x="1589.1" y="437" width="0.9" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="1592.05" y="447.5" ></text>
+<title>_notify_jvmti_vthread_unmount (24 samples, 0.68%; 0.00%)</title><rect x="1458.5" y="165" width="10.8" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
+<text  x="1461.48" y="175.5" ></text>
 </g>
 <g >
-<title>java/util/concurrent/locks/AbstractQueuedSynchronizer.acquireSharedInterruptibly (1 samples, 0.06%; 0.00%)</title><rect x="883.5" y="165" width="0.9" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="886.46" y="175.5" ></text>
+<title>AccessInternal::PostRuntimeDispatch&lt;G1BarrierSet::AccessBarrier&lt;286822ul, G1BarrierSet&gt;, (AccessInternal::BarrierType)3, 286822ul&gt;::oop_access_barrier (2 samples, 0.06%; +0.06%)</title><rect x="22.1" y="485" width="0.9" height="15.0" fill="rgb(255,200,200)" rx="2" ry="2" />
+<text  x="25.12" y="495.5" ></text>
 </g>
 <g >
-<title>java_lang_Thread::set_thread_status (6 samples, 0.36%; -0.06%)</title><rect x="1277.0" y="421" width="5.7" height="15.0" fill="rgb(202,202,255)" rx="2" ry="2" />
-<text  x="1280.03" y="431.5" ></text>
+<title>jdk/internal/vm/Continuation.enterSpecial (8 samples, 0.23%; 0.00%)</title><rect x="1176.6" y="373" width="3.6" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
+<text  x="1179.60" y="383.5" ></text>
 </g>
 <g >
-<title>G1RootProcessor::evacuate_roots (1 samples, 0.06%; 0.00%)</title><rect x="1589.1" y="405" width="0.9" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="1592.05" y="415.5" ></text>
+<title>Cont thaw (3 samples, 0.09%; +0.09%)</title><rect x="11.3" y="517" width="1.4" height="15.0" fill="rgb(255,196,196)" rx="2" ry="2" />
+<text  x="14.35" y="527.5" ></text>
 </g>
 <g >
-<title>int freeze&lt;Config&lt;(oop_kind)0, G1BarrierSet&gt; &gt; (17 samples, 1.02%; 0.00%)</title><rect x="1440.2" y="357" width="16.1" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="1443.16" y="367.5" ></text>
+<title>java/lang/Thread.join (1 samples, 0.03%; 0.00%)</title><rect x="61.2" y="213" width="0.4" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
+<text  x="64.17" y="223.5" ></text>
 </g>
 <g >
-<title>java/lang/VirtualThread.yieldContinuation (33 samples, 1.98%; 0.00%)</title><rect x="61.2" y="421" width="31.3" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="64.21" y="431.5" >ja..</text>
+<title>java/util/concurrent/locks/AbstractQueuedSynchronizer.acquireSharedInterruptibly (1 samples, 0.03%; 0.00%)</title><rect x="61.2" y="165" width="0.4" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
+<text  x="64.17" y="175.5" ></text>
 </g>
 <g >
-<title>Unsafe_Unpark (396 samples, 23.77%; +0.12%)</title><rect x="98.2" y="309" width="375.6" height="15.0" fill="rgb(255,194,194)" rx="2" ry="2" />
-<text  x="101.20" y="319.5" >Unsafe_Unpark</text>
+<title>G1CollectedHeap::do_collection_pause_at_safepoint (1 samples, 0.03%; 0.00%)</title><rect x="10.0" y="373" width="0.4" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
+<text  x="13.00" y="383.5" ></text>
 </g>
 <g >
-<title>atomic entry points (1 samples, 0.06%; +0.06%)</title><rect x="514.5" y="277" width="1.0" height="15.0" fill="rgb(255,202,202)" rx="2" ry="2" />
-<text  x="517.54" y="287.5" ></text>
+<title>java/lang/VirtualThread.run (596 samples, 16.93%; 0.00%)</title><rect x="1293.8" y="309" width="267.5" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
+<text  x="1296.75" y="319.5" >java/lang/VirtualThread.run</text>
 </g>
 <g >
-<title>__GI___pthread_mutex_unlock_usercnt (2 samples, 0.12%; +0.06%)</title><rect x="101.0" y="277" width="1.9" height="15.0" fill="rgb(255,202,202)" rx="2" ry="2" />
-<text  x="104.04" y="287.5" ></text>
+<title>java/lang/Thread.getContinuation (2 samples, 0.06%; +0.06%)</title><rect x="1470.2" y="133" width="0.9" height="15.0" fill="rgb(255,200,200)" rx="2" ry="2" />
+<text  x="1473.15" y="143.5" ></text>
 </g>
 <g >
-<title>Compilation::compile_java_method (1 samples, 0.06%; 0.00%)</title><rect x="1588.1" y="357" width="1.0" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="1591.10" y="367.5" ></text>
+<title>jdk/internal/vm/Continuation.yield0 (11 samples, 0.31%; -0.06%)</title><rect x="1343.6" y="149" width="4.9" height="15.0" fill="rgb(200,200,255)" rx="2" ry="2" />
+<text  x="1346.57" y="159.5" ></text>
 </g>
 <g >
-<title>java/util/concurrent/ForkJoinTask.doExec (253 samples, 15.19%; -0.06%)</title><rect x="1348.2" y="453" width="239.9" height="15.0" fill="rgb(202,202,255)" rx="2" ry="2" />
-<text  x="1351.16" y="463.5" >java/util/concurrent/ForkJoinTa..</text>
+<title>JvmtiVTMSTransitionDisabler::VTMS_vthread_unmount (14 samples, 0.40%; +0.03%)</title><rect x="1336.8" y="133" width="6.3" height="15.0" fill="rgb(255,205,205)" rx="2" ry="2" />
+<text  x="1339.84" y="143.5" ></text>
 </g>
 <g >
-<title>___pthread_cond_signal (14 samples, 0.84%; 0.00%)</title><rect x="1361.4" y="53" width="13.3" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="1364.44" y="63.5" ></text>
+<title>java/util/concurrent/ForkJoinPool.execute (156 samples, 4.43%; +0.03%)</title><rect x="1490.8" y="165" width="70.0" height="15.0" fill="rgb(255,205,205)" rx="2" ry="2" />
+<text  x="1493.80" y="175.5" >java/ut..</text>
 </g>
 <g >
-<title>_notify_jvmti_vthread_unmount (7 samples, 0.42%; 0.00%)</title><rect x="70.7" y="405" width="6.6" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="73.70" y="415.5" ></text>
+<title>java/util/concurrent/locks/LockSupport.park (111 samples, 3.15%; 0.00%)</title><rect x="1426.2" y="245" width="49.8" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
+<text  x="1429.16" y="255.5" >java/..</text>
 </g>
 <g >
-<title>java/lang/System$2.unparkVirtualThread (405 samples, 24.31%; +0.06%)</title><rect x="499.4" y="453" width="384.1" height="15.0" fill="rgb(255,202,202)" rx="2" ry="2" />
-<text  x="502.36" y="463.5" >java/lang/System$2.unparkVirtualThread</text>
+<title>JvmtiVTMSTransitionDisabler::finish_VTMS_transition (23 samples, 0.65%; -0.11%)</title><rect x="1257.8" y="341" width="10.4" height="15.0" fill="rgb(191,191,255)" rx="2" ry="2" />
+<text  x="1260.84" y="351.5" ></text>
 </g>
 <g >
-<title>java_lang_Thread::interrupted (1 samples, 0.06%; +0.06%)</title><rect x="983.0" y="389" width="1.0" height="15.0" fill="rgb(255,202,202)" rx="2" ry="2" />
-<text  x="986.04" y="399.5" ></text>
+<title>pthread_mutex_lock (1 samples, 0.03%; 0.00%)</title><rect x="1557.7" y="37" width="0.4" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
+<text  x="1560.68" y="47.5" ></text>
 </g>
 <g >
-<title>jdk/internal/misc/VirtualThreads.unpark (50 samples, 3.00%; 0.00%)</title><rect x="1463.9" y="229" width="47.4" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="1466.87" y="239.5" >jdk/..</text>
+<title>__tls_get_addr (2 samples, 0.06%; +0.06%)</title><rect x="1319.8" y="85" width="0.9" height="15.0" fill="rgb(255,200,200)" rx="2" ry="2" />
+<text  x="1322.78" y="95.5" ></text>
 </g>
 <g >
-<title>java/lang/System$2.unparkVirtualThread (14 samples, 0.84%; 0.00%)</title><rect x="1361.4" y="213" width="13.3" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="1364.44" y="223.5" ></text>
+<title>JvmtiThreadState::set_thread (2 samples, 0.06%; +0.06%)</title><rect x="1447.3" y="85" width="0.9" height="15.0" fill="rgb(255,200,200)" rx="2" ry="2" />
+<text  x="1450.26" y="95.5" ></text>
 </g>
 <g >
-<title>Continuation::prepare_thaw (5 samples, 0.30%; +0.12%)</title><rect x="11.9" y="501" width="4.7" height="15.0" fill="rgb(255,194,194)" rx="2" ry="2" />
-<text  x="14.90" y="511.5" ></text>
+<title>java/util/concurrent/locks/LockSupport.park (36 samples, 1.02%; 0.00%)</title><rect x="627.2" y="469" width="16.1" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
+<text  x="630.19" y="479.5" ></text>
 </g>
 <g >
-<title>jdk/internal/vm/ThreadContainers$RootContainer$TrackingRootContainer.onExit (1 samples, 0.06%; 0.00%)</title><rect x="1389.9" y="357" width="0.9" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="1392.89" y="367.5" ></text>
+<title>SharedRuntime::notify_jvmti_vthread_mount (70 samples, 1.99%; +0.09%)</title><rect x="1427.1" y="149" width="31.4" height="15.0" fill="rgb(255,196,196)" rx="2" ry="2" />
+<text  x="1430.06" y="159.5" >Sh..</text>
 </g>
 <g >
-<title>java/lang/VirtualThread.runContinuation (37 samples, 2.22%; -0.06%)</title><rect x="1348.2" y="405" width="35.1" height="15.0" fill="rgb(202,202,255)" rx="2" ry="2" />
-<text  x="1351.16" y="415.5" >ja..</text>
+<title>Thread::call_run (3 samples, 0.09%; 0.00%)</title><rect x="10.0" y="469" width="1.3" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
+<text  x="13.00" y="479.5" ></text>
 </g>
 <g >
-<title>SharedRuntime::notify_jvmti_vthread_unmount (7 samples, 0.42%; 0.00%)</title><rect x="70.7" y="389" width="6.6" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="73.70" y="399.5" ></text>
+<title>java/util/concurrent/locks/AbstractQueuedSynchronizer.acquire (1 samples, 0.03%; 0.00%)</title><rect x="61.2" y="149" width="0.4" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
+<text  x="64.17" y="159.5" ></text>
 </g>
 <g >
-<title>java/util/concurrent/ForkJoinPool.compareAndExchangeCtl (6 samples, 0.36%; +0.06%)</title><rect x="944.2" y="469" width="5.6" height="15.0" fill="rgb(255,202,202)" rx="2" ry="2" />
-<text  x="947.15" y="479.5" ></text>
+<title>java/util/concurrent/ForkJoinPool$WorkQueue.topLevelExec (973 samples, 27.64%; +0.23%)</title><rect x="1152.4" y="469" width="436.7" height="15.0" fill="rgb(255,173,173)" rx="2" ry="2" />
+<text  x="1155.36" y="479.5" >java/util/concurrent/ForkJoinPool$WorkQueue.topLevelExec</text>
 </g>
 <g >
-<title>__aarch64_cas4_acq (1 samples, 0.06%; 0.00%)</title><rect x="67.9" y="309" width="0.9" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="70.85" y="319.5" ></text>
+<title>G1YoungCollector::post_evacuate_collection_set (1 samples, 0.03%; 0.00%)</title><rect x="10.0" y="325" width="0.4" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
+<text  x="13.00" y="335.5" ></text>
 </g>
 <g >
-<title>JavaThread::thread_main_inner (1 samples, 0.06%; 0.00%)</title><rect x="1588.1" y="453" width="1.0" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="1591.10" y="463.5" ></text>
+<title>jdk/internal/misc/Unsafe.unpark (2 samples, 0.06%; 0.00%)</title><rect x="1589.1" y="437" width="0.9" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
+<text  x="1592.10" y="447.5" ></text>
 </g>
 <g >
-<title>SafeThreadsListPtr::release_stable_list (1 samples, 0.06%; +0.06%)</title><rect x="515.5" y="293" width="0.9" height="15.0" fill="rgb(255,202,202)" rx="2" ry="2" />
-<text  x="518.49" y="303.5" ></text>
+<title>JvmtiVTMSTransitionDisabler::finish_VTMS_transition (6 samples, 0.17%; +0.09%)</title><rect x="1331.0" y="117" width="2.7" height="15.0" fill="rgb(255,196,196)" rx="2" ry="2" />
+<text  x="1334.01" y="127.5" ></text>
 </g>
 <g >
-<title>java/lang/invoke/LambdaForm$MH.0x....invoke (1 samples, 0.06%; 0.00%)</title><rect x="883.5" y="309" width="0.9" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="886.46" y="319.5" ></text>
+<title>VMThread::run (1 samples, 0.03%; 0.00%)</title><rect x="10.0" y="453" width="0.4" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
+<text  x="13.00" y="463.5" ></text>
 </g>
 <g >
-<title>AccessInternal::PostRuntimeDispatch&lt;G1BarrierSet::AccessBarrier&lt;286822ul, G1BarrierSet&gt;, (AccessInternal::BarrierType)3, 286822ul&gt;::oop_access_barrier (1 samples, 0.06%; +0.06%)</title><rect x="21.4" y="485" width="0.9" height="15.0" fill="rgb(255,202,202)" rx="2" ry="2" />
-<text  x="24.38" y="495.5" ></text>
+<title>JvmtiVTMSTransitionDisabler::VTMS_vthread_mount (2 samples, 0.06%; 0.00%)</title><rect x="1178.8" y="133" width="0.9" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
+<text  x="1181.84" y="143.5" ></text>
 </g>
 <g >
-<title>I2C/C2I adapters (1 samples, 0.06%; +0.06%)</title><rect x="883.5" y="117" width="0.9" height="15.0" fill="rgb(255,202,202)" rx="2" ry="2" />
-<text  x="886.46" y="127.5" ></text>
+<title>jdk/internal/vm/Continuation.run (664 samples, 18.86%; -0.11%)</title><rect x="1268.6" y="389" width="298.1" height="15.0" fill="rgb(191,191,255)" rx="2" ry="2" />
+<text  x="1271.61" y="399.5" >jdk/internal/vm/Continuation.run</text>
 </g>
 <g >
-<title>ThawBase::thaw_slow (1 samples, 0.06%; 0.00%)</title><rect x="54.6" y="485" width="0.9" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="57.57" y="495.5" ></text>
+<title>uk/ac/ncl/jensen/benchmark/VThreadParkUnparkBenchmark.lambda$parkUnpark_pingPong$0 (285 samples, 8.10%; +0.11%)</title><rect x="1293.8" y="261" width="127.9" height="15.0" fill="rgb(255,191,191)" rx="2" ry="2" />
+<text  x="1296.75" y="271.5" >uk/ac/ncl/jensen..</text>
 </g>
 <g >
-<title>uk/ac/ncl/jensen/benchmark/VThreadParkUnparkBenchmark.lambda$parkUnpark_pingPong$0 (441 samples, 26.47%; +0.30%)</title><rect x="55.5" y="501" width="418.3" height="15.0" fill="rgb(255,171,171)" rx="2" ry="2" />
-<text  x="58.52" y="511.5" >uk/ac/ncl/jensen/benchmark/VThreadParkUnparkBenchmark.lam..</text>
-</g>
-<g >
-<title>__GI_memcpy (8 samples, 0.48%; +0.30%)</title><rect x="45.1" y="469" width="7.6" height="15.0" fill="rgb(255,171,171)" rx="2" ry="2" />
-<text  x="48.09" y="479.5" ></text>
-</g>
-<g >
-<title>java/lang/invoke/LambdaForm$MH.0x....invokeExact_MT (1 samples, 0.06%; 0.00%)</title><rect x="883.5" y="325" width="0.9" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="886.46" y="335.5" ></text>
-</g>
-<g >
-<title>java/lang/Thread.runWith (23 samples, 1.38%; 0.00%)</title><rect x="1361.4" y="293" width="21.9" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="1364.44" y="303.5" >j..</text>
-</g>
-<g >
-<title>Thaw&lt;Config&lt;(oop_kind)0, G1BarrierSet&gt; &gt;::thaw_fast (29 samples, 1.74%; 0.00%)</title><rect x="26.1" y="485" width="27.5" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="29.12" y="495.5" >T..</text>
-</g>
-<g >
-<title>java_lang_Thread::set_is_in_VTMS_transition (2 samples, 0.12%; +0.06%)</title><rect x="1425.9" y="325" width="1.9" height="15.0" fill="rgb(255,202,202)" rx="2" ry="2" />
-<text  x="1428.93" y="335.5" ></text>
-</g>
-<g >
-<title>java/util/concurrent/locks/AbstractQueuedSynchronizer$Node.clearStatus (1 samples, 0.06%; 0.00%)</title><rect x="883.5" y="133" width="0.9" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="886.46" y="143.5" ></text>
-</g>
-<g >
-<title>Parker::unpark (1 samples, 0.06%; 0.00%)</title><rect x="1465.8" y="53" width="0.9" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="1468.76" y="63.5" ></text>
-</g>
-<g >
-<title>java/util/concurrent/locks/LockSupport.park (26 samples, 1.56%; 0.00%)</title><rect x="474.7" y="485" width="24.7" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="477.71" y="495.5" >j..</text>
-</g>
-<g >
-<title>java/util/concurrent/ForkJoinPool$WorkQueue.topLevelExec (256 samples, 15.37%; +0.06%)</title><rect x="1345.3" y="469" width="242.8" height="15.0" fill="rgb(255,202,202)" rx="2" ry="2" />
-<text  x="1348.32" y="479.5" >java/util/concurrent/ForkJoinPoo..</text>
-</g>
-<g >
-<title>WorkerThread::run (1 samples, 0.06%; 0.00%)</title><rect x="1589.1" y="453" width="0.9" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="1592.05" y="463.5" ></text>
-</g>
-<g >
-<title>uk/ac/ncl/jensen/benchmark/VThreadParkUnparkBenchmark.parkUnpark_pingPong (1 samples, 0.06%; 0.00%)</title><rect x="883.5" y="245" width="0.9" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="886.46" y="255.5" ></text>
-</g>
-<g >
-<title>_notify_jvmti_vthread_unmount (1 samples, 0.06%; 0.00%)</title><rect x="1516.0" y="165" width="1.0" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="1519.03" y="175.5" ></text>
-</g>
-<g >
-<title>AccessInternal::PostRuntimeDispatch&lt;G1BarrierSet::AccessBarrier&lt;286822ul, G1BarrierSet&gt;, (AccessInternal::BarrierType)1, 286822ul&gt;::oop_access_barrier (3 samples, 0.18%; +0.18%)</title><rect x="1440.2" y="341" width="2.8" height="15.0" fill="rgb(255,186,186)" rx="2" ry="2" />
-<text  x="1443.16" y="351.5" ></text>
-</g>
-<g >
-<title>SharedRuntime::notify_jvmti_vthread_mount (24 samples, 1.44%; 0.00%)</title><rect x="1398.4" y="357" width="22.8" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="1401.43" y="367.5" >S..</text>
-</g>
-<g >
-<title>SharedRuntime::notify_jvmti_vthread_unmount (2 samples, 0.12%; 0.00%)</title><rect x="1458.2" y="149" width="1.9" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="1461.18" y="159.5" ></text>
-</g>
-<g >
-<title>java/lang/VirtualThread.switchToVirtualThread (1 samples, 0.06%; +0.06%)</title><rect x="1510.3" y="181" width="1.0" height="15.0" fill="rgb(255,202,202)" rx="2" ry="2" />
-<text  x="1513.34" y="191.5" ></text>
-</g>
-<g >
-<title>atomic entry points (1 samples, 0.06%; -0.06%)</title><rect x="1425.0" y="325" width="0.9" height="15.0" fill="rgb(202,202,255)" rx="2" ry="2" />
-<text  x="1427.98" y="335.5" ></text>
-</g>
-<g >
-<title>JavaThread::is_interrupted (5 samples, 0.30%; +0.12%)</title><rect x="979.2" y="405" width="4.8" height="15.0" fill="rgb(255,194,194)" rx="2" ry="2" />
-<text  x="982.24" y="415.5" ></text>
-</g>
-<g >
-<title>java/util/concurrent/ForkJoinTask.getAndBitwiseOrStatus (3 samples, 0.18%; 0.00%)</title><rect x="1585.3" y="421" width="2.8" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="1588.26" y="431.5" ></text>
-</g>
-<g >
-<title>__lll_lock_wake (1 samples, 0.06%; 0.00%)</title><rect x="102.0" y="261" width="0.9" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="104.99" y="271.5" ></text>
-</g>
-<g >
-<title>__aarch64_cas4_acq (1 samples, 0.06%; +0.06%)</title><rect x="102.9" y="261" width="1.0" height="15.0" fill="rgb(255,202,202)" rx="2" ry="2" />
-<text  x="105.94" y="271.5" ></text>
-</g>
-<g >
-<title>jdk/internal/misc/Unsafe.park (1 samples, 0.06%; +0.06%)</title><rect x="53.6" y="501" width="1.0" height="15.0" fill="rgb(255,202,202)" rx="2" ry="2" />
-<text  x="56.63" y="511.5" ></text>
-</g>
-<g >
-<title>jdk/internal/misc/VirtualThreads.unpark (9 samples, 0.54%; 0.00%)</title><rect x="1374.7" y="229" width="8.6" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="1377.72" y="239.5" ></text>
-</g>
-<g >
-<title>java/util/concurrent/locks/LockSupport.unpark (50 samples, 3.00%; 0.00%)</title><rect x="1463.9" y="245" width="47.4" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="1466.87" y="255.5" >java..</text>
-</g>
-<g >
-<title>Unsafe_Unpark (47 samples, 2.82%; 0.00%)</title><rect x="1465.8" y="69" width="44.5" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="1468.76" y="79.5" >Unsa..</text>
-</g>
-<g >
-<title>int freeze&lt;Config&lt;(oop_kind)0, G1BarrierSet&gt; &gt; (3 samples, 0.18%; -0.06%)</title><rect x="1461.0" y="117" width="2.9" height="15.0" fill="rgb(202,202,255)" rx="2" ry="2" />
-<text  x="1464.02" y="127.5" ></text>
-</g>
-<g >
-<title>SharedRuntime::notify_jvmti_vthread_mount (5 samples, 0.30%; 0.00%)</title><rect x="474.7" y="389" width="4.7" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="477.71" y="399.5" ></text>
-</g>
-<g >
-<title>FastThreadsListHandle::FastThreadsListHandle (1 samples, 0.06%; -0.06%)</title><rect x="514.5" y="293" width="1.0" height="15.0" fill="rgb(202,202,255)" rx="2" ry="2" />
-<text  x="517.54" y="303.5" ></text>
-</g>
-<g >
-<title>jdk/internal/reflect/DirectMethodHandleAccessor.invoke (1 samples, 0.06%; 0.00%)</title><rect x="883.5" y="357" width="0.9" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="886.46" y="367.5" ></text>
-</g>
-<g >
-<title>java/lang/VirtualThread.setCarrierThread (1 samples, 0.06%; +0.06%)</title><rect x="1421.2" y="373" width="0.9" height="15.0" fill="rgb(255,202,202)" rx="2" ry="2" />
-<text  x="1424.19" y="383.5" ></text>
-</g>
-<g >
-<title>java/util/concurrent/locks/LockSupport.unpark (396 samples, 23.77%; 0.00%)</title><rect x="98.2" y="341" width="375.6" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="101.20" y="351.5" >java/util/concurrent/locks/LockSupport.unpark</text>
-</g>
-<g >
-<title>java/util/concurrent/locks/LockSupport.park (6 samples, 0.36%; 0.00%)</title><rect x="1513.2" y="245" width="5.7" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="1516.18" y="255.5" ></text>
-</g>
-<g >
-<title>java/util/concurrent/locks/LockSupport.unpark (390 samples, 23.41%; 0.00%)</title><rect x="512.6" y="341" width="369.9" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="515.64" y="351.5" >java/util/concurrent/locks/LockSupport.unpark</text>
-</g>
-<g >
-<title>LIR_Assembler::const2reg (1 samples, 0.06%; 0.00%)</title><rect x="1588.1" y="293" width="1.0" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="1591.10" y="303.5" ></text>
-</g>
-<g >
-<title>java/lang/VirtualThread$VThreadContinuation$1.run (136 samples, 8.16%; 0.00%)</title><rect x="1456.3" y="325" width="129.0" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="1459.28" y="335.5" >java/lang/Virtua..</text>
-</g>
-<g >
-<title>java/util/concurrent/locks/LockSupport.unpark (9 samples, 0.54%; 0.00%)</title><rect x="1374.7" y="101" width="8.6" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="1377.72" y="111.5" ></text>
-</g>
-<g >
-<title>Continuation::set_cont_fastpath_thread_state (1 samples, 0.06%; -0.06%)</title><rect x="476.6" y="325" width="1.0" height="15.0" fill="rgb(202,202,255)" rx="2" ry="2" />
-<text  x="479.60" y="335.5" ></text>
-</g>
-<g >
-<title>Continuation::set_cont_fastpath_thread_state (1 samples, 0.06%; 0.00%)</title><rect x="1459.1" y="117" width="1.0" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="1462.12" y="127.5" ></text>
-</g>
-<g >
-<title>java/util/concurrent/FutureTask.run (1 samples, 0.06%; 0.00%)</title><rect x="883.5" y="421" width="0.9" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="886.46" y="431.5" ></text>
-</g>
-<g >
-<title>uk/ac/ncl/jensen/benchmark/VThreadParkUnparkBenchmark.lambda$parkUnpark_pingPong$1 (9 samples, 0.54%; 0.00%)</title><rect x="1374.7" y="261" width="8.6" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="1377.72" y="271.5" ></text>
-</g>
-<g >
-<title>JvmtiVTMSTransitionDisabler::finish_VTMS_transition (1 samples, 0.06%; 0.00%)</title><rect x="69.7" y="357" width="1.0" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="72.75" y="367.5" ></text>
-</g>
-<g >
-<title>Continuation::set_cont_fastpath_thread_state (2 samples, 0.12%; +0.12%)</title><rect x="71.6" y="357" width="1.9" height="15.0" fill="rgb(255,194,194)" rx="2" ry="2" />
-<text  x="74.64" y="367.5" ></text>
-</g>
-<g >
-<title>jdk/internal/vm/Continuation.yield (4 samples, 0.24%; -0.06%)</title><rect x="1460.1" y="165" width="3.8" height="15.0" fill="rgb(202,202,255)" rx="2" ry="2" />
-<text  x="1463.07" y="175.5" ></text>
-</g>
-<g >
-<title>JvmtiVTMSTransitionDisabler::start_VTMS_transition (1 samples, 0.06%; -0.06%)</title><rect x="1516.0" y="117" width="1.0" height="15.0" fill="rgb(202,202,255)" rx="2" ry="2" />
-<text  x="1519.03" y="127.5" ></text>
-</g>
-<g >
-<title>_dl_tlsdesc_return (4 samples, 0.24%; +0.06%)</title><rect x="1403.2" y="325" width="3.8" height="15.0" fill="rgb(255,202,202)" rx="2" ry="2" />
-<text  x="1406.17" y="335.5" ></text>
-</g>
-<g >
-<title>__aarch64_ldadd8_acq (1 samples, 0.06%; +0.06%)</title><rect x="1267.6" y="389" width="0.9" height="15.0" fill="rgb(255,202,202)" rx="2" ry="2" />
-<text  x="1270.55" y="399.5" ></text>
-</g>
-<g >
-<title>Compilation::emit_code_body (1 samples, 0.06%; 0.00%)</title><rect x="1588.1" y="341" width="1.0" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="1591.10" y="351.5" ></text>
-</g>
-<g >
-<title>__GI___pthread_mutex_unlock_usercnt (89 samples, 5.34%; -0.06%)</title><rect x="984.0" y="405" width="84.4" height="15.0" fill="rgb(202,202,255)" rx="2" ry="2" />
-<text  x="986.99" y="415.5" >__GI___pt..</text>
-</g>
-<g >
-<title>java/lang/VirtualThread.getAndSetParkPermit (6 samples, 0.36%; 0.00%)</title><rect x="506.0" y="421" width="5.7" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="509.00" y="431.5" ></text>
-</g>
-<g >
-<title>java/lang/System$2.getContinuation (1 samples, 0.06%; 0.00%)</title><rect x="484.2" y="389" width="0.9" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="487.19" y="399.5" ></text>
-</g>
-<g >
-<title>java/lang/VirtualThread.yieldContinuation (8 samples, 0.48%; -0.06%)</title><rect x="1456.3" y="181" width="7.6" height="15.0" fill="rgb(202,202,255)" rx="2" ry="2" />
-<text  x="1459.28" y="191.5" ></text>
-</g>
-<g >
-<title>java/util/concurrent/ForkJoinPool.execute (70 samples, 4.20%; 0.00%)</title><rect x="1518.9" y="165" width="66.4" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="1521.87" y="175.5" >java/ut..</text>
-</g>
-<g >
-<title>java/util/concurrent/ForkJoinPool$WorkQueue.casSlotToNull (12 samples, 0.72%; +0.06%)</title><rect x="1333.9" y="469" width="11.4" height="15.0" fill="rgb(255,202,202)" rx="2" ry="2" />
-<text  x="1336.94" y="479.5" ></text>
-</g>
-<g >
-<title>java/util/concurrent/locks/LockSupport.unpark (47 samples, 2.82%; 0.00%)</title><rect x="1465.8" y="101" width="44.5" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="1468.76" y="111.5" >java..</text>
-</g>
-<g >
-<title>java/util/concurrent/locks/LockSupport.unpark (14 samples, 0.84%; 0.00%)</title><rect x="1361.4" y="245" width="13.3" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="1364.44" y="255.5" ></text>
-</g>
-<g >
-<title>java/lang/VirtualThread.getAndSetParkPermit (1 samples, 0.06%; 0.00%)</title><rect x="1464.8" y="181" width="1.0" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="1467.81" y="191.5" ></text>
-</g>
-<g >
-<title>G1CollectedHeap::requires_barriers (4 samples, 0.24%; +0.18%)</title><rect x="22.3" y="485" width="3.8" height="15.0" fill="rgb(255,186,186)" rx="2" ry="2" />
-<text  x="25.33" y="495.5" ></text>
-</g>
-<g >
-<title>JvmtiVTMSTransitionDisabler::finish_VTMS_transition (4 samples, 0.24%; 0.00%)</title><rect x="1352.0" y="341" width="3.8" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="1354.96" y="351.5" ></text>
-</g>
-<g >
-<title>java/util/concurrent/ForkJoinPool.signalWork (390 samples, 23.41%; 0.00%)</title><rect x="512.6" y="357" width="369.9" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="515.64" y="367.5" >java/util/concurrent/ForkJoinPool.signalWork</text>
-</g>
-<g >
-<title>java_lang_Thread::set_is_in_VTMS_transition (1 samples, 0.06%; 0.00%)</title><rect x="1420.2" y="325" width="1.0" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="1423.24" y="335.5" ></text>
-</g>
-<g >
-<title>java/lang/VirtualThread.unmount (4 samples, 0.24%; 0.00%)</title><rect x="1352.0" y="389" width="3.8" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="1354.96" y="399.5" ></text>
-</g>
-<g >
-<title>LIR_Opr::as_register (1 samples, 0.06%; +0.06%)</title><rect x="1588.1" y="277" width="1.0" height="15.0" fill="rgb(255,202,202)" rx="2" ry="2" />
-<text  x="1591.10" y="287.5" ></text>
-</g>
-<g >
-<title>jdk/internal/vm/Continuation.enter0 (23 samples, 1.38%; 0.00%)</title><rect x="1361.4" y="341" width="21.9" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="1364.44" y="351.5" >j..</text>
-</g>
-<g >
-<title>Unsafe_Unpark (388 samples, 23.29%; -0.06%)</title><rect x="514.5" y="309" width="368.0" height="15.0" fill="rgb(202,202,255)" rx="2" ry="2" />
-<text  x="517.54" y="319.5" >Unsafe_Unpark</text>
-</g>
-<g >
-<title>java/util/concurrent/ConcurrentHashMap.replaceNode (1 samples, 0.06%; +0.06%)</title><rect x="1389.9" y="309" width="0.9" height="15.0" fill="rgb(255,202,202)" rx="2" ry="2" />
-<text  x="1392.89" y="319.5" ></text>
-</g>
-<g >
-<title>jdk/internal/vm/Continuation.enterSpecial (153 samples, 9.18%; -0.18%)</title><rect x="1440.2" y="373" width="145.1" height="15.0" fill="rgb(186,186,255)" rx="2" ry="2" />
-<text  x="1443.16" y="383.5" >jdk/internal/vm/Co..</text>
-</g>
-<g >
-<title>__aarch64_ldadd4_relax (4 samples, 0.24%; +0.12%)</title><rect x="875.9" y="277" width="3.8" height="15.0" fill="rgb(255,194,194)" rx="2" ry="2" />
-<text  x="878.87" y="287.5" ></text>
-</g>
-<g >
-<title>java/lang/System$2.unparkVirtualThread (9 samples, 0.54%; 0.00%)</title><rect x="1374.7" y="213" width="8.6" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="1377.72" y="223.5" ></text>
-</g>
-<g >
-<title>FreezeBase::size_if_fast_freeze_available (3 samples, 0.18%; +0.06%)</title><rect x="1461.0" y="101" width="2.9" height="15.0" fill="rgb(255,202,202)" rx="2" ry="2" />
-<text  x="1464.02" y="111.5" ></text>
-</g>
-<g >
-<title>jdk/internal/misc/Unsafe.unpark (390 samples, 23.41%; -0.06%)</title><rect x="512.6" y="325" width="369.9" height="15.0" fill="rgb(202,202,255)" rx="2" ry="2" />
-<text  x="515.64" y="335.5" >jdk/internal/misc/Unsafe.unpark</text>
-</g>
-<g >
-<title>Mutex::lock (1 samples, 0.06%; +0.06%)</title><rect x="1515.1" y="101" width="0.9" height="15.0" fill="rgb(255,202,202)" rx="2" ry="2" />
-<text  x="1518.08" y="111.5" ></text>
-</g>
-<g >
-<title>jdk/internal/vm/Continuation.run (166 samples, 9.96%; +0.06%)</title><rect x="1427.8" y="389" width="157.5" height="15.0" fill="rgb(255,202,202)" rx="2" ry="2" />
-<text  x="1430.83" y="399.5" >jdk/internal/vm/Cont..</text>
-</g>
-<g >
-<title>java/lang/VirtualThread$$Lambda.0x....run (37 samples, 2.22%; 0.00%)</title><rect x="1348.2" y="421" width="35.1" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="1351.16" y="431.5" >ja..</text>
-</g>
-<g >
-<title>java/lang/VirtualThread.submitRunContinuation (70 samples, 4.20%; 0.00%)</title><rect x="1518.9" y="181" width="66.4" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="1521.87" y="191.5" >java/la..</text>
-</g>
-<g >
-<title>java/util/concurrent/ForkJoinTask$AdaptedRunnableAction.exec (37 samples, 2.22%; -0.12%)</title><rect x="1348.2" y="437" width="35.1" height="15.0" fill="rgb(194,194,255)" rx="2" ry="2" />
-<text  x="1351.16" y="447.5" >ja..</text>
-</g>
-<g >
-<title>java/lang/VirtualThread.mount (28 samples, 1.68%; 0.00%)</title><rect x="1395.6" y="389" width="26.5" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="1398.58" y="399.5" >j..</text>
-</g>
-<g >
-<title>JvmtiVTMSTransitionDisabler::VTMS_mount_end (8 samples, 0.48%; -0.12%)</title><rect x="62.2" y="357" width="7.5" height="15.0" fill="rgb(194,194,255)" rx="2" ry="2" />
-<text  x="65.16" y="367.5" ></text>
-</g>
-<g >
-<title>java/util/concurrent/ForkJoinPool.signalWork (14 samples, 0.84%; 0.00%)</title><rect x="1361.4" y="117" width="13.3" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="1364.44" y="127.5" ></text>
-</g>
-<g >
-<title>___pthread_cond_signal (388 samples, 23.29%; +0.36%)</title><rect x="104.8" y="293" width="368.0" height="15.0" fill="rgb(255,163,163)" rx="2" ry="2" />
-<text  x="107.84" y="303.5" >___pthread_cond_signal</text>
-</g>
-<g >
-<title>java/lang/System$2.unparkVirtualThread (50 samples, 3.00%; 0.00%)</title><rect x="1463.9" y="213" width="47.4" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="1466.87" y="223.5" >java..</text>
-</g>
-<g >
-<title>java/util/concurrent/ForkJoinPool$WorkQueue.push (396 samples, 23.77%; 0.00%)</title><rect x="98.2" y="373" width="375.6" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="101.20" y="383.5" >java/util/concurrent/ForkJoinPool$WorkQueue.push</text>
-</g>
-<g >
-<title>uk/ac/ncl/jensen/benchmark/VThreadParkUnparkBenchmark.lambda$parkUnpark_pingPong$0 (58 samples, 3.48%; 0.00%)</title><rect x="1456.3" y="261" width="55.0" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="1459.28" y="271.5" >uk/ac..</text>
-</g>
-<g >
-<title>java/lang/reflect/Method.invoke (1 samples, 0.06%; 0.00%)</title><rect x="883.5" y="373" width="0.9" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="886.46" y="383.5" ></text>
-</g>
-<g >
-<title>SharedRuntime::notify_jvmti_vthread_unmount (6 samples, 0.36%; 0.00%)</title><rect x="1422.1" y="357" width="5.7" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="1425.14" y="367.5" ></text>
-</g>
-<g >
-<title>java/lang/VirtualThread.run (136 samples, 8.16%; 0.00%)</title><rect x="1456.3" y="309" width="129.0" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="1459.28" y="319.5" >java/lang/Virtua..</text>
-</g>
-<g >
-<title>java/lang/System$2.setScopedValueCache (1 samples, 0.06%; -0.12%)</title><rect x="1439.2" y="373" width="1.0" height="15.0" fill="rgb(194,194,255)" rx="2" ry="2" />
-<text  x="1442.21" y="383.5" ></text>
-</g>
-<g >
-<title>java/util/concurrent/ForkJoinPool.execute (391 samples, 23.47%; 0.00%)</title><rect x="511.7" y="405" width="370.8" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="514.69" y="415.5" >java/util/concurrent/ForkJoinPool.execute</text>
-</g>
-<g >
-<title>JavaThread::rebind_to_jvmti_thread_state_of (2 samples, 0.12%; 0.00%)</title><rect x="1513.2" y="101" width="1.9" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="1516.18" y="111.5" ></text>
-</g>
-<g >
-<title>jdk/internal/misc/VirtualThreads.park (26 samples, 1.56%; 0.00%)</title><rect x="474.7" y="469" width="24.7" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="477.71" y="479.5" >j..</text>
-</g>
-<g >
-<title>java/lang/VirtualThread.compareAndSetState (1 samples, 0.06%; +0.06%)</title><rect x="1351.0" y="389" width="1.0" height="15.0" fill="rgb(255,202,202)" rx="2" ry="2" />
-<text  x="1354.01" y="399.5" ></text>
-</g>
-<g >
-<title>java/util/concurrent/ForkJoinPool.poolSubmit (397 samples, 23.83%; +0.06%)</title><rect x="97.3" y="389" width="376.5" height="15.0" fill="rgb(255,202,202)" rx="2" ry="2" />
-<text  x="100.25" y="399.5" >java/util/concurrent/ForkJoinPool.poolSubmit</text>
-</g>
-<g >
-<title>FreezeBase::size_if_fast_freeze_available (6 samples, 0.36%; +0.24%)</title><rect x="493.7" y="341" width="5.7" height="15.0" fill="rgb(255,178,178)" rx="2" ry="2" />
-<text  x="496.67" y="351.5" ></text>
-</g>
-<g >
-<title>jdk/internal/vm/Continuation.yield (16 samples, 0.96%; -0.06%)</title><rect x="77.3" y="405" width="15.2" height="15.0" fill="rgb(202,202,255)" rx="2" ry="2" />
-<text  x="80.33" y="415.5" ></text>
-</g>
-<g >
-<title>JvmtiVTMSTransitionDisabler::start_VTMS_transition (3 samples, 0.18%; +0.06%)</title><rect x="74.5" y="357" width="2.8" height="15.0" fill="rgb(255,202,202)" rx="2" ry="2" />
-<text  x="77.49" y="367.5" ></text>
-</g>
-<g >
-<title>Unsafe_Park (346 samples, 20.77%; -0.06%)</title><rect x="954.6" y="437" width="328.1" height="15.0" fill="rgb(202,202,255)" rx="2" ry="2" />
-<text  x="957.59" y="447.5" >Unsafe_Park</text>
-</g>
-<g >
-<title>java/lang/invoke/DirectMethodHandle$Holder.invokeSpecial (1 samples, 0.06%; 0.00%)</title><rect x="883.5" y="293" width="0.9" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="886.46" y="303.5" ></text>
-</g>
-<g >
-<title>__syscall_cancel_arch (14 samples, 0.84%; +0.42%)</title><rect x="1096.8" y="357" width="13.3" height="15.0" fill="rgb(255,155,155)" rx="2" ry="2" />
-<text  x="1099.84" y="367.5" ></text>
-</g>
-<g >
-<title>___pthread_cond_wait (215 samples, 12.91%; +0.24%)</title><rect x="1068.4" y="405" width="203.9" height="15.0" fill="rgb(255,178,178)" rx="2" ry="2" />
-<text  x="1071.39" y="415.5" >___pthread_cond_wait</text>
-</g>
-<g >
-<title>java/lang/VirtualThread.unmount (6 samples, 0.36%; 0.00%)</title><rect x="1422.1" y="389" width="5.7" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="1425.14" y="399.5" ></text>
-</g>
-<g >
-<title>memcpy@plt (1 samples, 0.06%; -0.06%)</title><rect x="52.7" y="469" width="0.9" height="15.0" fill="rgb(202,202,255)" rx="2" ry="2" />
-<text  x="55.68" y="479.5" ></text>
-</g>
-<g >
-<title>uk/ac/ncl/jensen/benchmark/jmh_generated/VThreadParkUnparkBenchmark_parkUnpark_pingPong_jmhTest.parkUnpark_pingPong_avgt_jmhStub (1 samples, 0.06%; 0.00%)</title><rect x="883.5" y="261" width="0.9" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="886.46" y="271.5" ></text>
-</g>
-<g >
-<title>java/util/concurrent/locks/LockSupport.unpark (402 samples, 24.13%; 0.00%)</title><rect x="92.5" y="485" width="381.3" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="95.51" y="495.5" >java/util/concurrent/locks/LockSupport.unpark</text>
-</g>
-<g >
-<title>java/util/concurrent/ForkJoinPool.runWorker (742 samples, 44.54%; +0.30%)</title><rect x="884.4" y="501" width="703.7" height="15.0" fill="rgb(255,171,171)" rx="2" ry="2" />
-<text  x="887.41" y="511.5" >java/util/concurrent/ForkJoinPool.runWorker</text>
-</g>
-<g >
-<title>java/lang/VirtualThread.joinNanos (1 samples, 0.06%; 0.00%)</title><rect x="883.5" y="197" width="0.9" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="886.46" y="207.5" ></text>
-</g>
-<g >
-<title>G1ParScanThreadState::trim_queue_to_threshold (1 samples, 0.06%; +0.06%)</title><rect x="1589.1" y="309" width="0.9" height="15.0" fill="rgb(255,202,202)" rx="2" ry="2" />
-<text  x="1592.05" y="319.5" ></text>
-</g>
-<g >
-<title>cont return barrier (874 samples, 52.46%; 0.00%)</title><rect x="54.6" y="517" width="828.9" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="57.57" y="527.5" >cont return barrier</text>
-</g>
-<g >
-<title>FreezeBase::freeze_fast_copy (2 samples, 0.12%; +0.06%)</title><rect x="1358.6" y="341" width="1.9" height="15.0" fill="rgb(255,202,202)" rx="2" ry="2" />
-<text  x="1361.60" y="351.5" ></text>
-</g>
-<g >
-<title>__pthread_mutex_lock@GLIBC_2.17 (1 samples, 0.06%; -0.06%)</title><rect x="102.9" y="277" width="1.0" height="15.0" fill="rgb(202,202,255)" rx="2" ry="2" />
-<text  x="105.94" y="287.5" ></text>
-</g>
-<g >
-<title>jdk/internal/reflect/DirectMethodHandleAccessor.invokeImpl (1 samples, 0.06%; 0.00%)</title><rect x="883.5" y="341" width="0.9" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="886.46" y="351.5" ></text>
-</g>
-<g >
-<title>java/util/concurrent/ForkJoinPool.poolSubmit (9 samples, 0.54%; 0.00%)</title><rect x="1374.7" y="149" width="8.6" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="1377.72" y="159.5" ></text>
-</g>
-<g >
-<title>java/lang/VirtualThread.unpark (14 samples, 0.84%; 0.00%)</title><rect x="1361.4" y="197" width="13.3" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="1364.44" y="207.5" ></text>
-</g>
-<g >
-<title>SafepointMechanism::update_poll_values (12 samples, 0.72%; +0.36%)</title><rect x="1444.9" y="341" width="11.4" height="15.0" fill="rgb(255,163,163)" rx="2" ry="2" />
-<text  x="1447.90" y="351.5" ></text>
-</g>
-<g >
-<title>Unsafe_Unpark (9 samples, 0.54%; 0.00%)</title><rect x="1374.7" y="69" width="8.6" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="1377.72" y="79.5" ></text>
-</g>
-<g >
-<title>[unknown] (1 samples, 0.06%; 0.00%)</title><rect x="53.6" y="517" width="1.0" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="56.63" y="527.5" ></text>
-</g>
-<g >
-<title>java/lang/VirtualThread$$Lambda.0x....run (212 samples, 12.73%; -0.18%)</title><rect x="1384.2" y="421" width="201.1" height="15.0" fill="rgb(186,186,255)" rx="2" ry="2" />
-<text  x="1387.20" y="431.5" >java/lang/VirtualThread$$L..</text>
-</g>
-<g >
-<title>java/lang/VirtualThread.compareAndSetState (2 samples, 0.12%; +0.06%)</title><rect x="1348.2" y="373" width="1.9" height="15.0" fill="rgb(255,202,202)" rx="2" ry="2" />
-<text  x="1351.16" y="383.5" ></text>
-</g>
-<g >
-<title>Compilation::Compilation (1 samples, 0.06%; 0.00%)</title><rect x="1588.1" y="389" width="1.0" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="1591.10" y="399.5" ></text>
-</g>
-<g >
-<title>Parker::park (321 samples, 19.27%; -0.12%)</title><rect x="972.6" y="421" width="304.4" height="15.0" fill="rgb(194,194,255)" rx="2" ry="2" />
-<text  x="975.61" y="431.5" >Parker::park</text>
-</g>
-<g >
-<title>jdk/internal/misc/Unsafe.getAndSetBoolean (1 samples, 0.06%; 0.00%)</title><rect x="96.3" y="405" width="1.0" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="99.30" y="415.5" ></text>
-</g>
-<g >
-<title>__aarch64_ldeor8_rel (2 samples, 0.12%; +0.06%)</title><rect x="879.7" y="277" width="1.9" height="15.0" fill="rgb(255,202,202)" rx="2" ry="2" />
-<text  x="882.66" y="287.5" ></text>
-</g>
-<g >
-<title>JavaThread::set_is_in_VTMS_transition (2 samples, 0.12%; +0.12%)</title><rect x="1413.6" y="325" width="1.9" height="15.0" fill="rgb(255,194,194)" rx="2" ry="2" />
-<text  x="1416.60" y="335.5" ></text>
-</g>
-<g >
-<title>java/util/concurrent/ForkJoinPool$WorkQueue.nextLocalTask (1 samples, 0.06%; 0.00%)</title><rect x="1347.2" y="453" width="1.0" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="1350.21" y="463.5" ></text>
-</g>
-<g >
-<title>java/lang/VirtualThread.unpark (9 samples, 0.54%; 0.00%)</title><rect x="1374.7" y="197" width="8.6" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="1377.72" y="207.5" ></text>
-</g>
-<g >
-<title>long* thaw&lt;Config&lt;(oop_kind)0, G1BarrierSet&gt; &gt; (1 samples, 0.06%; 0.00%)</title><rect x="54.6" y="501" width="0.9" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="57.57" y="511.5" ></text>
-</g>
-<g >
-<title>_notify_jvmti_vthread_mount (5 samples, 0.30%; 0.00%)</title><rect x="474.7" y="405" width="4.7" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="477.71" y="415.5" ></text>
-</g>
-<g >
-<title>JvmtiVTMSTransitionDisabler::VTMS_mount_end (3 samples, 0.18%; -0.06%)</title><rect x="475.7" y="357" width="2.8" height="15.0" fill="rgb(202,202,255)" rx="2" ry="2" />
-<text  x="478.65" y="367.5" ></text>
-</g>
-<g >
-<title>start_thread (2 samples, 0.12%; 0.00%)</title><rect x="1588.1" y="501" width="1.9" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="1591.10" y="511.5" ></text>
-</g>
-<g >
-<title>org/openjdk/jmh/runner/BenchmarkHandler$BenchmarkTask.call (1 samples, 0.06%; 0.00%)</title><rect x="883.5" y="389" width="0.9" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="886.46" y="399.5" ></text>
-</g>
-<g >
-<title>jdk/internal/vm/Continuation.doYield (3 samples, 0.18%; 0.00%)</title><rect x="1461.0" y="133" width="2.9" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="1464.02" y="143.5" ></text>
-</g>
-<g >
-<title>JNIHandles::resolve_external_guard (1 samples, 0.06%; -0.06%)</title><rect x="1424.0" y="325" width="1.0" height="15.0" fill="rgb(202,202,255)" rx="2" ry="2" />
-<text  x="1427.03" y="335.5" ></text>
-</g>
-<g >
-<title>__aarch64_ldeor8_rel (1 samples, 0.06%; 0.00%)</title><rect x="470.9" y="277" width="1.0" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="473.91" y="287.5" ></text>
-</g>
-<g >
-<title>FreezeBase::freeze_fast_existing_chunk (1 samples, 0.06%; -0.12%)</title><rect x="90.6" y="341" width="1.0" height="15.0" fill="rgb(194,194,255)" rx="2" ry="2" />
-<text  x="93.61" y="351.5" ></text>
-</g>
-<g >
-<title>___pthread_cond_signal (68 samples, 4.08%; +1.44%)</title><rect x="1520.8" y="53" width="64.5" height="15.0" fill="rgb(255,23,23)" rx="2" ry="2" />
-<text  x="1523.77" y="63.5" >___pthr..</text>
-</g>
-<g >
-<title>JvmtiVTMSTransitionDisabler::start_VTMS_transition (15 samples, 0.90%; -0.36%)</title><rect x="1407.0" y="341" width="14.2" height="15.0" fill="rgb(163,163,255)" rx="2" ry="2" />
-<text  x="1409.96" y="351.5" ></text>
-</g>
-<g >
-<title>Mutex::lock (2 samples, 0.12%; +0.06%)</title><rect x="66.9" y="341" width="1.9" height="15.0" fill="rgb(255,202,202)" rx="2" ry="2" />
-<text  x="69.90" y="351.5" ></text>
-</g>
-<g >
-<title>java/util/concurrent/ForkJoinTask$RunnableExecuteAction.exec (213 samples, 12.79%; +0.06%)</title><rect x="1383.3" y="437" width="202.0" height="15.0" fill="rgb(255,202,202)" rx="2" ry="2" />
-<text  x="1386.25" y="447.5" >java/util/concurrent/ForkJ..</text>
-</g>
-<g >
-<title>FreezeBase::freeze_fast_copy (1 samples, 0.06%; -0.06%)</title><rect x="491.8" y="341" width="0.9" height="15.0" fill="rgb(202,202,255)" rx="2" ry="2" />
-<text  x="494.78" y="351.5" ></text>
-</g>
-<g >
-<title>jdk/internal/misc/Unsafe.getAndSetBoolean (6 samples, 0.36%; 0.00%)</title><rect x="506.0" y="405" width="5.7" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="509.00" y="415.5" ></text>
-</g>
-<g >
-<title>java/lang/Thread.join (1 samples, 0.06%; 0.00%)</title><rect x="883.5" y="213" width="0.9" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="886.46" y="223.5" ></text>
-</g>
-<g >
-<title>__pthread_mutex_cond_lock (2 samples, 0.12%; +0.06%)</title><rect x="1269.4" y="389" width="1.9" height="15.0" fill="rgb(255,202,202)" rx="2" ry="2" />
-<text  x="1272.45" y="399.5" ></text>
-</g>
-<g >
-<title>JavaThread::rebind_to_jvmti_thread_state_of (3 samples, 0.18%; +0.06%)</title><rect x="475.7" y="341" width="2.8" height="15.0" fill="rgb(255,202,202)" rx="2" ry="2" />
-<text  x="478.65" y="351.5" ></text>
-</g>
-<g >
-<title>Parker::unpark (4 samples, 0.24%; 0.00%)</title><rect x="100.1" y="293" width="3.8" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="103.10" y="303.5" ></text>
-</g>
-<g >
-<title>G1EvacuateRegionsTask::scan_roots (1 samples, 0.06%; 0.00%)</title><rect x="1589.1" y="421" width="0.9" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="1592.05" y="431.5" ></text>
-</g>
-<g >
-<title>atomic entry points (5 samples, 0.30%; +0.12%)</title><rect x="1415.5" y="325" width="4.7" height="15.0" fill="rgb(255,194,194)" rx="2" ry="2" />
-<text  x="1418.50" y="335.5" ></text>
-</g>
-<g >
-<title>java/lang/VirtualThread.runContinuation (211 samples, 12.67%; -0.12%)</title><rect x="1385.2" y="405" width="200.1" height="15.0" fill="rgb(194,194,255)" rx="2" ry="2" />
-<text  x="1388.15" y="415.5" >java/lang/VirtualThread.ru..</text>
-</g>
-<g >
-<title>___pthread_cond_signal (44 samples, 2.64%; -0.42%)</title><rect x="1466.7" y="53" width="41.7" height="15.0" fill="rgb(155,155,255)" rx="2" ry="2" />
-<text  x="1469.71" y="63.5" >___..</text>
-</g>
-<g >
-<title>java/lang/VirtualThread.submitRunContinuation (47 samples, 2.82%; 0.00%)</title><rect x="1465.8" y="181" width="44.5" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="1468.76" y="191.5" >java..</text>
-</g>
-<g >
-<title>java/lang/Thread.join (1 samples, 0.06%; 0.00%)</title><rect x="883.5" y="229" width="0.9" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="886.46" y="239.5" ></text>
-</g>
-<g >
-<title>thread_native_entry (2 samples, 0.12%; 0.00%)</title><rect x="1588.1" y="485" width="1.9" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="1591.10" y="495.5" ></text>
-</g>
-<g >
-<title>SharedRuntime::notify_jvmti_vthread_mount (1 samples, 0.06%; 0.00%)</title><rect x="1456.3" y="149" width="0.9" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="1459.28" y="159.5" ></text>
-</g>
-<g >
-<title>jdk/internal/misc/Unsafe.unpark (47 samples, 2.82%; 0.00%)</title><rect x="1465.8" y="85" width="44.5" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="1468.76" y="95.5" >jdk/..</text>
-</g>
-<g >
-<title>jdk/internal/misc/VirtualThreads.park (33 samples, 1.98%; 0.00%)</title><rect x="61.2" y="469" width="31.3" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="64.21" y="479.5" >jd..</text>
-</g>
-<g >
-<title>java/util/concurrent/ConcurrentHashMap$KeySetView.remove (1 samples, 0.06%; 0.00%)</title><rect x="1389.9" y="341" width="0.9" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="1392.89" y="351.5" ></text>
-</g>
-<g >
-<title>JvmtiVTMSTransitionDisabler::VTMS_vthread_mount (5 samples, 0.30%; +0.06%)</title><rect x="474.7" y="373" width="4.7" height="15.0" fill="rgb(255,202,202)" rx="2" ry="2" />
-<text  x="477.71" y="383.5" ></text>
-</g>
-<g >
-<title>java/lang/VirtualThread.yieldContinuation (6 samples, 0.36%; -0.06%)</title><rect x="1513.2" y="181" width="5.7" height="15.0" fill="rgb(202,202,255)" rx="2" ry="2" />
-<text  x="1516.18" y="191.5" ></text>
-</g>
-<g >
-<title>atomic entry points (1 samples, 0.06%; +0.06%)</title><rect x="478.5" y="341" width="0.9" height="15.0" fill="rgb(255,202,202)" rx="2" ry="2" />
-<text  x="481.50" y="351.5" ></text>
-</g>
-<g >
-<title>java/util/concurrent/ForkJoinPool$WorkQueue.push (70 samples, 4.20%; 0.00%)</title><rect x="1518.9" y="133" width="66.4" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="1521.87" y="143.5" >java/ut..</text>
-</g>
-<g >
-<title>java/lang/VirtualThread.unpark (70 samples, 4.20%; 0.00%)</title><rect x="1518.9" y="197" width="66.4" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="1521.87" y="207.5" >java/la..</text>
-</g>
-<g >
-<title>Parker::unpark (1 samples, 0.06%; -0.06%)</title><rect x="1519.8" y="53" width="1.0" height="15.0" fill="rgb(202,202,255)" rx="2" ry="2" />
-<text  x="1522.82" y="63.5" ></text>
-</g>
-<g >
-<title>SharedRuntime::notify_jvmti_vthread_mount (10 samples, 0.60%; 0.00%)</title><rect x="61.2" y="389" width="9.5" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="64.21" y="399.5" ></text>
-</g>
-<g >
-<title>HandleMark::~HandleMark (1 samples, 0.06%; +0.06%)</title><rect x="76.4" y="341" width="0.9" height="15.0" fill="rgb(255,202,202)" rx="2" ry="2" />
-<text  x="79.39" y="351.5" ></text>
-</g>
-<g >
-<title>_notify_jvmti_vthread_unmount (3 samples, 0.18%; +0.06%)</title><rect x="1457.2" y="165" width="2.9" height="15.0" fill="rgb(255,202,202)" rx="2" ry="2" />
-<text  x="1460.23" y="175.5" ></text>
-</g>
-<g >
-<title>jdk/internal/misc/VirtualThreads.park (6 samples, 0.36%; 0.00%)</title><rect x="1513.2" y="229" width="5.7" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="1516.18" y="239.5" ></text>
-</g>
-<g >
-<title>_notify_jvmti_vthread_mount (1 samples, 0.06%; 0.00%)</title><rect x="1456.3" y="165" width="0.9" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="1459.28" y="175.5" ></text>
-</g>
-<g >
-<title>JvmtiThreadState::set_thread (1 samples, 0.06%; 0.00%)</title><rect x="477.6" y="325" width="0.9" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="480.55" y="335.5" ></text>
-</g>
-<g >
-<title>atomic entry points (2 samples, 0.12%; +0.12%)</title><rect x="1352.9" y="325" width="1.9" height="15.0" fill="rgb(255,194,194)" rx="2" ry="2" />
-<text  x="1355.91" y="335.5" ></text>
-</g>
-<g >
-<title>__aarch64_ldclr4_rel (1 samples, 0.06%; +0.06%)</title><rect x="1382.3" y="37" width="1.0" height="15.0" fill="rgb(255,202,202)" rx="2" ry="2" />
-<text  x="1385.30" y="47.5" ></text>
-</g>
-<g >
-<title>HandleMark::~HandleMark (4 samples, 0.24%; +0.12%)</title><rect x="1409.8" y="325" width="3.8" height="15.0" fill="rgb(255,194,194)" rx="2" ry="2" />
-<text  x="1412.81" y="335.5" ></text>
-</g>
-<g >
-<title>___pthread_cond_signal (385 samples, 23.11%; -1.62%)</title><rect x="516.4" y="293" width="365.2" height="15.0" fill="rgb(0,0,255)" rx="2" ry="2" />
-<text  x="519.43" y="303.5" >___pthread_cond_signal</text>
-</g>
-<g >
-<title>JvmtiVTMSTransitionDisabler::VTMS_vthread_unmount (1 samples, 0.06%; 0.00%)</title><rect x="1516.0" y="133" width="1.0" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="1519.03" y="143.5" ></text>
-</g>
-<g >
-<title>java/util/concurrent/ForkJoinPool.poolSubmit (47 samples, 2.82%; 0.00%)</title><rect x="1465.8" y="149" width="44.5" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="1468.76" y="159.5" >java..</text>
-</g>
-<g >
-<title>__syscall_cancel_arch_end (165 samples, 9.90%; +1.14%)</title><rect x="1110.1" y="357" width="156.5" height="15.0" fill="rgb(255,62,62)" rx="2" ry="2" />
-<text  x="1113.12" y="367.5" >__syscall_cancel_arc..</text>
-</g>
-<g >
-<title>java/lang/System$2.unparkVirtualThread (70 samples, 4.20%; 0.00%)</title><rect x="1518.9" y="213" width="66.4" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="1521.87" y="223.5" >java/la..</text>
-</g>
-<g >
-<title>_notify_jvmti_vthread_mount (3 samples, 0.18%; 0.00%)</title><rect x="1513.2" y="165" width="2.8" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="1516.18" y="175.5" ></text>
-</g>
-<g >
-<title>___pthread_cond_signal (9 samples, 0.54%; -0.12%)</title><rect x="1374.7" y="53" width="8.6" height="15.0" fill="rgb(194,194,255)" rx="2" ry="2" />
-<text  x="1377.72" y="63.5" ></text>
-</g>
-<g >
-<title>java/lang/Thread.getContinuation (1 samples, 0.06%; +0.06%)</title><rect x="484.2" y="373" width="0.9" height="15.0" fill="rgb(255,202,202)" rx="2" ry="2" />
-<text  x="487.19" y="383.5" ></text>
-</g>
-<g >
-<title>java/lang/VirtualThread.afterDone (1 samples, 0.06%; 0.00%)</title><rect x="1389.9" y="389" width="0.9" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="1392.89" y="399.5" ></text>
-</g>
-<g >
-<title>AccessInternal::PostRuntimeDispatch&lt;G1BarrierSet::AccessBarrier&lt;544868ul, G1BarrierSet&gt;, (AccessInternal::BarrierType)2, 544868ul&gt;::oop_access_barrier (2 samples, 0.12%; +0.12%)</title><rect x="981.1" y="389" width="1.9" height="15.0" fill="rgb(255,194,194)" rx="2" ry="2" />
-<text  x="984.14" y="399.5" ></text>
-</g>
-<g >
-<title>java/util/concurrent/ForkJoinPool.scan (320 samples, 19.21%; -0.48%)</title><rect x="1284.6" y="485" width="303.5" height="15.0" fill="rgb(147,147,255)" rx="2" ry="2" />
-<text  x="1287.62" y="495.5" >java/util/concurrent/ForkJoinPool.scan</text>
-</g>
-<g >
-<title>Compilation::compile_method (1 samples, 0.06%; 0.00%)</title><rect x="1588.1" y="373" width="1.0" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="1591.10" y="383.5" ></text>
-</g>
-<g >
-<title>java/lang/VirtualThread.park (26 samples, 1.56%; 0.00%)</title><rect x="474.7" y="437" width="24.7" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="477.71" y="447.5" >j..</text>
-</g>
-<g >
-<title>G1RootProcessor::process_java_roots (1 samples, 0.06%; 0.00%)</title><rect x="1589.1" y="389" width="0.9" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="1592.05" y="399.5" ></text>
-</g>
-<g >
-<title>HandleMark::~HandleMark (1 samples, 0.06%; +0.06%)</title><rect x="1516.0" y="101" width="1.0" height="15.0" fill="rgb(255,202,202)" rx="2" ry="2" />
-<text  x="1519.03" y="111.5" ></text>
-</g>
-<g >
-<title>__lll_lock_wake (89 samples, 5.34%; +0.30%)</title><rect x="984.0" y="389" width="84.4" height="15.0" fill="rgb(255,171,171)" rx="2" ry="2" />
-<text  x="986.99" y="399.5" >__lll_loc..</text>
-</g>
-<g >
-<title>java/util/concurrent/locks/LockSupport.unpark (70 samples, 4.20%; 0.00%)</title><rect x="1518.9" y="245" width="66.4" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="1521.87" y="255.5" >java/ut..</text>
-</g>
-<g >
-<title>java/util/concurrent/ForkJoinPool$WorkQueue.push (9 samples, 0.54%; 0.00%)</title><rect x="1374.7" y="133" width="8.6" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="1377.72" y="143.5" ></text>
-</g>
-<g >
-<title>HandleMark::initialize (2 samples, 0.12%; 0.00%)</title><rect x="1407.9" y="325" width="1.9" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="1410.91" y="335.5" ></text>
-</g>
-<g >
-<title>java/lang/System$2.parkVirtualThread (8 samples, 0.48%; 0.00%)</title><rect x="1456.3" y="213" width="7.6" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="1459.28" y="223.5" ></text>
-</g>
-<g >
-<title>uk/ac/ncl/jensen/benchmark/VThreadParkUnparkBenchmark.lambda$parkUnpark_pingPong$0 (14 samples, 0.84%; 0.00%)</title><rect x="1361.4" y="261" width="13.3" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="1364.44" y="271.5" ></text>
-</g>
-<g >
-<title>__internal_syscall_cancel (181 samples, 10.86%; 0.00%)</title><rect x="1094.9" y="373" width="171.7" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="1097.95" y="383.5" >__internal_syscall_can..</text>
-</g>
-<g >
-<title>G1CLDScanClosure::do_cld (1 samples, 0.06%; 0.00%)</title><rect x="1589.1" y="357" width="0.9" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="1592.05" y="367.5" ></text>
-</g>
-<g >
-<title>java/util/concurrent/ConcurrentHashMap.remove (1 samples, 0.06%; 0.00%)</title><rect x="1389.9" y="325" width="0.9" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="1392.89" y="335.5" ></text>
-</g>
-<g >
-<title>AccessInternal::PostRuntimeDispatch&lt;G1BarrierSet::AccessBarrier&lt;548964ul, G1BarrierSet&gt;, (AccessInternal::BarrierType)2, 548964ul&gt;::oop_access_barrier (3 samples, 0.18%; -0.06%)</title><rect x="964.1" y="421" width="2.8" height="15.0" fill="rgb(202,202,255)" rx="2" ry="2" />
-<text  x="967.07" y="431.5" ></text>
-</g>
-<g >
-<title>uk/ac/ncl/jensen/benchmark/VThreadParkUnparkBenchmark$$Lambda.0x....run (23 samples, 1.38%; 0.00%)</title><rect x="1361.4" y="277" width="21.9" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="1364.44" y="287.5" >u..</text>
-</g>
-<g >
-<title>ClassLoaderDataGraph::roots_cld_do (1 samples, 0.06%; 0.00%)</title><rect x="1589.1" y="373" width="0.9" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="1592.05" y="383.5" ></text>
-</g>
-<g >
-<title>java/util/concurrent/CountDownLatch.await (1 samples, 0.06%; 0.00%)</title><rect x="883.5" y="181" width="0.9" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="886.46" y="191.5" ></text>
-</g>
-<g >
-<title>java/util/concurrent/ForkJoinPool.execute (47 samples, 2.82%; -0.06%)</title><rect x="1465.8" y="165" width="44.5" height="15.0" fill="rgb(202,202,255)" rx="2" ry="2" />
-<text  x="1468.76" y="175.5" >java..</text>
-</g>
-<g >
-<title>java/lang/VirtualThread.submitRunContinuation (9 samples, 0.54%; 0.00%)</title><rect x="1374.7" y="181" width="8.6" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="1377.72" y="191.5" ></text>
-</g>
-<g >
-<title>jdk/internal/misc/Unsafe.unpark (14 samples, 0.84%; 0.00%)</title><rect x="1361.4" y="85" width="13.3" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="1364.44" y="95.5" ></text>
-</g>
-<g >
-<title>_notify_jvmti_vthread_mount (25 samples, 1.50%; 0.00%)</title><rect x="1397.5" y="373" width="23.7" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="1400.48" y="383.5" >_..</text>
-</g>
-<g >
-<title>int freeze&lt;Config&lt;(oop_kind)0, G1BarrierSet&gt; &gt; (11 samples, 0.66%; +0.18%)</title><rect x="488.9" y="357" width="10.5" height="15.0" fill="rgb(255,186,186)" rx="2" ry="2" />
-<text  x="491.93" y="367.5" ></text>
-</g>
-<g >
-<title>jdk/internal/misc/Unsafe.getAndSetByte (1 samples, 0.06%; +0.06%)</title><rect x="1464.8" y="149" width="1.0" height="15.0" fill="rgb(255,202,202)" rx="2" ry="2" />
-<text  x="1467.81" y="159.5" ></text>
-</g>
-<g >
-<title>JavaFrameAnchor::make_walkable (4 samples, 0.24%; +0.06%)</title><rect x="967.9" y="421" width="3.8" height="15.0" fill="rgb(255,202,202)" rx="2" ry="2" />
-<text  x="970.86" y="431.5" ></text>
-</g>
-<g >
-<title>java/lang/VirtualThread.unpark (50 samples, 3.00%; +0.06%)</title><rect x="1463.9" y="197" width="47.4" height="15.0" fill="rgb(255,202,202)" rx="2" ry="2" />
-<text  x="1466.87" y="207.5" >java..</text>
-</g>
-<g >
-<title>java/util/concurrent/locks/LockSupport.setCurrentBlocker (2 samples, 0.12%; +0.12%)</title><rect x="1282.7" y="469" width="1.9" height="15.0" fill="rgb(255,194,194)" rx="2" ry="2" />
-<text  x="1285.73" y="479.5" ></text>
-</g>
-<g >
-<title>CompileBroker::invoke_compiler_on_method (1 samples, 0.06%; 0.00%)</title><rect x="1588.1" y="421" width="1.0" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="1591.10" y="431.5" ></text>
-</g>
-<g >
-<title>java/lang/Thread.runWith (136 samples, 8.16%; 0.00%)</title><rect x="1456.3" y="293" width="129.0" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="1459.28" y="303.5" >java/lang/Thread..</text>
-</g>
-<g >
-<title>JNIHandles::make_local (7 samples, 0.42%; +0.12%)</title><rect x="1400.3" y="341" width="6.7" height="15.0" fill="rgb(255,194,194)" rx="2" ry="2" />
-<text  x="1403.32" y="351.5" ></text>
-</g>
-<g >
-<title>all (1,666 samples, 100%)</title><rect x="10.0" y="533" width="1580.0" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
+<title>all (3,520 samples, 100%)</title><rect x="10.0" y="533" width="1580.0" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
 <text  x="13.00" y="543.5" ></text>
 </g>
 <g >
-<title>int freeze&lt;Config&lt;(oop_kind)0, G1BarrierSet&gt; &gt; (5 samples, 0.30%; +0.18%)</title><rect x="87.8" y="357" width="4.7" height="15.0" fill="rgb(255,186,186)" rx="2" ry="2" />
-<text  x="90.77" y="367.5" ></text>
+<title>RefProcPhantomPhaseTask::rp_work (1 samples, 0.03%; 0.00%)</title><rect x="10.0" y="229" width="0.4" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
+<text  x="13.00" y="239.5" ></text>
 </g>
 <g >
-<title>java/lang/VirtualThread.yieldContinuation (26 samples, 1.56%; 0.00%)</title><rect x="474.7" y="421" width="24.7" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="477.71" y="431.5" >j..</text>
+<title>java/lang/System$2.unparkVirtualThread (163 samples, 4.63%; 0.00%)</title><rect x="1348.5" y="213" width="73.2" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
+<text  x="1351.51" y="223.5" >java/lan..</text>
 </g>
 <g >
-<title>AccessInternal::PostRuntimeDispatch&lt;G1BarrierSet::AccessBarrier&lt;286822ul, G1BarrierSet&gt;, (AccessInternal::BarrierType)3, 286822ul&gt;::oop_access_barrier (1 samples, 0.06%; +0.06%)</title><rect x="15.7" y="485" width="0.9" height="15.0" fill="rgb(255,202,202)" rx="2" ry="2" />
-<text  x="18.69" y="495.5" ></text>
+<title>java_lang_Thread::set_is_in_VTMS_transition (1 samples, 0.03%; -0.03%)</title><rect x="1333.2" y="101" width="0.5" height="15.0" fill="rgb(205,205,255)" rx="2" ry="2" />
+<text  x="1336.25" y="111.5" ></text>
 </g>
 <g >
-<title>long* thaw&lt;Config&lt;(oop_kind)0, G1BarrierSet&gt; &gt; (39 samples, 2.34%; -0.18%)</title><rect x="16.6" y="501" width="37.0" height="15.0" fill="rgb(186,186,255)" rx="2" ry="2" />
-<text  x="19.64" y="511.5" >lon..</text>
+<title>JvmtiVTMSTransitionDisabler::VTMS_vthread_mount (64 samples, 1.82%; +0.06%)</title><rect x="1305.0" y="133" width="28.7" height="15.0" fill="rgb(255,200,200)" rx="2" ry="2" />
+<text  x="1307.97" y="143.5" >Jv..</text>
 </g>
 <g >
-<title>java/lang/Thread.runWith (1 samples, 0.06%; 0.00%)</title><rect x="883.5" y="501" width="0.9" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="886.46" y="511.5" ></text>
+<title>jdk/internal/vm/StackableScope.head (1 samples, 0.03%; 0.00%)</title><rect x="1560.8" y="277" width="0.5" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
+<text  x="1563.82" y="287.5" ></text>
 </g>
 <g >
-<title>java/lang/VirtualThread.submitRunContinuation (14 samples, 0.84%; 0.00%)</title><rect x="1361.4" y="181" width="13.3" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="1364.44" y="191.5" ></text>
+<title>java/util/concurrent/ForkJoinPool.signalWork (108 samples, 3.07%; -0.11%)</title><rect x="1512.3" y="117" width="48.5" height="15.0" fill="rgb(191,191,255)" rx="2" ry="2" />
+<text  x="1515.35" y="127.5" >java..</text>
 </g>
 <g >
-<title>FreezeBase::freeze_fast_copy (2 samples, 0.12%; +0.06%)</title><rect x="1443.0" y="341" width="1.9" height="15.0" fill="rgb(255,202,202)" rx="2" ry="2" />
-<text  x="1446.00" y="351.5" ></text>
+<title>pthread_cond_wait (27 samples, 0.77%; +0.03%)</title><rect x="629.9" y="405" width="12.1" height="15.0" fill="rgb(255,205,205)" rx="2" ry="2" />
+<text  x="632.88" y="415.5" ></text>
 </g>
 <g >
-<title>java/util/concurrent/ForkJoinPool$WorkQueue.push (390 samples, 23.41%; -0.06%)</title><rect x="512.6" y="373" width="369.9" height="15.0" fill="rgb(202,202,255)" rx="2" ry="2" />
-<text  x="515.64" y="383.5" >java/util/concurrent/ForkJoinPool$WorkQueue.push</text>
+<title>java/lang/VirtualThread.setState (1 samples, 0.03%; -0.06%)</title><rect x="1426.6" y="181" width="0.5" height="15.0" fill="rgb(200,200,255)" rx="2" ry="2" />
+<text  x="1429.61" y="191.5" ></text>
 </g>
 <g >
-<title>AccessInternal::PostRuntimeDispatch&lt;G1BarrierSet::AccessBarrier&lt;286822ul, G1BarrierSet&gt;, (AccessInternal::BarrierType)3, 286822ul&gt;::oop_access_barrier (2 samples, 0.12%; -0.18%)</title><rect x="1280.8" y="405" width="1.9" height="15.0" fill="rgb(186,186,255)" rx="2" ry="2" />
-<text  x="1283.83" y="415.5" ></text>
+<title>G1ParEvacuateFollowersClosure::do_void (1 samples, 0.03%; 0.00%)</title><rect x="10.0" y="213" width="0.4" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
+<text  x="13.00" y="223.5" ></text>
 </g>
 <g >
-<title>_notify_jvmti_vthread_unmount (4 samples, 0.24%; 0.00%)</title><rect x="1352.0" y="373" width="3.8" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="1354.96" y="383.5" ></text>
+<title>G1CollectedHeap::do_collection_pause_at_safepoint_helper (1 samples, 0.03%; 0.00%)</title><rect x="10.0" y="357" width="0.4" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
+<text  x="13.00" y="367.5" ></text>
 </g>
 <g >
-<title>java/util/concurrent/locks/AbstractQueuedSynchronizer.acquire (1 samples, 0.06%; 0.00%)</title><rect x="883.5" y="149" width="0.9" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="886.46" y="159.5" ></text>
+<title>JvmtiVTMSTransitionDisabler::start_VTMS_transition (62 samples, 1.76%; +0.26%)</title><rect x="1206.2" y="341" width="27.9" height="15.0" fill="rgb(255,168,168)" rx="2" ry="2" />
+<text  x="1209.22" y="351.5" >J..</text>
 </g>
 <g >
-<title>SharedRuntime::notify_jvmti_vthread_unmount (1 samples, 0.06%; -0.06%)</title><rect x="1516.0" y="149" width="1.0" height="15.0" fill="rgb(202,202,255)" rx="2" ry="2" />
-<text  x="1519.03" y="159.5" ></text>
+<title>java/util/concurrent/ForkJoinPool$WorkQueue.tryPoll (27 samples, 0.77%; -0.17%)</title><rect x="1162.7" y="453" width="12.1" height="15.0" fill="rgb(182,182,255)" rx="2" ry="2" />
+<text  x="1165.68" y="463.5" ></text>
 </g>
 <g >
-<title>java/lang/VirtualThread.compareAndSetState (2 samples, 0.12%; +0.12%)</title><rect x="504.1" y="421" width="1.9" height="15.0" fill="rgb(255,194,194)" rx="2" ry="2" />
-<text  x="507.11" y="431.5" ></text>
+<title>java/lang/VirtualThread.compareAndSetState (10 samples, 0.28%; +0.20%)</title><rect x="1198.1" y="389" width="4.5" height="15.0" fill="rgb(255,178,178)" rx="2" ry="2" />
+<text  x="1201.14" y="399.5" ></text>
 </g>
 <g >
-<title>jdk/internal/vm/Continuation.yield0 (15 samples, 0.90%; -0.30%)</title><rect x="485.1" y="389" width="14.3" height="15.0" fill="rgb(171,171,255)" rx="2" ry="2" />
-<text  x="488.14" y="399.5" ></text>
+<title>java/lang/System$2.unparkVirtualThread (1 samples, 0.03%; 0.00%)</title><rect x="1179.7" y="213" width="0.5" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
+<text  x="1182.74" y="223.5" ></text>
 </g>
 <g >
-<title>java/lang/System$2.unparkVirtualThread (402 samples, 24.13%; 0.00%)</title><rect x="92.5" y="453" width="381.3" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="95.51" y="463.5" >java/lang/System$2.unparkVirtualThread</text>
+<title>java/lang/VirtualThread.park (111 samples, 3.15%; 0.00%)</title><rect x="1426.2" y="197" width="49.8" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
+<text  x="1429.16" y="207.5" >java/..</text>
 </g>
 <g >
-<title>jdk/internal/vm/Continuation.enter0 (136 samples, 8.16%; 0.00%)</title><rect x="1456.3" y="341" width="129.0" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
-<text  x="1459.28" y="351.5" >jdk/internal/vm/..</text>
+<title>java/util/concurrent/locks/LockSupport.unpark (1 samples, 0.03%; 0.00%)</title><rect x="1179.7" y="245" width="0.5" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
+<text  x="1182.74" y="255.5" ></text>
 </g>
 <g >
-<title>jdk/internal/misc/Unsafe.getAndBitwiseOrInt (3 samples, 0.18%; +0.06%)</title><rect x="1585.3" y="405" width="2.8" height="15.0" fill="rgb(255,202,202)" rx="2" ry="2" />
-<text  x="1588.26" y="415.5" ></text>
+<title>Mutex::lock (1 samples, 0.03%; 0.00%)</title><rect x="1177.0" y="101" width="0.5" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
+<text  x="1180.05" y="111.5" ></text>
 </g>
 <g >
-<title>jdk/internal/vm/Continuation.yield0 (4 samples, 0.24%; +0.06%)</title><rect x="1460.1" y="149" width="3.8" height="15.0" fill="rgb(255,202,202)" rx="2" ry="2" />
-<text  x="1463.07" y="159.5" ></text>
+<title>java/util/concurrent/locks/LockSupport.unpark (189 samples, 5.37%; 0.00%)</title><rect x="1476.0" y="245" width="84.8" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
+<text  x="1478.99" y="255.5" >java/util..</text>
+</g>
+<g >
+<title>SharedRuntime::notify_jvmti_vthread_unmount (35 samples, 0.99%; +0.20%)</title><rect x="1252.5" y="357" width="15.7" height="15.0" fill="rgb(255,178,178)" rx="2" ry="2" />
+<text  x="1255.45" y="367.5" ></text>
+</g>
+<g >
+<title>JvmtiVTMSTransitionDisabler::VTMS_mount_end (52 samples, 1.48%; +0.06%)</title><rect x="1431.1" y="117" width="23.3" height="15.0" fill="rgb(255,200,200)" rx="2" ry="2" />
+<text  x="1434.10" y="127.5" >J..</text>
+</g>
+<g >
+<title>AccessInternal::PostRuntimeDispatch&lt;G1BarrierSet::AccessBarrier&lt;286822ul, G1BarrierSet&gt;, (AccessInternal::BarrierType)3, 286822ul&gt;::oop_access_barrier (2 samples, 0.06%; -0.06%)</title><rect x="59.8" y="469" width="0.9" height="15.0" fill="rgb(200,200,255)" rx="2" ry="2" />
+<text  x="62.82" y="479.5" ></text>
+</g>
+<g >
+<title>/usr/lib/x86_64-linux-gnu/libc.so.6 (20 samples, 0.57%; +0.11%)</title><rect x="633.0" y="389" width="9.0" height="15.0" fill="rgb(255,191,191)" rx="2" ry="2" />
+<text  x="636.02" y="399.5" ></text>
+</g>
+<g >
+<title>AccessInternal::PostRuntimeDispatch&lt;G1BarrierSet::AccessBarrier&lt;548964ul, G1BarrierSet&gt;, (AccessInternal::BarrierType)0, 548964ul&gt;::oop_access_barrier (2 samples, 0.06%; +0.06%)</title><rect x="1446.4" y="85" width="0.9" height="15.0" fill="rgb(255,200,200)" rx="2" ry="2" />
+<text  x="1449.36" y="95.5" ></text>
+</g>
+<g >
+<title>java/util/concurrent/ForkJoinPool.signalWork (95 samples, 2.70%; +0.23%)</title><rect x="1379.0" y="117" width="42.7" height="15.0" fill="rgb(255,173,173)" rx="2" ry="2" />
+<text  x="1382.03" y="127.5" >java..</text>
+</g>
+<g >
+<title>WorkerThread::run (2 samples, 0.06%; 0.00%)</title><rect x="10.4" y="453" width="0.9" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
+<text  x="13.45" y="463.5" ></text>
+</g>
+<g >
+<title>_notify_jvmti_vthread_mount (73 samples, 2.07%; 0.00%)</title><rect x="1300.9" y="165" width="32.8" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
+<text  x="1303.93" y="175.5" >_n..</text>
+</g>
+<g >
+<title>HandleMark::initialize (1 samples, 0.03%; +0.03%)</title><rect x="1340.9" y="101" width="0.4" height="15.0" fill="rgb(255,205,205)" rx="2" ry="2" />
+<text  x="1343.88" y="111.5" ></text>
+</g>
+<g >
+<title>java/util/concurrent/ForkJoinPool.poolSubmit (1 samples, 0.03%; 0.00%)</title><rect x="1178.4" y="149" width="0.4" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
+<text  x="1181.39" y="159.5" ></text>
+</g>
+<g >
+<title>java/lang/VirtualThread$$Lambda.0x....run (10 samples, 0.28%; +0.03%)</title><rect x="1175.7" y="421" width="4.5" height="15.0" fill="rgb(255,205,205)" rx="2" ry="2" />
+<text  x="1178.70" y="431.5" ></text>
+</g>
+<g >
+<title>java/util/concurrent/ForkJoinPool.compareAndExchangeCtl (11 samples, 0.31%; -0.34%)</title><rect x="1413.6" y="101" width="4.9" height="15.0" fill="rgb(155,155,255)" rx="2" ry="2" />
+<text  x="1416.60" y="111.5" ></text>
+</g>
+<g >
+<title>JavaThread::rebind_to_jvmti_thread_state_of (1 samples, 0.03%; +0.03%)</title><rect x="1176.6" y="101" width="0.4" height="15.0" fill="rgb(255,205,205)" rx="2" ry="2" />
+<text  x="1179.60" y="111.5" ></text>
+</g>
+<g >
+<title>java/lang/VirtualThread.park (2 samples, 0.06%; 0.00%)</title><rect x="1178.8" y="197" width="0.9" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
+<text  x="1181.84" y="207.5" ></text>
+</g>
+<g >
+<title>jdk/internal/misc/VirtualThreads.park (2 samples, 0.06%; 0.00%)</title><rect x="1178.8" y="229" width="0.9" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
+<text  x="1181.84" y="239.5" ></text>
+</g>
+<g >
+<title>java/util/concurrent/locks/LockSupport.park (1 samples, 0.03%; 0.00%)</title><rect x="61.2" y="133" width="0.4" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
+<text  x="64.17" y="143.5" ></text>
+</g>
+<g >
+<title>Continuation::prepare_thaw (23 samples, 0.65%; +0.11%)</title><rect x="12.7" y="501" width="10.3" height="15.0" fill="rgb(255,191,191)" rx="2" ry="2" />
+<text  x="15.69" y="511.5" ></text>
+</g>
+<g >
+<title>java_lang_Thread::set_is_in_VTMS_transition (25 samples, 0.71%; +0.14%)</title><rect x="1222.8" y="325" width="11.3" height="15.0" fill="rgb(255,187,187)" rx="2" ry="2" />
+<text  x="1225.83" y="335.5" ></text>
+</g>
+<g >
+<title>int freeze&lt;Config&lt;(oop_kind)0, G1BarrierSet&gt; &gt; (6 samples, 0.17%; +0.06%)</title><rect x="1345.8" y="117" width="2.7" height="15.0" fill="rgb(255,200,200)" rx="2" ry="2" />
+<text  x="1348.82" y="127.5" ></text>
+</g>
+<g >
+<title>__tls_get_addr@plt (1 samples, 0.03%; +0.03%)</title><rect x="1342.7" y="117" width="0.4" height="15.0" fill="rgb(255,205,205)" rx="2" ry="2" />
+<text  x="1345.68" y="127.5" ></text>
+</g>
+<g >
+<title>java/util/concurrent/ForkJoinTask$AdaptedRunnableAction.exec (10 samples, 0.28%; 0.00%)</title><rect x="1175.7" y="437" width="4.5" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
+<text  x="1178.70" y="447.5" ></text>
+</g>
+<g >
+<title>java/util/concurrent/locks/LockSupport.unpark (7 samples, 0.20%; 0.00%)</title><rect x="1418.5" y="101" width="3.2" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
+<text  x="1421.53" y="111.5" ></text>
+</g>
+<g >
+<title>Continuation::set_cont_fastpath_thread_state (1 samples, 0.03%; 0.00%)</title><rect x="1319.3" y="85" width="0.5" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
+<text  x="1322.34" y="95.5" ></text>
+</g>
+<g >
+<title>JNIHandles::make_local (4 samples, 0.11%; +0.06%)</title><rect x="1334.1" y="133" width="1.8" height="15.0" fill="rgb(255,200,200)" rx="2" ry="2" />
+<text  x="1337.15" y="143.5" ></text>
+</g>
+<g >
+<title>__pthread_mutex_unlock (3 samples, 0.09%; 0.00%)</title><rect x="628.5" y="405" width="1.4" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
+<text  x="631.53" y="415.5" ></text>
+</g>
+<g >
+<title>java/lang/VirtualThread.run (8 samples, 0.23%; 0.00%)</title><rect x="1176.6" y="309" width="3.6" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
+<text  x="1179.60" y="319.5" ></text>
+</g>
+<g >
+<title>java/lang/VirtualThread.unpark (1 samples, 0.03%; 0.00%)</title><rect x="1179.7" y="197" width="0.5" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
+<text  x="1182.74" y="207.5" ></text>
+</g>
+<g >
+<title>JavaThread::set_is_in_VTMS_transition (1 samples, 0.03%; +0.03%)</title><rect x="1457.6" y="101" width="0.4" height="15.0" fill="rgb(255,205,205)" rx="2" ry="2" />
+<text  x="1460.59" y="111.5" ></text>
+</g>
+<g >
+<title>jdk/internal/vm/Continuation.enterSpecial (621 samples, 17.64%; +0.03%)</title><rect x="1282.5" y="373" width="278.8" height="15.0" fill="rgb(255,205,205)" rx="2" ry="2" />
+<text  x="1285.53" y="383.5" >jdk/internal/vm/Continuation.enterSpe..</text>
+</g>
+<g >
+<title>java/lang/VirtualThread.yieldContinuation (109 samples, 3.10%; +0.03%)</title><rect x="1299.6" y="181" width="48.9" height="15.0" fill="rgb(255,205,205)" rx="2" ry="2" />
+<text  x="1302.59" y="191.5" >java..</text>
+</g>
+<g >
+<title>VMThread::evaluate_operation (1 samples, 0.03%; 0.00%)</title><rect x="10.0" y="421" width="0.4" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
+<text  x="13.00" y="431.5" ></text>
+</g>
+<g >
+<title>pthread_cond_signal (5 samples, 0.14%; -0.06%)</title><rect x="1558.6" y="53" width="2.2" height="15.0" fill="rgb(200,200,255)" rx="2" ry="2" />
+<text  x="1561.58" y="63.5" ></text>
+</g>
+<g >
+<title>java/lang/VirtualThread.joinNanos (1 samples, 0.03%; 0.00%)</title><rect x="61.2" y="197" width="0.4" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
+<text  x="64.17" y="207.5" ></text>
+</g>
+<g >
+<title>/usr/lib/x86_64-linux-gnu/libc.so.6 (3 samples, 0.09%; 0.00%)</title><rect x="10.0" y="501" width="1.3" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
+<text  x="13.00" y="511.5" ></text>
+</g>
+<g >
+<title>SafeThreadsListPtr::release_stable_list (1 samples, 0.03%; +0.03%)</title><rect x="1558.1" y="53" width="0.5" height="15.0" fill="rgb(255,205,205)" rx="2" ry="2" />
+<text  x="1561.13" y="63.5" ></text>
+</g>
+<g >
+<title>java/lang/VirtualThread.runContinuation (849 samples, 24.12%; -0.26%)</title><rect x="1185.6" y="405" width="381.1" height="15.0" fill="rgb(168,168,255)" rx="2" ry="2" />
+<text  x="1188.57" y="415.5" >java/lang/VirtualThread.runContinuation</text>
+</g>
+<g >
+<title>SharedRuntime::notify_jvmti_vthread_mount (3 samples, 0.09%; 0.00%)</title><rect x="1176.6" y="149" width="1.3" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
+<text  x="1179.60" y="159.5" ></text>
+</g>
+<g >
+<title>__tls_get_addr (1 samples, 0.03%; 0.00%)</title><rect x="1430.7" y="117" width="0.4" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
+<text  x="1433.65" y="127.5" ></text>
+</g>
+<g >
+<title>java/lang/VirtualThread.unmount (49 samples, 1.39%; -0.17%)</title><rect x="1246.6" y="389" width="22.0" height="15.0" fill="rgb(182,182,255)" rx="2" ry="2" />
+<text  x="1249.62" y="399.5" >j..</text>
+</g>
+<g >
+<title>java/lang/System$2.unparkVirtualThread (1 samples, 0.03%; 0.00%)</title><rect x="1178.4" y="213" width="0.4" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
+<text  x="1181.39" y="223.5" ></text>
+</g>
+<g >
+<title>/usr/lib/x86_64-linux-gnu/libc.so.6 (3 samples, 0.09%; +0.03%)</title><rect x="628.5" y="389" width="1.4" height="15.0" fill="rgb(255,205,205)" rx="2" ry="2" />
+<text  x="631.53" y="399.5" ></text>
+</g>
+<g >
+<title>JNIHandleBlock::allocate_handle (2 samples, 0.06%; +0.06%)</title><rect x="1204.0" y="341" width="0.9" height="15.0" fill="rgb(255,200,200)" rx="2" ry="2" />
+<text  x="1206.98" y="351.5" ></text>
+</g>
+<g >
+<title>AccessInternal::PostRuntimeDispatch&lt;G1BarrierSet::AccessBarrier&lt;286822ul, G1BarrierSet&gt;, (AccessInternal::BarrierType)3, 286822ul&gt;::oop_access_barrier (2 samples, 0.06%; +0.06%)</title><rect x="24.8" y="485" width="0.9" height="15.0" fill="rgb(255,200,200)" rx="2" ry="2" />
+<text  x="27.81" y="495.5" ></text>
+</g>
+<g >
+<title>__tls_get_addr@plt (1 samples, 0.03%; +0.03%)</title><rect x="1335.5" y="117" width="0.4" height="15.0" fill="rgb(255,205,205)" rx="2" ry="2" />
+<text  x="1338.49" y="127.5" ></text>
+</g>
+<g >
+<title>/usr/lib/x86_64-linux-gnu/libc.so.6 (3 samples, 0.09%; 0.00%)</title><rect x="10.0" y="517" width="1.3" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
+<text  x="13.00" y="527.5" ></text>
+</g>
+<g >
+<title>/usr/lib/x86_64-linux-gnu/libc.so.6 (58 samples, 1.65%; -0.51%)</title><rect x="33.8" y="469" width="26.0" height="15.0" fill="rgb(127,127,255)" rx="2" ry="2" />
+<text  x="36.79" y="479.5" >/..</text>
+</g>
+<g >
+<title>jdk/internal/vm/Continuation.run (8 samples, 0.23%; 0.00%)</title><rect x="1176.6" y="389" width="3.6" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
+<text  x="1179.60" y="399.5" ></text>
+</g>
+<g >
+<title>AccessInternal::PostRuntimeDispatch&lt;G1BarrierSet::AccessBarrier&lt;286822ul, G1BarrierSet&gt;, (AccessInternal::BarrierType)3, 286822ul&gt;::oop_access_barrier (1 samples, 0.03%; +0.03%)</title><rect x="642.9" y="405" width="0.4" height="15.0" fill="rgb(255,205,205)" rx="2" ry="2" />
+<text  x="645.90" y="415.5" ></text>
+</g>
+<g >
+<title>JNIHandleBlock::allocate_handle (3 samples, 0.09%; 0.00%)</title><rect x="1429.3" y="133" width="1.4" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
+<text  x="1432.31" y="143.5" ></text>
+</g>
+<g >
+<title>Cont thaw (108 samples, 3.07%; 0.00%)</title><rect x="12.7" y="517" width="48.5" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
+<text  x="15.69" y="527.5" >Cont..</text>
+</g>
+<g >
+<title>java/util/concurrent/FutureTask.run (1 samples, 0.03%; 0.00%)</title><rect x="61.2" y="453" width="0.4" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
+<text  x="64.17" y="463.5" ></text>
+</g>
+<g >
+<title>VMThread::inner_execute (1 samples, 0.03%; 0.00%)</title><rect x="10.0" y="437" width="0.4" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
+<text  x="13.00" y="447.5" ></text>
+</g>
+<g >
+<title>java/util/concurrent/ForkJoinPool$WorkQueue.push (1 samples, 0.03%; 0.00%)</title><rect x="1194.1" y="325" width="0.5" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
+<text  x="1197.10" y="335.5" ></text>
+</g>
+<g >
+<title>Mutex::unlock (1 samples, 0.03%; +0.03%)</title><rect x="1326.5" y="101" width="0.5" height="15.0" fill="rgb(255,205,205)" rx="2" ry="2" />
+<text  x="1329.52" y="111.5" ></text>
+</g>
+<g >
+<title>G1EvacuateRegionsTask::evacuate_live_objects (2 samples, 0.06%; 0.00%)</title><rect x="10.4" y="421" width="0.9" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
+<text  x="13.45" y="431.5" ></text>
+</g>
+<g >
+<title>java/lang/VirtualThread.getAndSetParkPermit (1 samples, 0.03%; +0.03%)</title><rect x="1426.2" y="181" width="0.4" height="15.0" fill="rgb(255,205,205)" rx="2" ry="2" />
+<text  x="1429.16" y="191.5" ></text>
+</g>
+<g >
+<title>java/lang/VirtualThread.getAndSetParkPermit (13 samples, 0.37%; +0.09%)</title><rect x="1483.6" y="181" width="5.9" height="15.0" fill="rgb(255,196,196)" rx="2" ry="2" />
+<text  x="1486.62" y="191.5" ></text>
+</g>
+<g >
+<title>AccessInternal::PostRuntimeDispatch&lt;G1BarrierSet::AccessBarrier&lt;286822ul, G1BarrierSet&gt;, (AccessInternal::BarrierType)3, 286822ul&gt;::oop_access_barrier (3 samples, 0.09%; +0.09%)</title><rect x="1346.7" y="101" width="1.4" height="15.0" fill="rgb(255,196,196)" rx="2" ry="2" />
+<text  x="1349.72" y="111.5" ></text>
+</g>
+<g >
+<title>JNIHandleBlock::allocate_handle (1 samples, 0.03%; -0.03%)</title><rect x="1459.4" y="133" width="0.4" height="15.0" fill="rgb(205,205,255)" rx="2" ry="2" />
+<text  x="1462.38" y="143.5" ></text>
+</g>
+<g >
+<title>JavaThread::rebind_to_jvmti_thread_state_of (30 samples, 0.85%; -0.03%)</title><rect x="1306.3" y="101" width="13.5" height="15.0" fill="rgb(205,205,255)" rx="2" ry="2" />
+<text  x="1309.32" y="111.5" ></text>
+</g>
+<g >
+<title>java/lang/VirtualThread.mount (76 samples, 2.16%; 0.00%)</title><rect x="1202.6" y="389" width="34.1" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
+<text  x="1205.63" y="399.5" >ja..</text>
+</g>
+<g >
+<title>__tls_get_addr (1 samples, 0.03%; +0.03%)</title><rect x="1448.2" y="85" width="0.4" height="15.0" fill="rgb(255,205,205)" rx="2" ry="2" />
+<text  x="1451.16" y="95.5" ></text>
+</g>
+<g >
+<title>jdk/internal/vm/Continuation.enter0 (8 samples, 0.23%; 0.00%)</title><rect x="1176.6" y="341" width="3.6" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
+<text  x="1179.60" y="351.5" ></text>
+</g>
+<g >
+<title>java/lang/VirtualThread.yieldContinuation (109 samples, 3.10%; -0.06%)</title><rect x="1427.1" y="181" width="48.9" height="15.0" fill="rgb(200,200,255)" rx="2" ry="2" />
+<text  x="1430.06" y="191.5" >java..</text>
+</g>
+<g >
+<title>VM_Operation::evaluate (1 samples, 0.03%; 0.00%)</title><rect x="10.0" y="405" width="0.4" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
+<text  x="13.00" y="415.5" ></text>
+</g>
+<g >
+<title>__tls_get_addr (1 samples, 0.03%; +0.03%)</title><rect x="1466.6" y="101" width="0.4" height="15.0" fill="rgb(255,205,205)" rx="2" ry="2" />
+<text  x="1469.56" y="111.5" ></text>
+</g>
+<g >
+<title>G1STWRefProcProxyTask::work (1 samples, 0.03%; 0.00%)</title><rect x="10.0" y="245" width="0.4" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
+<text  x="13.00" y="255.5" ></text>
+</g>
+<g >
+<title>java/lang/VirtualThread$VThreadContinuation$1.run (596 samples, 16.93%; 0.00%)</title><rect x="1293.8" y="325" width="267.5" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
+<text  x="1296.75" y="335.5" >java/lang/VirtualThread$VThreadCont..</text>
+</g>
+<g >
+<title>java/lang/VirtualThread.park (115 samples, 3.27%; 0.00%)</title><rect x="1296.9" y="197" width="51.6" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
+<text  x="1299.89" y="207.5" >java/..</text>
+</g>
+<g >
+<title>java/lang/VirtualThread.setCarrierThread (6 samples, 0.17%; 0.00%)</title><rect x="1234.1" y="373" width="2.6" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
+<text  x="1237.05" y="383.5" ></text>
+</g>
+<g >
+<title>java/util/concurrent/ForkJoinPool.runWorker (3,405 samples, 96.73%; +0.06%)</title><rect x="61.6" y="501" width="1528.4" height="15.0" fill="rgb(255,200,200)" rx="2" ry="2" />
+<text  x="64.62" y="511.5" >java/util/concurrent/ForkJoinPool.runWorker</text>
+</g>
+<g >
+<title>java/util/concurrent/locks/LockSupport.park (115 samples, 3.27%; 0.00%)</title><rect x="1296.9" y="245" width="51.6" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
+<text  x="1299.89" y="255.5" >java/..</text>
+</g>
+<g >
+<title>java/util/concurrent/ForkJoinPool$WorkQueue.nextLocalTask (14 samples, 0.40%; -0.23%)</title><rect x="1156.4" y="453" width="6.3" height="15.0" fill="rgb(173,173,255)" rx="2" ry="2" />
+<text  x="1159.40" y="463.5" ></text>
+</g>
+<g >
+<title>java/lang/System$2.getContinuation (1 samples, 0.03%; 0.00%)</title><rect x="1269.5" y="373" width="0.5" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
+<text  x="1272.51" y="383.5" ></text>
+</g>
+<g >
+<title>java/util/concurrent/locks/LockSupport.setBlocker (1 samples, 0.03%; +0.03%)</title><rect x="61.2" y="117" width="0.4" height="15.0" fill="rgb(255,205,205)" rx="2" ry="2" />
+<text  x="64.17" y="127.5" ></text>
+</g>
+<g >
+<title>jdk/internal/reflect/DirectMethodHandleAccessor.invoke (1 samples, 0.03%; 0.00%)</title><rect x="61.2" y="357" width="0.4" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
+<text  x="64.17" y="367.5" ></text>
+</g>
+<g >
+<title>java/util/concurrent/ForkJoinPool$WorkQueue.getAndSetAccess (36 samples, 1.02%; +0.26%)</title><rect x="1362.9" y="117" width="16.1" height="15.0" fill="rgb(255,168,168)" rx="2" ry="2" />
+<text  x="1365.88" y="127.5" ></text>
+</g>
+<g >
+<title>Mutex::lock (14 samples, 0.40%; -0.03%)</title><rect x="1448.2" y="101" width="6.2" height="15.0" fill="rgb(205,205,255)" rx="2" ry="2" />
+<text  x="1451.16" y="111.5" ></text>
+</g>
+<g >
+<title>G1YoungCollector::process_discovered_references (1 samples, 0.03%; 0.00%)</title><rect x="10.0" y="309" width="0.4" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
+<text  x="13.00" y="319.5" ></text>
+</g>
+<g >
+<title>jdk/internal/misc/VirtualThreads.park (111 samples, 3.15%; 0.00%)</title><rect x="1426.2" y="229" width="49.8" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
+<text  x="1429.16" y="239.5" >jdk/i..</text>
+</g>
+<g >
+<title>java/lang/VirtualThread.runContinuation (9 samples, 0.26%; 0.00%)</title><rect x="1176.1" y="405" width="4.1" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
+<text  x="1179.15" y="415.5" ></text>
+</g>
+<g >
+<title>java/lang/Thread.runWith (595 samples, 16.90%; 0.00%)</title><rect x="1293.8" y="293" width="267.0" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
+<text  x="1296.75" y="303.5" >java/lang/Thread.runWith</text>
+</g>
+<g >
+<title>jdk/internal/misc/Unsafe.getAndSetBoolean (3 samples, 0.09%; -0.06%)</title><rect x="1354.8" y="165" width="1.3" height="15.0" fill="rgb(200,200,255)" rx="2" ry="2" />
+<text  x="1357.80" y="175.5" ></text>
+</g>
+<g >
+<title>java/util/concurrent/ForkJoinTask.getAndBitwiseOrStatus (48 samples, 1.36%; 0.00%)</title><rect x="1566.7" y="421" width="21.5" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
+<text  x="1569.66" y="431.5" >j..</text>
+</g>
+<g >
+<title>JvmtiVTMSTransitionDisabler::VTMS_vthread_mount (61 samples, 1.73%; 0.00%)</title><rect x="1431.1" y="133" width="27.4" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
+<text  x="1434.10" y="143.5" >J..</text>
+</g>
+<g >
+<title>java/util/concurrent/ForkJoinTask.doExec (923 samples, 26.22%; +0.03%)</title><rect x="1174.8" y="453" width="414.3" height="15.0" fill="rgb(255,205,205)" rx="2" ry="2" />
+<text  x="1177.80" y="463.5" >java/util/concurrent/ForkJoinTask.doExec</text>
+</g>
+<g >
+<title>java/lang/VirtualThread.submitRunContinuation (146 samples, 4.15%; +0.06%)</title><rect x="1356.1" y="181" width="65.6" height="15.0" fill="rgb(255,200,200)" rx="2" ry="2" />
+<text  x="1359.14" y="191.5" >java/la..</text>
+</g>
+<g >
+<title>java/lang/VirtualThread.compareAndSetState (1 samples, 0.03%; +0.03%)</title><rect x="1179.7" y="181" width="0.5" height="15.0" fill="rgb(255,205,205)" rx="2" ry="2" />
+<text  x="1182.74" y="191.5" ></text>
+</g>
+<g >
+<title>java_lang_Thread::jvmti_thread_state (1 samples, 0.03%; +0.03%)</title><rect x="1336.4" y="117" width="0.4" height="15.0" fill="rgb(255,205,205)" rx="2" ry="2" />
+<text  x="1339.39" y="127.5" ></text>
+</g>
+<g >
+<title>java/lang/System$2.parkVirtualThread (115 samples, 3.27%; 0.00%)</title><rect x="1296.9" y="213" width="51.6" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
+<text  x="1299.89" y="223.5" >java/..</text>
+</g>
+<g >
+<title>G1ParEvacuateFollowersClosure::do_void (2 samples, 0.06%; 0.00%)</title><rect x="10.4" y="405" width="0.9" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
+<text  x="13.45" y="415.5" ></text>
+</g>
+<g >
+<title>JNIHandleBlock::allocate_handle (4 samples, 0.11%; +0.11%)</title><rect x="1301.4" y="133" width="1.8" height="15.0" fill="rgb(255,191,191)" rx="2" ry="2" />
+<text  x="1304.38" y="143.5" ></text>
+</g>
+<g >
+<title>JvmtiVTMSTransitionDisabler::VTMS_mount_end (2 samples, 0.06%; 0.00%)</title><rect x="1176.6" y="117" width="0.9" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
+<text  x="1179.60" y="127.5" ></text>
+</g>
+<g >
+<title>java/lang/VirtualThread.yieldContinuation (4 samples, 0.11%; 0.00%)</title><rect x="1176.6" y="181" width="1.8" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
+<text  x="1179.60" y="191.5" ></text>
+</g>
+<g >
+<title>SharedRuntime::notify_jvmti_vthread_mount (70 samples, 1.99%; +0.03%)</title><rect x="1202.6" y="357" width="31.5" height="15.0" fill="rgb(255,205,205)" rx="2" ry="2" />
+<text  x="1205.63" y="367.5" >Sh..</text>
+</g>
+<g >
+<title>java/lang/Thread.runWith (8 samples, 0.23%; 0.00%)</title><rect x="1176.6" y="293" width="3.6" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
+<text  x="1179.60" y="303.5" ></text>
+</g>
+<g >
+<title>jdk/internal/vm/Continuation.enter (8 samples, 0.23%; 0.00%)</title><rect x="1176.6" y="357" width="3.6" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
+<text  x="1179.60" y="367.5" ></text>
+</g>
+<g >
+<title>java/lang/VirtualThread.setState (2 samples, 0.06%; +0.03%)</title><rect x="1298.7" y="181" width="0.9" height="15.0" fill="rgb(255,205,205)" rx="2" ry="2" />
+<text  x="1301.69" y="191.5" ></text>
+</g>
+<g >
+<title>JvmtiThreadState::set_thread (1 samples, 0.03%; +0.03%)</title><rect x="1335.9" y="117" width="0.5" height="15.0" fill="rgb(255,205,205)" rx="2" ry="2" />
+<text  x="1338.94" y="127.5" ></text>
+</g>
+<g >
+<title>thread_native_entry (3 samples, 0.09%; 0.00%)</title><rect x="10.0" y="485" width="1.3" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
+<text  x="13.00" y="495.5" ></text>
+</g>
+<g >
+<title>jdk/internal/misc/VirtualThreads.park (115 samples, 3.27%; 0.00%)</title><rect x="1296.9" y="229" width="51.6" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
+<text  x="1299.89" y="239.5" >jdk/i..</text>
+</g>
+<g >
+<title>java/lang/VirtualThread.lazySubmitRunContinuation (1 samples, 0.03%; 0.00%)</title><rect x="1194.1" y="373" width="0.5" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
+<text  x="1197.10" y="383.5" ></text>
+</g>
+<g >
+<title>SharedRuntime::notify_jvmti_vthread_unmount (20 samples, 0.57%; 0.00%)</title><rect x="1334.1" y="149" width="9.0" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
+<text  x="1337.15" y="159.5" ></text>
+</g>
+<g >
+<title>java/util/concurrent/ForkJoinTask.signalWaiters (2 samples, 0.06%; +0.03%)</title><rect x="1588.2" y="421" width="0.9" height="15.0" fill="rgb(255,205,205)" rx="2" ry="2" />
+<text  x="1591.20" y="431.5" ></text>
+</g>
+<g >
+<title>java/util/concurrent/locks/LockSupport.unpark (163 samples, 4.63%; 0.00%)</title><rect x="1348.5" y="245" width="73.2" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
+<text  x="1351.51" y="255.5" >java/uti..</text>
+</g>
+<g >
+<title>_notify_jvmti_vthread_unmount (1 samples, 0.03%; 0.00%)</title><rect x="1177.9" y="165" width="0.5" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
+<text  x="1180.94" y="175.5" ></text>
+</g>
+<g >
+<title>java/util/concurrent/Executors$RunnableAdapter.call (1 samples, 0.03%; 0.00%)</title><rect x="61.2" y="437" width="0.4" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
+<text  x="64.17" y="447.5" ></text>
+</g>
+<g >
+<title>HandleMark::initialize (1 samples, 0.03%; +0.03%)</title><rect x="1220.1" y="325" width="0.5" height="15.0" fill="rgb(255,205,205)" rx="2" ry="2" />
+<text  x="1223.14" y="335.5" ></text>
+</g>
+<g >
+<title>ReferenceProcessor::process_phantom_refs (1 samples, 0.03%; 0.00%)</title><rect x="10.0" y="277" width="0.4" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
+<text  x="13.00" y="287.5" ></text>
+</g>
+<g >
+<title>java/util/concurrent/ForkJoinPool.awaitWork (1,289 samples, 36.62%; -1.31%)</title><rect x="64.8" y="485" width="578.5" height="15.0" fill="rgb(0,0,255)" rx="2" ry="2" />
+<text  x="67.76" y="495.5" >java/util/concurrent/ForkJoinPool.awaitWork</text>
+</g>
+<g >
+<title>JNIHandles::resolve_external_guard (1 samples, 0.03%; +0.03%)</title><rect x="1457.1" y="101" width="0.5" height="15.0" fill="rgb(255,205,205)" rx="2" ry="2" />
+<text  x="1460.14" y="111.5" ></text>
+</g>
+<g >
+<title>java/lang/reflect/Method.invoke (1 samples, 0.03%; 0.00%)</title><rect x="61.2" y="373" width="0.4" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
+<text  x="64.17" y="383.5" ></text>
+</g>
+<g >
+<title>JavaThread::rebind_to_jvmti_thread_state_of (1 samples, 0.03%; 0.00%)</title><rect x="1177.9" y="133" width="0.5" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
+<text  x="1180.94" y="143.5" ></text>
+</g>
+<g >
+<title>java/lang/System$2.parkVirtualThread (2 samples, 0.06%; 0.00%)</title><rect x="1178.8" y="213" width="0.9" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
+<text  x="1181.84" y="223.5" ></text>
+</g>
+<g >
+<title>org/openjdk/jmh/runner/BenchmarkHandler$BenchmarkTask.call (1 samples, 0.03%; 0.00%)</title><rect x="61.2" y="405" width="0.4" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
+<text  x="64.17" y="415.5" ></text>
+</g>
+<g >
+<title>__pthread_mutex_unlock (7 samples, 0.20%; +0.11%)</title><rect x="1327.0" y="101" width="3.1" height="15.0" fill="rgb(255,191,191)" rx="2" ry="2" />
+<text  x="1329.97" y="111.5" ></text>
+</g>
+<g >
+<title>java/lang/Thread.clearInterrupt (1 samples, 0.03%; +0.03%)</title><rect x="1268.2" y="373" width="0.4" height="15.0" fill="rgb(255,205,205)" rx="2" ry="2" />
+<text  x="1271.16" y="383.5" ></text>
+</g>
+<g >
+<title>jdk/internal/reflect/DirectMethodHandleAccessor.invokeImpl (1 samples, 0.03%; 0.00%)</title><rect x="61.2" y="341" width="0.4" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
+<text  x="64.17" y="351.5" ></text>
+</g>
+<g >
+<title>__tls_get_addr@plt (1 samples, 0.03%; +0.03%)</title><rect x="1459.8" y="117" width="0.5" height="15.0" fill="rgb(255,205,205)" rx="2" ry="2" />
+<text  x="1462.83" y="127.5" ></text>
+</g>
+<g >
+<title>JNIHandles::make_local (3 samples, 0.09%; +0.06%)</title><rect x="1256.5" y="341" width="1.3" height="15.0" fill="rgb(255,200,200)" rx="2" ry="2" />
+<text  x="1259.49" y="351.5" ></text>
+</g>
+<g >
+<title>java/util/concurrent/ForkJoinPool$WorkQueue.getAndSetAccess (1 samples, 0.03%; 0.00%)</title><rect x="1194.1" y="309" width="0.5" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
+<text  x="1197.10" y="319.5" ></text>
+</g>
+<g >
+<title>jdk/internal/vm/Continuation.compareAndSetMounted (12 samples, 0.34%; 0.00%)</title><rect x="1561.3" y="357" width="5.4" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
+<text  x="1564.27" y="367.5" ></text>
+</g>
+<g >
+<title>JNIHandles::make_local (1 samples, 0.03%; 0.00%)</title><rect x="1430.7" y="133" width="0.4" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
+<text  x="1433.65" y="143.5" ></text>
+</g>
+<g >
+<title>JvmtiVTMSTransitionDisabler::finish_VTMS_transition (1 samples, 0.03%; +0.03%)</title><rect x="1179.3" y="117" width="0.4" height="15.0" fill="rgb(255,205,205)" rx="2" ry="2" />
+<text  x="1182.29" y="127.5" ></text>
+</g>
+<g >
+<title>__tls_get_addr (2 samples, 0.06%; +0.03%)</title><rect x="1304.1" y="117" width="0.9" height="15.0" fill="rgb(255,205,205)" rx="2" ry="2" />
+<text  x="1307.07" y="127.5" ></text>
+</g>
+<g >
+<title>oopDesc::address_field (1 samples, 0.03%; +0.03%)</title><rect x="1287.0" y="325" width="0.5" height="15.0" fill="rgb(255,205,205)" rx="2" ry="2" />
+<text  x="1290.02" y="335.5" ></text>
+</g>
+<g >
+<title>JavaThread::rebind_to_jvmti_thread_state_of (36 samples, 1.02%; +0.26%)</title><rect x="1432.0" y="101" width="16.2" height="15.0" fill="rgb(255,168,168)" rx="2" ry="2" />
+<text  x="1435.00" y="111.5" ></text>
+</g>
+<g >
+<title>java/lang/invoke/DirectMethodHandle$Holder.invokeSpecial (1 samples, 0.03%; 0.00%)</title><rect x="61.2" y="293" width="0.4" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
+<text  x="64.17" y="303.5" ></text>
+</g>
+<g >
+<title>JvmtiVTMSTransitionDisabler::VTMS_mount_end (56 samples, 1.59%; -0.03%)</title><rect x="1305.9" y="117" width="25.1" height="15.0" fill="rgb(205,205,255)" rx="2" ry="2" />
+<text  x="1308.87" y="127.5" >J..</text>
+</g>
+<g >
+<title>pthread_mutex_trylock (13 samples, 0.37%; +0.11%)</title><rect x="1320.7" y="85" width="5.8" height="15.0" fill="rgb(255,191,191)" rx="2" ry="2" />
+<text  x="1323.68" y="95.5" ></text>
+</g>
+<g >
+<title>java/lang/invoke/LambdaForm$MH.0x....invoke (1 samples, 0.03%; 0.00%)</title><rect x="61.2" y="309" width="0.4" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
+<text  x="64.17" y="319.5" ></text>
+</g>
+<g >
+<title>java/util/concurrent/locks/LockSupport.unpark (7 samples, 0.20%; 0.00%)</title><rect x="1557.7" y="101" width="3.1" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
+<text  x="1560.68" y="111.5" ></text>
+</g>
+<g >
+<title>G1ParScanThreadState::steal_and_trim_queue (2 samples, 0.06%; +0.06%)</title><rect x="10.4" y="389" width="0.9" height="15.0" fill="rgb(255,200,200)" rx="2" ry="2" />
+<text  x="13.45" y="399.5" ></text>
+</g>
+<g >
+<title>int freeze&lt;Config&lt;(oop_kind)0, G1BarrierSet&gt; &gt; (3 samples, 0.09%; +0.03%)</title><rect x="1474.6" y="117" width="1.4" height="15.0" fill="rgb(255,205,205)" rx="2" ry="2" />
+<text  x="1477.64" y="127.5" ></text>
+</g>
+<g >
+<title>jdk/internal/vm/Continuation.doYield (3 samples, 0.09%; 0.00%)</title><rect x="1474.6" y="133" width="1.4" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
+<text  x="1477.64" y="143.5" ></text>
+</g>
+<g >
+<title>JNIHandleBlock::allocate_handle (2 samples, 0.06%; +0.06%)</title><rect x="1255.6" y="341" width="0.9" height="15.0" fill="rgb(255,200,200)" rx="2" ry="2" />
+<text  x="1258.60" y="351.5" ></text>
+</g>
+<g >
+<title>jdk/internal/vm/Continuation.doYield (7 samples, 0.20%; +0.03%)</title><rect x="1345.4" y="133" width="3.1" height="15.0" fill="rgb(255,205,205)" rx="2" ry="2" />
+<text  x="1348.37" y="143.5" ></text>
+</g>
+<g >
+<title>jdk/internal/misc/VirtualThreads.unpark (1 samples, 0.03%; 0.00%)</title><rect x="1178.4" y="229" width="0.4" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
+<text  x="1181.39" y="239.5" ></text>
+</g>
+<g >
+<title>JNIHandles::make_local (1 samples, 0.03%; 0.00%)</title><rect x="1459.8" y="133" width="0.5" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
+<text  x="1462.83" y="143.5" ></text>
+</g>
+<g >
+<title>JvmtiVTMSTransitionDisabler::finish_VTMS_transition (1 samples, 0.03%; +0.03%)</title><rect x="1177.5" y="117" width="0.4" height="15.0" fill="rgb(255,205,205)" rx="2" ry="2" />
+<text  x="1180.49" y="127.5" ></text>
+</g>
+<g >
+<title>java/lang/VirtualThread.submitRunContinuation (1 samples, 0.03%; 0.00%)</title><rect x="1178.4" y="181" width="0.4" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
+<text  x="1181.39" y="191.5" ></text>
+</g>
+<g >
+<title>uk/ac/ncl/jensen/benchmark/VThreadParkUnparkBenchmark.lambda$parkUnpark_pingPong$1 (310 samples, 8.81%; +0.17%)</title><rect x="1421.7" y="261" width="139.1" height="15.0" fill="rgb(255,182,182)" rx="2" ry="2" />
+<text  x="1424.68" y="271.5" >uk/ac/ncl/jensen/..</text>
+</g>
+<g >
+<title>JvmtiVTMSTransitionDisabler::start_VTMS_transition (12 samples, 0.34%; +0.03%)</title><rect x="1337.3" y="117" width="5.4" height="15.0" fill="rgb(255,205,205)" rx="2" ry="2" />
+<text  x="1340.29" y="127.5" ></text>
+</g>
+<g >
+<title>java/util/concurrent/locks/LockSupport.unpark (2 samples, 0.06%; 0.00%)</title><rect x="1589.1" y="453" width="0.9" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
+<text  x="1592.10" y="463.5" ></text>
+</g>
+<g >
+<title>java/lang/VirtualThread.getAndSetParkPermit (9 samples, 0.26%; +0.06%)</title><rect x="1352.1" y="181" width="4.0" height="15.0" fill="rgb(255,200,200)" rx="2" ry="2" />
+<text  x="1355.10" y="191.5" ></text>
+</g>
+<g >
+<title>jdk/internal/misc/VirtualThreads.park (4 samples, 0.11%; 0.00%)</title><rect x="1176.6" y="229" width="1.8" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
+<text  x="1179.60" y="239.5" ></text>
+</g>
+<g >
+<title>java/lang/VirtualThread.setState (8 samples, 0.23%; +0.06%)</title><rect x="1194.6" y="373" width="3.5" height="15.0" fill="rgb(255,200,200)" rx="2" ry="2" />
+<text  x="1197.55" y="383.5" ></text>
+</g>
+<g >
+<title>java/util/concurrent/ForkJoinPool.signalWork (2 samples, 0.06%; 0.00%)</title><rect x="1589.1" y="469" width="0.9" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
+<text  x="1592.10" y="479.5" ></text>
+</g>
+<g >
+<title>java/lang/VirtualThread.state (22 samples, 0.62%; -0.14%)</title><rect x="1236.7" y="389" width="9.9" height="15.0" fill="rgb(187,187,255)" rx="2" ry="2" />
+<text  x="1239.74" y="399.5" ></text>
+</g>
+<g >
+<title>FreezeBase::freeze_fast_existing_chunk (1 samples, 0.03%; +0.03%)</title><rect x="1348.1" y="101" width="0.4" height="15.0" fill="rgb(255,205,205)" rx="2" ry="2" />
+<text  x="1351.06" y="111.5" ></text>
+</g>
+<g >
+<title>Unsafe_Unpark (7 samples, 0.20%; 0.00%)</title><rect x="1557.7" y="69" width="3.1" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
+<text  x="1560.68" y="79.5" ></text>
+</g>
+<g >
+<title>java/util/concurrent/locks/LockSupport.park (4 samples, 0.11%; 0.00%)</title><rect x="1176.6" y="245" width="1.8" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
+<text  x="1179.60" y="255.5" ></text>
+</g>
+<g >
+<title>Unsafe_Unpark (7 samples, 0.20%; 0.00%)</title><rect x="1418.5" y="69" width="3.2" height="15.0" fill="rgb(255,255,255)" rx="2" ry="2" />
+<text  x="1421.53" y="79.5" ></text>
 </g>
 </g>
 </svg>

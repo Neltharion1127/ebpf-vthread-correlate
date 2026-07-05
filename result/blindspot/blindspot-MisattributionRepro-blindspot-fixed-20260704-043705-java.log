@@ -1,0 +1,7 @@
+[vthread-trace-agent] loading, options=(none)
+[vthread-trace-agent] loaded
+[vthread-trace-agent] ready (fieldID=0x1e2 methodID=0xffffa81583e8 publish_jvmti=0)
+VT1_ID=20
+VT2_ID=24
+DONE
+[vthread-trace-agent] unloading

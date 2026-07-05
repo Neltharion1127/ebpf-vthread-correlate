@@ -1,0 +1,42 @@
+Attached 53 probes
+ebpf-vthread-correlate: tracing started
+  Program: blindspot-fixed (lifecycle-probe cache protocol)
+  USDT source: /home/jie/csc8499/jdk21u/build/linux-aarch64-server-release/images/jdk/lib/server/libjvm.so
+  Watching: vthread__start, vthread__end, vthread__thaw, vthread__freeze, sys_enter_write(count==101|103|107)
+
+[write]  carrier tid=235591  comm=bpftrace         count=107  -> UNMAPPED
+[start]  carrier tid=235632  vthread_id=20  buf=0xffffa01842e0
+[write]  carrier tid=235632  comm=ForkJoinPool-1-  count=101  -> vthread_id=20
+[freeze] carrier tid=235632  vthread_id=20  result=0
+[thaw]   carrier tid=235632  vthread_id=20  kind=0
+[thaw]   carrier tid=235632  vthread_id=20  kind=1
+[thaw]   carrier tid=235632  vthread_id=20  kind=1
+[thaw]   carrier tid=235632  vthread_id=20  kind=1
+[thaw]   carrier tid=235632  vthread_id=20  kind=1
+[thaw]   carrier tid=235632  vthread_id=20  kind=1
+[write]  carrier tid=235632  comm=ForkJoinPool-1-  count=103  -> vthread_id=20
+[thaw]   carrier tid=235632  vthread_id=20  kind=1
+[thaw]   carrier tid=235632  vthread_id=20  kind=1
+[thaw]   carrier tid=235632  vthread_id=20  kind=1
+[end]    carrier tid=235632  vthread_id=20
+[thaw]   carrier tid=235632  vthread_id=20  kind=1
+[thaw]   carrier tid=235632  vthread_id=20  kind=1
+[thaw]   carrier tid=235632  vthread_id=20  kind=1
+
+ebpf-vthread-correlate: tracing stopped — summary follows
+
+
+@end_total: 1
+@end_unmatched: 0
+@freeze_failed_kept: 0
+@freeze_result[0]: 1
+@freeze_total: 1
+@freeze_unmatched: 0
+@pinned_total: 0
+@post_end_freeze: 0
+@post_end_thaw: 3
+@post_end_thaw_kind[1]: 3
+@start_total: 1
+@thaw_kind[0]: 1
+@thaw_kind[1]: 11
+@thaw_total: 12

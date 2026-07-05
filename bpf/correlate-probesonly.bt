@@ -17,14 +17,29 @@
 //            now-removed sys_enter_write handler. So there is NO buffer read here, by
 //            design (chosen over lifting the verbose deref in).
 //
+// Counter semantics: @thaw_total counts PROBE EVENTS, not logical transitions —
+// one logical remount fires 1x kind=0 + Nx kind=1 (N grows with stack depth;
+// e.g. 12 events on a shallow stack in a single measurement, see
+// result/blindspot/FINDINGS.md), and a vthread's FIRST mount fires no thaw at
+// all. @thaw_top counts kind==0 only and is the logical-remount normalisation
+// divisor — use it, never @thaw_total, for per-transition arithmetic.
+//
+// Lifecycle probes (this branch): vthread__start/vthread__end are consumed
+// with the same cache protocol as bpf/correlate.bt — start inserts, end
+// deletes unconditionally, and thaw inserts only on kind==0 (return-barrier
+// thaws fire after end on the termination path and must not resurrect the
+// cleared mapping; see bpf/correlate.bt header). Counter set kept consistent:
+// @start_total / @end_total / @end_unmatched.
+//
 // LIBJVM_PATH is a placeholder. measure-oslevel.sh sed-substitutes the real libjvm.so
 // path before handing this file to bpftrace, so the USDT probes attach by FILE PATH
 // (not PID) and therefore catch the JMH `-f 2` forked child JVM.
 //
 // BEGIN prints "tracing started" — measure-oslevel.sh polls for that line as the
 // attach-complete marker before launching JMH. END dumps the counters; the script
-// reads @freeze_total / @thaw_total from there to confirm the probes fired in the
-// forked JVM (otherwise B is meaningless and the script FAILs).
+// reads @freeze_total / @thaw_total / @start_total / @end_total (all must be > 0)
+// and @end_unmatched (must be 0) from there to confirm the probes fired cleanly in
+// the forked JVM (otherwise B is meaningless and the script FAILs).
 //
 
 BEGIN
@@ -41,14 +56,19 @@ usdt:LIBJVM_PATH:hotspot:vthread__thaw
 {
     @thaw_total = count();
     @thaw_kind[(int64)arg1] = count();
+    if (arg1 == 0) {
+        @thaw_top = count();
+    }
     @carriers[tid] = count();
     if (arg2 == 0) {
         @thaw_nullbuf = count();
     }
-    // carrier-cache insert: which vthread (and its buffer addr) is mounted on this carrier
-    @vthread[(uint64)curtask] = arg0;
-    @vtbuf[(uint64)curtask]   = arg2;
-    @cache_insert = count();
+    // carrier-cache insert — kind==0 (top) thaws only (see header)
+    if (arg1 == 0) {
+        @vthread[(uint64)curtask] = arg0;
+        @vtbuf[(uint64)curtask]   = arg2;
+        @cache_insert = count();
+    }
 }
 
 // arg0 = vthread_id        (uintptr_t)
@@ -77,12 +97,41 @@ usdt:LIBJVM_PATH:hotspot:vthread__freeze
     }
 }
 
+// arg0 = vthread_id        (uintptr_t)
+// arg1 = trace_buffer_addr (uintptr_t)
+usdt:LIBJVM_PATH:hotspot:vthread__start
+{
+    @start_total = count();
+
+    // carrier-cache insert — isomorphic to the kind==0 thaw insert
+    @vthread[(uint64)curtask] = arg0;
+    @vtbuf[(uint64)curtask]   = arg1;
+    @cache_insert = count();
+}
+
+// arg0 = vthread_id (uintptr_t)
+usdt:LIBJVM_PATH:hotspot:vthread__end
+{
+    @end_total = count();
+
+    // unconditional delete: termination fires no freeze
+    $carrier = (uint64)curtask;
+    if (@vthread[$carrier]) {
+        delete(@vthread[$carrier]);
+        delete(@vtbuf[$carrier]);
+        @cache_delete = count();
+    } else {
+        @end_unmatched = count();
+    }
+}
+
 END
 {
     printf("\nebpf-vthread-correlate: tracing stopped — summary follows\n");
 
-    // Residual cache entries = @cache_insert - @cache_delete; the raw per-carrier maps
-    // add no information beyond that, so drop them from the auto-printed summary.
+    // @cache_insert - @cache_delete is an EVENT delta (a start onto a carrier
+    // that already holds an entry overwrites it), not a live-entry count; drop
+    // the raw per-carrier maps from the auto-printed summary.
     clear(@vthread);
     clear(@vtbuf);
 }

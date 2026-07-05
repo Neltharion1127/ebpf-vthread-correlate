@@ -1,0 +1,25 @@
+Attaching 52 probes...
+ebpf-vthread-correlate: tracing started
+  Program: correlate-probesonly (freeze/thaw perf path: cache + counters, no buffer deref)
+  USDT source: /home/ubuntu/ebpf-vthread-correlate/.vthread-jdk/jdk/lib/server/libjvm.so
+
+ebpf-vthread-correlate: tracing stopped — summary follows
+
+
+@cache_delete: 11442000
+@cache_insert: 11442000
+
+@end_total: 11442000
+@end_unmatched: 0
+@freeze_failed_kept: 0
+
+@freeze_total: 0
+@freeze_unmatched: 0
+@pinned_total: 0
+@start_total: 11442000
+
+@thaw_nullbuf: 0
+@thaw_top: 0
+@thaw_total: 0
+
+
