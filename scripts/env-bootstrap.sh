@@ -24,7 +24,7 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
 cd "$REPO_ROOT"
 
-ASPROF_VERSION="${ASPROF_VERSION:-4.4}"   # matches README ("async-profiler 4.4")
+ASPROF_VERSION="${ASPROF_VERSION:-4.4}"
 LIB_DIR="$REPO_ROOT/lib"
 ASPROF_SO="$LIB_DIR/libasyncProfiler.so"
 CHECK_ONLY="${CHECK_ONLY:-0}"
@@ -132,6 +132,25 @@ fetch_async_profiler() {
   file "$ASPROF_SO" 2>/dev/null | sed 's/^/    /' || true
 }
 
+# perf sysctls for PROF_EVENT=cpu (perf-events sampling incl. kernel stacks in
+# the profile-matrix.sh profiling pass; run-batch.sh uses it on bare metal).
+# Root via sudo — the same privilege context the bpftrace consumer already needs.
+# Not persisted across reboot on purpose (batch boxes are ephemeral); re-run this
+# script after a reboot.
+perf_sysctls() {
+  say "perf sysctls (PROF_EVENT=cpu prerequisites)"
+  local paranoid kptr
+  paranoid="$(cat /proc/sys/kernel/perf_event_paranoid 2>/dev/null || echo unknown)"
+  kptr="$(cat /proc/sys/kernel/kptr_restrict 2>/dev/null || echo unknown)"
+  if [[ "$paranoid" =~ ^-?[0-9]+$ ]] && [ "$paranoid" -le 1 ] && [ "$kptr" = 0 ]; then
+    ok "already satisfied: perf_event_paranoid=$paranoid kptr_restrict=$kptr"
+    return
+  fi
+  warn "setting kernel.perf_event_paranoid=1 kernel.kptr_restrict=0 (were: $paranoid/$kptr)"
+  sudo sysctl -w kernel.perf_event_paranoid=1 kernel.kptr_restrict=0 \
+    || die "sysctl failed — PROF_EVENT=cpu will not work (itimer still fine)"
+}
+
 self_check() {
   say "self-check"
   local fail=0 c
@@ -148,6 +167,16 @@ self_check() {
   else
     printf '  \033[31m[MISSING]\033[0m %-10s (expected at %s)\n' "libasyncProfiler.so" "$ASPROF_SO"
     fail=1
+  fi
+  # Informational (does not fail the check: itimer works regardless; PROF_EVENT=cpu
+  # is guarded loudly in profile-matrix.sh / run-batch.sh themselves).
+  local paranoid kptr
+  paranoid="$(cat /proc/sys/kernel/perf_event_paranoid 2>/dev/null || echo unknown)"
+  kptr="$(cat /proc/sys/kernel/kptr_restrict 2>/dev/null || echo unknown)"
+  if [[ "$paranoid" =~ ^-?[0-9]+$ ]] && [ "$paranoid" -le 1 ] && [ "$kptr" = 0 ]; then
+    printf '  \033[32m[OK]     \033[0m %-10s paranoid=%s kptr_restrict=%s (PROF_EVENT=cpu ready)\n' "perf sysctls" "$paranoid" "$kptr"
+  else
+    printf '  \033[33m[!!]     \033[0m %-10s paranoid=%s kptr_restrict=%s — PROF_EVENT=cpu will refuse; itimer unaffected\n' "perf sysctls" "$paranoid" "$kptr"
   fi
   echo
   if [ "$fail" -ne 0 ]; then
@@ -167,4 +196,5 @@ fi
 
 install_packages
 fetch_async_profiler
+perf_sysctls
 self_check && exit 0 || exit 1
