@@ -1,0 +1,77 @@
+measure-oslevel: A/C/B OS-level observation overhead  (DIRECTIONAL, VM-only — not citable)
+  C - A = publish residual (expected ~0);  B - C = observation cost
+
+JMH jar: /home/ubuntu/ebpf-vthread-correlate/target/ebpf-vthread-correlate-1.0-SNAPSHOT.jar
+JDK:     /home/ubuntu/ebpf-vthread-correlate/.vthread-jdk/jdk
+JAVA:    /home/ubuntu/ebpf-vthread-correlate/.vthread-jdk/jdk/bin/java
+LIBJVM:  /home/ubuntu/ebpf-vthread-correlate/.vthread-jdk/jdk/lib/server/libjvm.so
+BENCH:   parkunpark
+CLASS:   uk.ac.ncl.jensen.benchmark.VThreadParkUnparkBenchmark
+MODE:    COUNT MODE — time figures meaningless, counters only (B state only, -f 1 -wi 0 -i 5)
+OUT:     /home/ubuntu/ebpf-vthread-correlate/result/benchmark/oslevel
+RUNINFO: /home/ubuntu/ebpf-vthread-correlate/result/benchmark/oslevel/RUNINFO-20260707-142438.txt
+LOG:     /home/ubuntu/ebpf-vthread-correlate/result/benchmark/oslevel/measure-oslevel-parkunpark-count-20260707-142438.log
+
+COUNT MODE — time figures meaningless, counters only. Skipping A and C.
+
+B — observed (flag on, cropped bpftrace attached by libjvm path)
+  bpftrace attached after 1s via libjvm path — no -c, no PID scope
+
+  /home/ubuntu/ebpf-vthread-correlate/.vthread-jdk/jdk/bin/java -jar /home/ubuntu/ebpf-vthread-correlate/target/benchmarks.jar uk.ac.ncl.jensen.benchmark.VThreadParkUnparkBenchmark -f 1 -wi 0 -r 1 -i 5 -jvmArgsAppend -XX:+VThreadTraceProbes 
+# JMH version: 1.37
+# VM version: JDK 21.0.12-internal, OpenJDK 64-Bit Server VM, 21.0.12-internal-adhoc.root.src
+# VM invoker: /home/ubuntu/ebpf-vthread-correlate/.vthread-jdk/jdk/bin/java
+# VM options: --enable-preview --enable-native-access=ALL-UNNAMED -XX:+VThreadTraceProbes
+# Blackhole mode: compiler (auto-detected, use -Djmh.blackhole.autoDetect=false to disable)
+# Warmup: <none>
+# Measurement: 5 iterations, 1 s each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Average time, time/op
+# Benchmark: uk.ac.ncl.jensen.benchmark.VThreadParkUnparkBenchmark.parkUnpark_pingPong
+# Parameters: (rounds = 10000)
+
+# Run progress: 0.00% complete, ETA 00:00:05
+# Fork: 1 of 1
+Iteration   1: 44448.639 us/op
+Iteration   2: 33420.989 us/op
+Iteration   3: 33175.441 us/op
+Iteration   4: 31663.239 us/op
+Iteration   5: 33061.792 us/op
+
+
+Result "uk.ac.ncl.jensen.benchmark.VThreadParkUnparkBenchmark.parkUnpark_pingPong":
+  35154.020 ±(99.9%) 20181.111 us/op [Average]
+  (min, avg, max) = (31663.239, 35154.020, 44448.639), stdev = 5240.970
+  CI (99.9%): [14972.909, 55335.131] (assumes normal distribution)
+
+
+# Run complete. Total time: 00:00:05
+
+REMEMBER: The numbers below are just data. To gain reusable insights, you need to follow up on
+why the numbers are the way they are. Use profilers (see -prof, -lprof), design factorial
+experiments, perform baseline and negative tests that provide experimental control, make sure
+the benchmarking environment is safe on JVM/OS/HW level, ask for reviews from the domain experts.
+Do not assume the numbers tell you what you want them to tell.
+
+NOTE: Current JVM experimentally supports Compiler Blackholes, and they are in use. Please exercise
+extra caution when trusting the results, look into the generated code to check the benchmark still
+works, and factor in a small probability of new VM bugs. Additionally, while comparisons between
+different JVMs are already problematic, the performance difference caused by different Blackhole
+modes can be very significant. Please make sure you use the consistent Blackhole mode for comparisons.
+
+Benchmark                                       (rounds)  Mode  Cnt      Score       Error  Units
+VThreadParkUnparkBenchmark.parkUnpark_pingPong     10000  avgt    5  35154.020 ± 20181.111  us/op
+
+============================================================
+COUNT MODE — time figures meaningless, counters only
+  ops estimated from avgt iteration scores (~±1 op per 1s iteration)
+
+  ops (measured iterations only, wi=0): 144
+  @freeze_total=2869866  @thaw_total=2951145  @thaw_kind[0]=2869866
+  @start_total=294  @end_total=294  @end_unmatched=0
+
+COUNT RESULT: bench=parkunpark class=uk.ac.ncl.jensen.benchmark.VThreadParkUnparkBenchmark ops=144 freeze_total=2869866 thaw_total=2951145 thaw_top=2869866 start_total=294 end_total=294 end_unmatched=0 freezes_per_op=19929.6250 top_thaws_per_op=19929.6250 starts_per_op=2.0417 extra_jvmargs=''
+  (archived: /home/ubuntu/ebpf-vthread-correlate/result/benchmark/oslevel/COUNT-parkunpark-count-20260707-142438.txt)
+
+RESULT: OK — COUNT mode counters harvested (time figures meaningless by design).
