@@ -19,6 +19,23 @@
 #
 # Every step's knobs are hard-coded here on purpose; the comment on each step names
 # the triage item (ANALYSIS-BAREMETAL.md §2 / v2 ANALYSIS.md §5a) it answers.
+#
+# SPEC=jmh-defaults: since the D3/D4/D5/D7 spec change, the matrix gc pass, the
+# N-sweep and the oslevel A/C/B states all run on the JMH 1.37 built-in defaults
+# (5 forks, warmup 5x10s, measurement 5x10s — no -f/-wi/-i injected anywhere;
+# see result/analysis/JMH-PARAMS.md). Two deliberate exceptions, unchanged:
+# COUNT mode (-f 1 -wi 0 -r 1, correctness) and the profiling pass (-f 1,
+# attribution-only).
+# PROF_EVENT=cpu on the formal batch: bare metal has PMU access, so the
+# profiling pass uses perf-events sampling with KERNEL stacks — the attribution
+# upgrade for observation cost (itimer was the VM-era compatibility compromise;
+# the 20260705 batch's flame graphs are itimer, do not mix in differentials).
+# Requires kernel.perf_event_paranoid<=1 and kernel.kptr_restrict=0 — checked
+# up front below (fail-fast), set by scripts/env-bootstrap.sh.
+# EXPECTED WALL TIME on this spec: roughly 4-5 hours for the full batch
+# (10 matrix gc cells + 12 N-sweep cells at ~9 min each ≈ 3.5 h, oslevel
+# Transition/Churn A/C/B at ~9 min per state ≈ 45 min, COUNT runs and the
+# profiling pass add the rest) — versus ~1 h under the old reduced spec.
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -35,6 +52,19 @@ source "$REPO_ROOT/config/env.sh"
 source "$SCRIPT_DIR/lib/runinfo.sh"
 
 SKIP_MATRIX="${SKIP_MATRIX:-0}"
+PROF_EVENT="${PROF_EVENT:-cpu}"   # formal batch = perf events w/ kernel stacks (see header)
+
+# Fail fast at batch start, not 4 hours in at step 8: PROF_EVENT=cpu needs the
+# perf sysctls (same privilege context as bpftrace's sudo).
+if [[ "$PROF_EVENT" == cpu && "$SKIP_MATRIX" != "1" ]]; then
+    _paranoid="$(cat /proc/sys/kernel/perf_event_paranoid 2>/dev/null || echo unknown)"
+    _kptr="$(cat /proc/sys/kernel/kptr_restrict 2>/dev/null || echo unknown)"
+    if ! [[ "$_paranoid" =~ ^-?[0-9]+$ ]] || (( _paranoid > 1 )) || [[ "$_kptr" != 0 ]]; then
+        echo "ERROR: PROF_EVENT=cpu needs kernel.perf_event_paranoid<=1 (now: $_paranoid) and kernel.kptr_restrict=0 (now: $_kptr)." >&2
+        echo "       sudo sysctl -w kernel.perf_event_paranoid=1 kernel.kptr_restrict=0   (scripts/env-bootstrap.sh does this)" >&2
+        exit 1
+    fi
+fi
 
 STAMP="$(date +%Y%m%d-%H%M%S)"
 RESULTS="$REPO_ROOT/result/benchmark"
@@ -51,6 +81,9 @@ exec > >(tee "$BATCH_LOG") 2>&1
 
 echo "run-batch: formal batch definition (SKIP_MATRIX=$SKIP_MATRIX)"
 RUNINFO_FILE="$(write_runinfo "$RESULTS" "run-batch.sh" "${JAVA_HOME}/bin/java" \
+    "SPEC=jmh-defaults" "PROF_EVENT=$PROF_EVENT" \
+    "perf_event_paranoid=$(cat /proc/sys/kernel/perf_event_paranoid 2>/dev/null || echo unknown)" \
+    "kptr_restrict=$(cat /proc/sys/kernel/kptr_restrict 2>/dev/null || echo unknown)" \
     "SKIP_MATRIX=$SKIP_MATRIX" "STAMP=$STAMP" "NSWEEP_DIR=$NSWEEP_DIR" "BATCH_LOG=$BATCH_LOG")"
 echo "RUNINFO: $RUNINFO_FILE"
 echo "LOG:     $BATCH_LOG"
@@ -61,7 +94,7 @@ echo
 
 step() { printf '\n\033[1m==== batch step %s ====\033[0m\n' "$*"; }
 
-# 1. Transition A/C/B — publish residual (#13) + observation cost (#14).
+# 1. Transition A/C/B — publish residual.
 #    Also the ENVIRONMENT SENTINEL for gap-fill runs: compare this A/C against the
 #    main batch's A/C — CI overlap means same-batch-comparable, non-overlap means
 #    the gap-fill data must be labelled a separate batch.
@@ -74,13 +107,13 @@ step "1/8 oslevel Transition A/C/B  (#13 publish residual, #14 observation cost,
 step "2/8 oslevel Churn A/C (RUN_B=0)  (#16 lifecycle probe flag-on pricing)"
 BENCH=churn RUN_B=0 "$SCRIPT_DIR/measure-oslevel.sh"
 
-# 3. Churn COUNT — pure-isolation precondition for #16: @freeze_total MUST be 0
+# 3. Churn COUNT — pure-isolation precondition, @freeze_total MUST be 0
 #    (churn vthreads never block by design), asserted workload-aware (lifecycle
 #    pair only; freeze_total recorded, not asserted — its value IS the verdict).
 step "3/8 oslevel Churn COUNT  (#16 precondition: freeze_total == 0)"
 BENCH=churn COUNT=1 "$SCRIPT_DIR/measure-oslevel.sh"
 
-# 4-6. ParkUnpark COUNT x 3 variants — TRUE per-op denominators (#11: alloc-axis
+# 4-6. ParkUnpark COUNT x 3 variants — TRUE per-op denominators ( alloc-axis
 #    adjudication needs freezes_per_op per variant; VM showed ~9% variant drift).
 step "4/8 oslevel ParkUnpark COUNT, baseline  (#11 true denominator)"
 COUNT=1 BENCH=parkunpark "$SCRIPT_DIR/measure-oslevel.sh"
@@ -93,20 +126,21 @@ step "6/8 oslevel ParkUnpark COUNT, jvmAlloc  (#11 true denominator)"
 COUNT=1 BENCH=parkunpark EXTRA_JVMARGS="-Dvthread.trace.jvmAlloc=true" \
     "$SCRIPT_DIR/measure-oslevel.sh"
 
-# 7. Transition N-sweep — per-yield convergence curve, both axes from the gc pass
-#    (GAP-9). QUICK=1: no itimer, no flamegraphs. RESULTS redirected so the main
+# 7. Transition N-sweep — per-yield convergence curve, both axes from the gc pass.
+#    QUICK=1: no profiling pass, no flamegraphs. RESULTS redirected so the main
 #    batch's fixed-name Transition JSONs are not overwritten.
 step "7/8 Transition N-sweep, gc pass only  (GAP-9 convergence curve)"
 NPARAM="yieldsPerVthread=1000,10000,100000" ONLY="Transition" QUICK=1 \
     RESULTS="$NSWEEP_DIR" "$SCRIPT_DIR/profile-matrix.sh"
 
-# 8. Full 10-cell matrix (gc + itimer + flamegraphs) — the main tables. LAST so a
-#    late failure cannot cost the cheap runs above. NOTE: overwrites the fixed-name
-#    gc JSONs / collapsed CSVs — that is the formal-batch convention; use
-#    SKIP_MATRIX=1 for gap-fill runs on a batch whose matrix already exists.
+# 8. Full 10-cell matrix (gc + profiling pass [event=$PROF_EVENT] + flamegraphs)
+#    — the main tables. LAST so a late failure cannot cost the cheap runs above.
+#    NOTE: overwrites the fixed-name gc JSONs / collapsed CSVs — that is the
+#    formal-batch convention; use SKIP_MATRIX=1 for gap-fill runs on a batch
+#    whose matrix already exists.
 if [[ "$SKIP_MATRIX" != "1" ]]; then
-    step "8/8 full 10-cell matrix  (main tables)"
-    "$SCRIPT_DIR/profile-matrix.sh"
+    step "8/8 full 10-cell matrix  (main tables, PROF_EVENT=$PROF_EVENT)"
+    PROF_EVENT="$PROF_EVENT" "$SCRIPT_DIR/profile-matrix.sh"
 else
     step "8/8 full 10-cell matrix — SKIPPED (SKIP_MATRIX=1)"
 fi

@@ -1,0 +1,101 @@
+# JMH version: 1.37
+# VM version: JDK 21.0.12-internal, OpenJDK 64-Bit Server VM, 21.0.12-internal-adhoc.root.src
+# VM invoker: /home/ubuntu/ebpf-vthread-correlate/.vthread-jdk/jdk/bin/java
+# VM options: --enable-preview --enable-native-access=ALL-UNNAMED -XX:+VThreadTraceProbes
+# Blackhole mode: compiler (auto-detected, use -Djmh.blackhole.autoDetect=false to disable)
+# Warmup: 5 iterations, 10 s each
+# Measurement: 5 iterations, 10 s each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Average time, time/op
+# Benchmark: uk.ac.ncl.jensen.benchmark.VThreadChurnBenchmark.churn
+# Parameters: (vthreadsPerOp = 1000)
+
+# Run progress: 0.00% complete, ETA 00:08:20
+# Fork: 1 of 5
+# Warmup Iteration   1: 410.474 us/op
+# Warmup Iteration   2: 383.724 us/op
+# Warmup Iteration   3: 388.895 us/op
+# Warmup Iteration   4: 380.673 us/op
+# Warmup Iteration   5: 382.912 us/op
+Iteration   1: 377.483 us/op
+Iteration   2: 378.275 us/op
+Iteration   3: 390.138 us/op
+Iteration   4: 376.494 us/op
+Iteration   5: 376.141 us/op
+
+# Run progress: 20.00% complete, ETA 00:06:40
+# Fork: 2 of 5
+# Warmup Iteration   1: 396.198 us/op
+# Warmup Iteration   2: 397.855 us/op
+# Warmup Iteration   3: 384.778 us/op
+# Warmup Iteration   4: 386.283 us/op
+# Warmup Iteration   5: 379.508 us/op
+Iteration   1: 377.691 us/op
+Iteration   2: 382.831 us/op
+Iteration   3: 382.135 us/op
+Iteration   4: 382.217 us/op
+Iteration   5: 387.823 us/op
+
+# Run progress: 40.00% complete, ETA 00:05:00
+# Fork: 3 of 5
+# Warmup Iteration   1: 378.883 us/op
+# Warmup Iteration   2: 367.540 us/op
+# Warmup Iteration   3: 364.299 us/op
+# Warmup Iteration   4: 364.891 us/op
+# Warmup Iteration   5: 364.328 us/op
+Iteration   1: 362.993 us/op
+Iteration   2: 366.761 us/op
+Iteration   3: 365.294 us/op
+Iteration   4: 360.676 us/op
+Iteration   5: 361.254 us/op
+
+# Run progress: 60.00% complete, ETA 00:03:20
+# Fork: 4 of 5
+# Warmup Iteration   1: 375.158 us/op
+# Warmup Iteration   2: 363.973 us/op
+# Warmup Iteration   3: 361.341 us/op
+# Warmup Iteration   4: 361.282 us/op
+# Warmup Iteration   5: 354.071 us/op
+Iteration   1: 355.825 us/op
+Iteration   2: 360.721 us/op
+Iteration   3: 357.467 us/op
+Iteration   4: 362.627 us/op
+Iteration   5: 362.915 us/op
+
+# Run progress: 80.00% complete, ETA 00:01:40
+# Fork: 5 of 5
+# Warmup Iteration   1: 327.076 us/op
+# Warmup Iteration   2: 320.894 us/op
+# Warmup Iteration   3: 318.522 us/op
+# Warmup Iteration   4: 371.167 us/op
+# Warmup Iteration   5: 387.629 us/op
+Iteration   1: 384.720 us/op
+Iteration   2: 376.798 us/op
+Iteration   3: 367.478 us/op
+Iteration   4: 297.029 us/op
+Iteration   5: 298.091 us/op
+
+
+Result "uk.ac.ncl.jensen.benchmark.VThreadChurnBenchmark.churn":
+  366.075 ±(99.9%) 17.178 us/op [Average]
+  (min, avg, max) = (297.029, 366.075, 390.138), stdev = 22.932
+  CI (99.9%): [348.897, 383.253] (assumes normal distribution)
+
+
+# Run complete. Total time: 00:08:21
+
+REMEMBER: The numbers below are just data. To gain reusable insights, you need to follow up on
+why the numbers are the way they are. Use profilers (see -prof, -lprof), design factorial
+experiments, perform baseline and negative tests that provide experimental control, make sure
+the benchmarking environment is safe on JVM/OS/HW level, ask for reviews from the domain experts.
+Do not assume the numbers tell you what you want them to tell.
+
+NOTE: Current JVM experimentally supports Compiler Blackholes, and they are in use. Please exercise
+extra caution when trusting the results, look into the generated code to check the benchmark still
+works, and factor in a small probability of new VM bugs. Additionally, while comparisons between
+different JVMs are already problematic, the performance difference caused by different Blackhole
+modes can be very significant. Please make sure you use the consistent Blackhole mode for comparisons.
+
+Benchmark                    (vthreadsPerOp)  Mode  Cnt    Score    Error  Units
+VThreadChurnBenchmark.churn             1000  avgt   25  366.075 ± 17.178  us/op

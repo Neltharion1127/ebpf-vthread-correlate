@@ -36,11 +36,13 @@ import java.util.concurrent.TimeUnit;
  * NOTE: must run on the patched JDK ($JAVA_HOME/bin/java). Numbers taken inside
  * OrbStack/LXC are for familiarisation only; the evaluation needs bare metal.
  */
+// No @Warmup/@Measurement and no @Fork(value): the statistical spec deliberately
+// falls through to the JMH 1.37 built-in defaults (5 forks, warmup 5x10s,
+// measurement 5x10s) — see result/analysis/JMH-PARAMS.md. @Fork stays only to
+// pin the forked-JVM arg set (single-variable guarantee).
 @BenchmarkMode(Mode.AverageTime)
 @OutputTimeUnit(TimeUnit.MICROSECONDS)
-@Warmup(iterations = 5, time = 1)
-@Measurement(iterations = 10, time = 1)
-@Fork(value = 2, jvmArgs = {"--enable-preview", "--enable-native-access=ALL-UNNAMED"})
+@Fork(jvmArgs = {"--enable-preview", "--enable-native-access=ALL-UNNAMED"})
 @State(Scope.Benchmark)
 public class VThreadTransitionBenchmark {
 

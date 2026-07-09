@@ -5,14 +5,24 @@
 # modify bpf/correlate.bt, scripts/run-usdt.sh or scripts/profile-matrix.sh; it only
 # consumes bpf/correlate-probesonly.bt (the cropped consumer).
 #
-# Three states — ALL use `-f 2` (this cell only means anything under correct fork
-# isolation; never -f 0):
+# Three states — ALL run in forked JVMs (this cell only means anything under
+# correct fork isolation; never -f 0):
 #   A  baseline    : flag OFF, no bpftrace                  -> publish OFF, observe OFF
 #   C  publish-on  : flag ON,  no bpftrace / no consumer    -> publish ON,  observe OFF
 #   B  observed    : flag ON,  cropped bpftrace attached    -> publish ON,  observe ON
 #
 #   C - A = publish residual   (expected ~0: cost of emitting USDT with no consumer)
 #   B - C = observation cost    (cost added by the eBPF consumer maintaining its maps)
+#
+# BEHAVIOUR CHANGE (jmh-defaults spec): the non-COUNT path no longer injects an
+# implicit `-f 2 -wi 3 -i 5`. F= / WI= / I= are now optional knobs — when UNSET,
+# the corresponding -f/-wi/-i flag is NOT passed at all, so the formal statistical
+# spec falls through to the JMH 1.37 built-in defaults (5 forks, warmup 5x10s,
+# measurement 5x10s; see result/analysis/JMH-PARAMS.md). Set them explicitly only
+# for special-purpose runs (e.g. quick orchestration checks or CI-tightening
+# reruns with a recorded, deliberate spec). Rationale: formally cited A/C/B
+# numbers must come from the same default spec as the main matrix, eliminating
+# deviation D7. The COUNT path is NOT affected (see below — correctness, not spec).
 #
 # Workload selection (BENCH=, default preserves historical behaviour):
 #   BENCH=transition  (default)  uk.ac.ncl.jensen.benchmark.VThreadTransitionBenchmark
@@ -30,9 +40,11 @@
 # prediction.
 #
 # COUNT mode (COUNT=1): counters-only run. Skips A and C entirely and runs ONLY
-# the B state (flag on + probesonly consumer) with `-f 1 -wi 0` — no warmup so
-# warmup iterations cannot pollute the counters, single fork so the counter set
-# maps to exactly one benchmark JVM. Measurement iterations stay at the default
+# the B state (flag on + probesonly consumer) with `-f 1 -wi 0 -r 1` — no warmup
+# so warmup iterations cannot pollute the counters, single fork so the counter
+# set maps to exactly one benchmark JVM, 1s iterations pinned (ops estimate
+# depends on it). Correctness requirements — this hard-coded spec deliberately
+# does NOT follow the jmh-defaults statistical spec. Measurement iterations stay at the default
 # (or MI= overrides). ALL time figures in COUNT mode are meaningless (cold JVM,
 # single fork) and are labelled as such; the deliverable is the "COUNT RESULT:"
 # line: total measured ops parsed from the JMH log plus the derived
@@ -44,13 +56,14 @@
 # every mode (default empty); in non-COUNT mode it is appended to ALL states so
 # each state still differs only by flag/consumer.
 #
-# EVERY number this script prints is DIRECTIONAL and VM-only — NOT citable as an
-# absolute overhead. The small warmup/iteration defaults exist solely to validate the
-# orchestration on the VM (all three states start, bpftrace catches the forked child
-# JVM, counters are non-zero).
+# On a VM, every number this script prints is DIRECTIONAL — NOT citable as an
+# absolute overhead; citable numbers require bare metal AND the jmh-defaults spec
+# (F/WI/I unset). Explicitly set F/WI/I mark a special-purpose run whose numbers
+# are for orchestration checks or bound-tightening experiments, recorded as
+# SPEC=custom in RUNINFO.
 #
 # B-state attach is by libjvm FILE PATH (USDT), never `bpftrace -c PID`:
-#   JMH `-f 2` forks a child JVM and runs the benchmark there; a PID-scoped `-c` probe
+#   JMH forking (`-f` >= 1) runs the benchmark in a child JVM; a PID-scoped `-c` probe
 #   binds to the parent and would miss the child. Path attach catches the forked JVM
 #   regardless of PID. We poll the bpftrace log for the BEGIN "tracing started" marker
 #   before launching JMH (no bare sleep), and self-check the probes afterwards —
@@ -112,9 +125,10 @@ case "$BENCH" in
 esac
 CLASS="${CLASS:-$BENCH_CLASS}"
 
-WI="${WI:-3}"                         # warmup iterations (small: VM orchestration check)
-I="${I:-5}"                           # measurement iterations (small: VM orchestration check)
-MI="${MI:-$I}"                        # COUNT-mode measurement iterations override
+F="${F:-}"                            # forks; UNSET = do not pass -f (JMH default: 5)
+WI="${WI:-}"                          # warmup iterations; UNSET = do not pass -wi (JMH default: 5x10s)
+I="${I:-}"                            # measurement iterations; UNSET = do not pass -i (JMH default: 5x10s)
+MI="${MI:-${I:-5}}"                   # COUNT-mode measurement iterations (COUNT always passes -i)
 RUN_C="${RUN_C:-1}"                   # 1 = run C so publish residual / observation cost split
 RUN_B="${RUN_B:-1}"                   # 0 = skip B (A/C only — publish pricing without a consumer;
                                       #     no probe self-check in that case, pair it with a COUNT run)
@@ -129,8 +143,6 @@ JAR="$REPO_ROOT/target/benchmarks.jar"
 OUT="$REPO_ROOT/result/benchmark/oslevel"
 mkdir -p "$OUT"
 
-# Timestamped output names (S5/GAP-5 fix): never overwrite the git-tracked
-# fixed-name logs from earlier batches.
 STAMP="$(date +%Y%m%d-%H%M%S)"
 if [[ "$COUNT" == "1" ]]; then
     TAG="$BENCH-count-$STAMP"
@@ -156,9 +168,9 @@ count_from_log() {
 # COUNT mode: total measured ops from the JMH log. avgt prints one
 # "Iteration   N: <score> us/op" line per measurement iteration (warmup lines
 # carry a leading '#', and -wi 0 means there are none anyway); each iteration
-# runs ~1s (@Measurement(time=1), all three benchmarks emit us/op), so
-# ops/iter ≈ 1e6/score. The ±1 op/iter estimation error is irrelevant at
-# counter-adjudication precision.
+# runs ~1s (pinned by -r 1 in the COUNT invocation, all three benchmarks emit
+# us/op), so ops/iter ≈ 1e6/score. The ±1 op/iter estimation error is
+# irrelevant at counter-adjudication precision.
 ops_from_log() {
     awk '$1 == "Iteration" { score = $3 + 0; if (score > 0) ops += int(1000000 / score + 0.5) }
          END { printf "%d\n", ops }' "$1"
@@ -189,9 +201,12 @@ require_runtime
 
 # All states share the SAME JMH invocation; states differ ONLY by the flag value
 # and by whether bpftrace is attached. That keeps C-A a pure publish delta and B-C a pure
-# observation delta. NOTE: -f 2 (forked), never -f 0. COUNT mode is the one sanctioned
-# exception: -f 1 -wi 0, because it discards every time figure and only harvests counters
-# (wi=0 keeps warmup invocations out of the counter totals).
+# observation delta. NOTE: forked JVMs always, never -f 0. -f/-wi/-i are injected only
+# when F=/WI=/I= are explicitly set (unset = JMH built-in defaults govern; see header).
+# COUNT mode is the one sanctioned exception with a HARD-CODED -f 1 -wi 0: correctness
+# requirement, not a statistical-spec choice — it does NOT follow the jmh-defaults spec
+# (wi=0 keeps warmup invocations out of the counter totals, single fork maps the counter
+# set to exactly one benchmark JVM).
 #
 # The flag is routed into the FORK via -jvmArgsAppend, NOT the host `java` line: the
 # benchmarks declare @Fork(jvmArgs={...}), and JMH's @Fork(jvmArgs) REPLACES the forked
@@ -200,9 +215,16 @@ require_runtime
 # fork, so every state measured publish-off — a fake ~0 residual). EXTRA_JVMARGS rides
 # the same -jvmArgsAppend route for the same reason.
 if [[ "$COUNT" == "1" ]]; then
-    COMMON_JMH=(-jar "$JAR" "$CLASS" -f 1 -wi 0 -i "$MI")
+    # -r 1 pins the historical 1s measurement iterations explicitly: they used to
+    # come from the (now removed) @Measurement(time=1) annotation, and ops_from_log's
+    # ops-per-iteration estimate assumes ~1s iterations — without -r 1 the JMH 10s
+    # default would silently inflate every *_per_op figure 10x.
+    COMMON_JMH=(-jar "$JAR" "$CLASS" -f 1 -wi 0 -r 1 -i "$MI")
 else
-    COMMON_JMH=(-jar "$JAR" "$CLASS" -f 2 -wi "$WI" -i "$I")
+    COMMON_JMH=(-jar "$JAR" "$CLASS")
+    [[ -n "$F" ]]  && COMMON_JMH+=(-f "$F")
+    [[ -n "$WI" ]] && COMMON_JMH+=(-wi "$WI")
+    [[ -n "$I" ]]  && COMMON_JMH+=(-i "$I")
 fi
 EXTRA_APPEND=()
 if [[ -n "$EXTRA_JVMARGS" ]]; then
@@ -221,7 +243,8 @@ B_CMD=("${C_CMD[@]}")   # B's JMH command is byte-for-byte identical to C.
 if [[ "$DRY_RUN" != "1" ]]; then
     exec > >(tee "$MAIN_LOG") 2>&1
     RUNINFO_FILE="$(write_runinfo "$OUT" "measure-oslevel.sh" "$JAVA" \
-        "BENCH=$BENCH" "CLASS=$CLASS" "COUNT=$COUNT" "WI=$WI" "I=$I" "MI=$MI" \
+        "SPEC=$([[ -z "$F$WI$I" ]] && echo jmh-defaults || echo custom)" "F=$F" "WI=$WI" "I=$I" \
+        "BENCH=$BENCH" "CLASS=$CLASS" "COUNT=$COUNT" "MI=$MI" \
         "RUN_C=$RUN_C" "RUN_B=$RUN_B" "EXTRA_JVMARGS=$EXTRA_JVMARGS" "ATTACH_TIMEOUT=$ATTACH_TIMEOUT" \
         "JDK=$JDK" "JAVA=$JAVA" "LIBJVM=$LIBJVM" "OUT=$OUT" "TAG=$TAG")"
 fi
@@ -238,7 +261,11 @@ echo "CLASS:   $CLASS"
 if [[ "$COUNT" == "1" ]]; then
     echo "MODE:    COUNT MODE — time figures meaningless, counters only (B state only, -f 1 -wi 0 -i $MI)"
 else
-    echo "WI/I:    $WI / $I   (small — orchestration check only)"
+    if [[ -z "$F$WI$I" ]]; then
+        echo "SPEC:    jmh-defaults — no -f/-wi/-i passed (JMH 1.37: 5 forks, warmup 5x10s, measurement 5x10s)"
+    else
+        echo "SPEC:    custom — F='${F:-(default)}' WI='${WI:-(default)}' I='${I:-(default)}' (special-purpose run, not the formal spec)"
+    fi
     [[ "$RUN_B" == "0" ]] && echo "RUN_B:   0   (A/C only — no observed state, no probe self-check this run)"
 fi
 [[ -n "$EXTRA_JVMARGS" ]] && echo "EXTRA:   $EXTRA_JVMARGS   (via -jvmArgsAppend, all states)"
@@ -271,7 +298,7 @@ if [[ "$DRY_RUN" == "1" ]]; then
     print_cmd "${B_CMD[@]}"
     echo "  # 4) SIGINT bpftrace so its END dumps @freeze_total / @thaw_total"
     echo
-    echo "(no -f 0 anywhere; every state uses -f 2)"
+    echo "(no -f 0 anywhere; forked JVMs in every state — fork count from F= if set, else JMH default 5)"
     exit 0
 fi
 
@@ -495,7 +522,7 @@ if [[ "$FAIL" != "0" ]]; then
 fi
 echo
 if [[ "$RUN_B" == "1" ]]; then
-    echo "RESULT: OK — orchestration validated (probes fired in the -f 2 child). Still directional/VM-only."
+    echo "RESULT: OK — orchestration validated (probes fired in the forked child JVM)."
 else
     echo "RESULT: OK — A/C states completed (RUN_B=0: B skipped, no probe self-check — pair with a COUNT run). Still directional/VM-only."
 fi

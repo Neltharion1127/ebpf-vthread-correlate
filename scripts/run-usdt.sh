@@ -128,7 +128,9 @@ echo "CLASS:   $CLASS"
 echo "OUT:     $OUT"
 echo
 
-COMMON_JMH=(-jar "$JAR" "$CLASS" -f 0 -wi "$WARMUP" -i "$ITER")
+# -w 1 -r 1 pin the historical 1s iterations (previously supplied by the now
+# removed @Warmup/@Measurement annotations); acceptance timing only, never cited.
+COMMON_JMH=(-jar "$JAR" "$CLASS" -f 0 -wi "$WARMUP" -i "$ITER" -w 1 -r 1)
 
 A_CMD=("$JAVA" -XX:-VThreadTraceProbes "${COMMON_JMH[@]}")
 B_JAVA_CMD=("$JAVA" -Djmh.ignoreLock=true -XX:+VThreadTraceProbes "${COMMON_JMH[@]}")

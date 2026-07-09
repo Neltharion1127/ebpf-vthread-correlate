@@ -1,6 +1,11 @@
 #!/usr/bin/env bash
 # gen-flamegraphs.sh — regenerate plain + differential flame graphs from the
-# itimer collapsed stacks produced by the JMH async-profiler pass.
+# collapsed stacks produced by the JMH async-profiler pass. The sampling event
+# is selected via PROF_EVENT (default itimer; profile-matrix.sh passes its own):
+# JMH names the folded file collapsed-<event>.csv, and discovery follows it.
+# Differential pairs are built ONLY from cells discovered in this invocation —
+# one event per invocation, so a diff can never mix events (e.g. a cpu batch is
+# never diffed against the 20260705 itimer batch's files).
 #
 # Idempotent and re-runnable: auto-discovers every <Bench>_<variant> cell under
 # PROF_DIR, emits one plain flame per cell and one differential flame per
@@ -14,7 +19,7 @@
 #   scripts/gen-flamegraphs.sh
 #   PROF_DIR=/path/to/prof  OUT_DIR=/path/to/out  scripts/gen-flamegraphs.sh
 #
-# Tunables (env vars): PROF_DIR OUT_DIR FG COLLAPSED_NAME SPARSE_THRESHOLD WIDTH
+# Tunables (env vars): PROF_DIR OUT_DIR FG PROF_EVENT COLLAPSED_NAME SPARSE_THRESHOLD WIDTH
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -23,7 +28,11 @@ REPO_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
 PROF_DIR="${PROF_DIR:-$REPO_ROOT/result/benchmark/collapsed}"
 OUT_DIR="${OUT_DIR:-$REPO_ROOT/result/figures}"
 FG="${FG:-$REPO_ROOT/tools/FlameGraph}"
-COLLAPSED_NAME="${COLLAPSED_NAME:-collapsed-itimer.csv}"
+PROF_EVENT="${PROF_EVENT:-itimer}"
+COLLAPSED_NAME="${COLLAPSED_NAME:-collapsed-$PROF_EVENT.csv}"
+# Event label for titles/index — derived from the actual file name so an explicit
+# COLLAPSED_NAME= override is labelled correctly even without PROF_EVENT.
+EVENT_LABEL="${COLLAPSED_NAME#collapsed-}"; EVENT_LABEL="${EVENT_LABEL%.csv}"
 SPARSE_THRESHOLD="${SPARSE_THRESHOLD:-2000}"
 WIDTH="${WIDTH:-1600}"
 
@@ -82,7 +91,7 @@ for k in $(printf '%s\n' "${!CELL_FILE[@]}" | sort); do
     sub="$n samples"; sparse "$f" && sub="$sub (SPARSE)"
     out="$OUT_DIR/${sn}_${variant}.svg"
     perl "$FG/flamegraph.pl" --colors java --width "$WIDTH" \
-        --title "$bench · $variant · itimer CPU" --subtitle "$sub" \
+        --title "$bench · $variant · $EVENT_LABEL CPU" --subtitle "$sub" \
         "$f" > "$out"
     echo "  -> $out"
 done
@@ -135,7 +144,7 @@ mapfile -t SHORTS < <(for b in "${!BENCHES[@]}"; do printf '%s\n' "$(short_name 
     echo 'h2{margin:1.6em 0 .3em;border-bottom:1px solid #ddd}a{display:block;padding:1px 0}'
     echo '.d a{color:#b00}small{color:#666}</style>'
     echo '<h1>vthread benchmark flame graphs</h1>'
-    echo "<small>itimer CPU · release-flag JDK · generated $(date -u +%FT%TZ)</small>"
+    echo "<small>$EVENT_LABEL CPU · release-flag JDK · generated $(date -u +%FT%TZ)</small>"
     for sn in "${SHORTS[@]}"; do
         ls "$OUT_DIR/${sn}_"*.svg >/dev/null 2>&1 || continue
         echo "<h2>$sn</h2><div><strong>plain</strong>"
