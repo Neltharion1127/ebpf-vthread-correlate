@@ -1,1 +1,0 @@
-COUNT RESULT: bench=parkunpark class=uk.ac.ncl.jensen.benchmark.VThreadParkUnparkBenchmark ops=148 freeze_total=2740232 thaw_total=2822449 thaw_top=2740232 start_total=298 end_total=298 end_unmatched=0 freezes_per_op=18515.0811 top_thaws_per_op=18515.0811 starts_per_op=2.0135 extra_jvmargs=''
