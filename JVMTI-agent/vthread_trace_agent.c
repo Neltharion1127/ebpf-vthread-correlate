@@ -206,7 +206,13 @@ on_vm_init(jvmtiEnv *jvmti, JNIEnv *jni, jthread thread) {
     /* Resolve VirtualThread class and cache as GlobalRef. */
     jclass cls = (*jni)->FindClass(jni, "java/lang/VirtualThread");
     if (cls == NULL) {
-        log_msg("FindClass(java/lang/VirtualThread) failed");
+        /* A failed JNI lookup leaves a pending exception; it MUST be cleared
+         * before returning from this callback, or the VM aborts when it next
+         * constructs an ExceptionMark during startup. */
+        if ((*jni)->ExceptionCheck(jni)) {
+            (*jni)->ExceptionClear(jni);
+        }
+        log_msg("FindClass(java/lang/VirtualThread) failed; disabling agent");
         return;
     }
     g_vthread_class = (*jni)->NewGlobalRef(jni, cls);
@@ -215,8 +221,15 @@ on_vm_init(jvmtiEnv *jvmti, JNIEnv *jni, jthread thread) {
     g_trace_buf_field = (*jni)->GetFieldID(jni, g_vthread_class,
                                             "traceBufferAddress", "J");
     if (g_trace_buf_field == NULL) {
-        log_msg("GetFieldID(VirtualThread.traceBufferAddress) failed; "
-                "did you rebuild the JDK after editing VirtualThread.java?");
+        /* Field exists only in the patched JDK. On a stock JDK GetFieldID leaves
+         * a pending NoSuchFieldError; clear it and disable the agent gracefully
+         * rather than letting the VM abort. g_trace_buf_field stays NULL and no
+         * callback that dereferences it is ever enabled. */
+        if ((*jni)->ExceptionCheck(jni)) {
+            (*jni)->ExceptionClear(jni);
+        }
+        log_msg("VirtualThread.traceBufferAddress field absent (not a patched JDK); "
+                "disabling agent — no vthread callbacks will be enabled");
         return;
     }
 
@@ -224,14 +237,20 @@ on_vm_init(jvmtiEnv *jvmti, JNIEnv *jni, jthread thread) {
      * on every VirtualThread instance. */
     jclass thread_cls = (*jni)->FindClass(jni, "java/lang/Thread");
     if (thread_cls == NULL) {
-        log_msg("FindClass(java/lang/Thread) failed");
+        if ((*jni)->ExceptionCheck(jni)) {
+            (*jni)->ExceptionClear(jni);
+        }
+        log_msg("FindClass(java/lang/Thread) failed; disabling agent");
         return;
     }
     g_thread_id_method = (*jni)->GetMethodID(jni, thread_cls,
                                               "threadId", "()J");
     (*jni)->DeleteLocalRef(jni, thread_cls);
     if (g_thread_id_method == NULL) {
-        log_msg("GetMethodID(Thread.threadId) failed");
+        if ((*jni)->ExceptionCheck(jni)) {
+            (*jni)->ExceptionClear(jni);
+        }
+        log_msg("GetMethodID(Thread.threadId) failed; disabling agent");
         return;
     }
 
