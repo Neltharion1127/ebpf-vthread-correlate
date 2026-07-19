@@ -59,6 +59,8 @@ PROF_EVENT="${PROF_EVENT:-itimer}"      # async-profiler event: itimer (default)
 COLLAPSED_MIN_LINES="${COLLAPSED_MIN_LINES:-50}"  # empty-artifact guard threshold (see below)
 DRY_RUN="${DRY_RUN:-0}"
 QUICK="${QUICK:-0}"
+SKIP_BUILD="${SKIP_BUILD:-0}" # formal batch builds once before any measurement
+BATCH_ID="${BATCH_ID:-standalone}"
 NPARAM="${NPARAM:-}"   # e.g. NPARAM="yieldsPerVthread=1000,10000,100000"; empty = source @Param default
 ONLY="${ONLY:-}"       # substring filter on "Bench|variant" cells; empty = run all (unchanged)
 
@@ -92,7 +94,9 @@ if [ "$DRY_RUN" != 1 ]; then
         *fastdebug*) echo "ABORT: JAVA_HOME is a fastdebug build — it distorts ratios. Point env.sh at the release-flag build."; exit 1;;
     esac
     [ -f "$AGENT_PATH" ]  || { echo "ABORT: agent not built. Run: make -C JVMTI-agent"; exit 1; }
-    [ -f "$ASPROF" ]      || { echo "ABORT: async-profiler lib not found at $ASPROF"; exit 1; }
+    if [[ "$QUICK" != "1" ]]; then
+        [ -f "$ASPROF" ]  || { echo "ABORT: async-profiler lib not found at $ASPROF"; exit 1; }
+    fi
     command -v mvn >/dev/null 2>&1 || { echo "ABORT: mvn not on PATH (ran under sudo? re-run as yourself)"; exit 1; }
     # PROF_EVENT=cpu needs perf_events with kernel symbols; fail loudly up front
     # rather than let async-profiler degrade/produce empty stacks mid-matrix.
@@ -108,11 +112,13 @@ if [ "$DRY_RUN" != 1 ]; then
         fi
     fi
 fi
-mkdir -p "$RESULTS" "$PROF_DIR"
+mkdir -p "$RESULTS"
+[[ "$QUICK" == "1" ]] || mkdir -p "$PROF_DIR"
 
 if [ "$DRY_RUN" != 1 ]; then
     RUNINFO_FILE="$(write_runinfo "$RESULTS" "profile-matrix.sh" "$JAVA" \
-        "ONLY=$ONLY" "QUICK=$QUICK" "DRY_RUN=$DRY_RUN" "NPARAM=$NPARAM" \
+        "BATCH_ID=$BATCH_ID" "ONLY=$ONLY" "QUICK=$QUICK" "DRY_RUN=$DRY_RUN" \
+        "SKIP_BUILD=$SKIP_BUILD" "NPARAM=$NPARAM" \
         "PROF_EVENT=$PROF_EVENT" "PROF_PASS_ARGS=$PROF_PASS_ARGS" \
         "perf_event_paranoid=$(cat /proc/sys/kernel/perf_event_paranoid 2>/dev/null || echo unknown)" \
         "kptr_restrict=$(cat /proc/sys/kernel/kptr_restrict 2>/dev/null || echo unknown)" \
@@ -123,8 +129,12 @@ fi
 
 # ---- build ----
 say "build"
-run make -C JVMTI-agent
-run mvn -q clean package
+if [[ "$SKIP_BUILD" == "1" ]]; then
+    echo "build skipped: caller supplied a prebuilt, batch-frozen agent and JAR"
+else
+    run make -C JVMTI-agent
+    run mvn -q clean package
+fi
 
 # ---- run the matrix: gc (clean) + profiling (collapsed, event=$PROF_EVENT) per cell ----
 for cell in "${CELLS[@]}"; do

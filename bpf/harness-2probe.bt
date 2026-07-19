@@ -1,0 +1,90 @@
+#!/usr/bin/env bpftrace
+// Historical two-probe ground-truth harness consumer.
+// LIBJVM_PATH is replaced by scripts/harness/run-harness.sh.
+// $1 = target PID, $2 = dedicated marker fd.
+
+BEGIN
+{
+    printf("ebpf-vthread-harness: tracing started\n");
+    printf("  Protocol: historical unconditional thaw/successful freeze\n");
+}
+
+// Old protocol preserved by repro/blindspot/blindspot.bt: every thaw inserts,
+// successful freezes delete, and there are no start/end handlers.
+
+// arg0 = vthread_id, arg1 = thaw_kind, arg2 = trace_buffer_addr
+usdt:LIBJVM_PATH:hotspot:vthread__thaw
+/pid == $1/
+{
+    @thaw_total = count();
+    @thaw_kind[(int64)arg1] = count();
+    @vthread[(uint64)curtask] = arg0;
+    @vtbuf[(uint64)curtask] = arg2;
+    @cache_insert = count();
+}
+
+// arg0 = vthread_id, arg1 = freeze_result, arg2 = trace_buffer_addr
+usdt:LIBJVM_PATH:hotspot:vthread__freeze
+/pid == $1/
+{
+    @freeze_total = count();
+    @freeze_result[(int64)arg1] = count();
+    if (arg1 >= 2 && arg1 <= 4) {
+        @pinned_total = count();
+    }
+
+    $carrier = (uint64)curtask;
+    if (arg1 <= 1) {
+        if (@vthread[$carrier]) {
+            delete(@vthread[$carrier]);
+            delete(@vtbuf[$carrier]);
+            @cache_delete = count();
+        } else {
+            @freeze_unmatched = count();
+        }
+    } else {
+        @freeze_failed_kept = count();
+    }
+}
+
+tracepoint:syscalls:sys_enter_write
+/args->fd == $2 && args->count >= 1000 && args->count < 1512 && pid == $1/
+{
+    @marker_total = count();
+    $carrier = (uint64)curtask;
+    if (!@vthread[$carrier]) {
+        @marker_unmapped = count();
+        printf("[marker] ts=%llu carrier=%d count=%llu status=UNMAPPED vthread=0 traceid_hi=0 traceid_lo=0 spanid=0\n",
+               nsecs, tid, args->count);
+    } else {
+        @write_on_vthread = count();
+        $buf = @vtbuf[$carrier];
+        if ($buf == 0) {
+            @marker_nullbuf = count();
+            printf("[marker] ts=%llu carrier=%d count=%llu status=NULLBUF vthread=%llu traceid_hi=0 traceid_lo=0 spanid=0\n",
+                   nsecs, tid, args->count, @vthread[$carrier]);
+        } else {
+            $valid = *(uint8 *)uptr($buf + 24);
+            if ($valid != 1) {
+                @write_invalid_ctx = count();
+                printf("[marker] ts=%llu carrier=%d count=%llu status=INVALID vthread=%llu traceid_hi=0 traceid_lo=0 spanid=0\n",
+                       nsecs, tid, args->count, @vthread[$carrier]);
+            } else {
+                @write_correlated = count();
+                $trace_hi = *(uint64 *)uptr($buf + 0);
+                $trace_lo = *(uint64 *)uptr($buf + 8);
+                $span_id = *(uint64 *)uptr($buf + 16);
+                printf("[marker] ts=%llu carrier=%d count=%llu status=OK vthread=%llu traceid_hi=%llx traceid_lo=%llx spanid=%llx\n",
+                       nsecs, tid, args->count, @vthread[$carrier],
+                       bswap($trace_hi), bswap($trace_lo), bswap($span_id));
+            }
+        }
+    }
+}
+
+END
+{
+    printf("ebpf-vthread-harness: tracing stopped\n");
+    clear(@vthread);
+    clear(@vtbuf);
+}

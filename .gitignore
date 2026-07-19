@@ -17,7 +17,8 @@ target/
 
 .claude
 .vscode
+__pycache__/
 
 # External helper clones
 tools/
-# result/
+result/

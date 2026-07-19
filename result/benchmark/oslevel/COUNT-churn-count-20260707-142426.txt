@@ -1,1 +1,0 @@
-COUNT RESULT: bench=churn class=uk.ac.ncl.jensen.benchmark.VThreadChurnBenchmark ops=11400 freeze_total=0 thaw_total=0 thaw_top=0 start_total=11404000 end_total=11404000 end_unmatched=0 freezes_per_op=0.0000 top_thaws_per_op=0.0000 starts_per_op=1000.3509 extra_jvmargs=''

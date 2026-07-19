@@ -37,6 +37,7 @@ write_runinfo() {
         # Environment pinning evidence (bare-metal GAP-3): best-effort, N/A when
         # a source is unavailable (non-EC2 host, no cpufreq, numactl missing).
         echo "cpu governor  : $(cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor 2>/dev/null || echo N/A)"
+        echo "cpu affinity  : $(awk '/^Cpus_allowed_list:/ {print $2}' /proc/self/status 2>/dev/null || echo N/A)"
         local turbo="N/A"
         if [[ -r /sys/devices/system/cpu/intel_pstate/no_turbo ]]; then
             turbo="intel_pstate/no_turbo=$(cat /sys/devices/system/cpu/intel_pstate/no_turbo)"
@@ -44,6 +45,13 @@ write_runinfo() {
             turbo="cpufreq/boost=$(cat /sys/devices/system/cpu/cpufreq/boost)"
         fi
         echo "turbo         : $turbo"
+        local smt="N/A"
+        if [[ -r /sys/devices/system/cpu/smt/control ]]; then
+            smt="$(cat /sys/devices/system/cpu/smt/control)"
+        elif [[ -r /sys/devices/system/cpu/smt/active ]]; then
+            smt="active=$(cat /sys/devices/system/cpu/smt/active)"
+        fi
+        echo "smt           : $smt"
         local numa
         numa="$(numactl --hardware 2>/dev/null | head -2 | paste -sd'; ' - || true)"
         echo "numa          : ${numa:-N/A}"

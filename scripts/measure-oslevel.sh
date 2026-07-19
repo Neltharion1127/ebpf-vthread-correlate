@@ -140,7 +140,8 @@ EXTRA_JVMARGS="${EXTRA_JVMARGS:-}"    # extra fork args via -jvmArgsAppend (spac
 PROBES_BT="$REPO_ROOT/bpf/correlate-probesonly.bt"
 SHADED_JAR="$REPO_ROOT/target/ebpf-vthread-correlate-1.0-SNAPSHOT.jar"
 JAR="$REPO_ROOT/target/benchmarks.jar"
-OUT="$REPO_ROOT/result/benchmark/oslevel"
+OUT="${OUT:-$REPO_ROOT/result/benchmark/oslevel}"
+BATCH_ID="${BATCH_ID:-standalone}"
 mkdir -p "$OUT"
 
 STAMP="$(date +%Y%m%d-%H%M%S)"
@@ -244,7 +245,7 @@ if [[ "$DRY_RUN" != "1" ]]; then
     exec > >(tee "$MAIN_LOG") 2>&1
     RUNINFO_FILE="$(write_runinfo "$OUT" "measure-oslevel.sh" "$JAVA" \
         "SPEC=$([[ -z "$F$WI$I" ]] && echo jmh-defaults || echo custom)" "F=$F" "WI=$WI" "I=$I" \
-        "BENCH=$BENCH" "CLASS=$CLASS" "COUNT=$COUNT" "MI=$MI" \
+        "BATCH_ID=$BATCH_ID" "BENCH=$BENCH" "CLASS=$CLASS" "COUNT=$COUNT" "MI=$MI" \
         "RUN_C=$RUN_C" "RUN_B=$RUN_B" "EXTRA_JVMARGS=$EXTRA_JVMARGS" "ATTACH_TIMEOUT=$ATTACH_TIMEOUT" \
         "JDK=$JDK" "JAVA=$JAVA" "LIBJVM=$LIBJVM" "OUT=$OUT" "TAG=$TAG")"
 fi
