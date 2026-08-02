@@ -65,17 +65,19 @@ NPARAM="${NPARAM:-}"   # e.g. NPARAM="yieldsPerVthread=1000,10000,100000"; empty
 ONLY="${ONLY:-}"       # substring filter on "Bench|variant" cells; empty = run all (unchanged)
 
 # ---- the matrix: "Bench|variant|<jvm arg to append, empty for baseline>" ----
-# The intentional per-benchmark variant selection.
+# The full benchmark x variant product.
 CELLS=(
   "VThreadTransitionBenchmark|baseline|"
   "VThreadTransitionBenchmark|agent|-agentpath:$AGENT_PATH"
   "VThreadTransitionBenchmark|jvmtipublish|-agentpath:$AGENT_PATH=publish=jvmti"
   "VThreadTransitionBenchmark|jvmalloc|-Dvthread.trace.jvmAlloc=true"
   "VThreadParkUnparkBenchmark|baseline|"
+  "VThreadParkUnparkBenchmark|agent|-agentpath:$AGENT_PATH"
   "VThreadParkUnparkBenchmark|jvmtipublish|-agentpath:$AGENT_PATH=publish=jvmti"
   "VThreadParkUnparkBenchmark|jvmalloc|-Dvthread.trace.jvmAlloc=true"
   "VThreadChurnBenchmark|baseline|"
   "VThreadChurnBenchmark|agent|-agentpath:$AGENT_PATH"
+  "VThreadChurnBenchmark|jvmtipublish|-agentpath:$AGENT_PATH=publish=jvmti"
   "VThreadChurnBenchmark|jvmalloc|-Dvthread.trace.jvmAlloc=true"
 )
 

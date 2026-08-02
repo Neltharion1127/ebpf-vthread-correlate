@@ -31,7 +31,7 @@
 # Requires kernel.perf_event_paranoid<=1 and kernel.kptr_restrict=0 — checked
 # up front below (fail-fast), set by scripts/env-bootstrap.sh.
 # EXPECTED WALL TIME on this spec: roughly 5 hours for the full batch
-# (10 matrix gc cells + 12 N-sweep cells at ~9 min each ≈ 3.5 h, oslevel
+# (12 matrix gc cells + 12 N-sweep cells at ~9 min each ≈ 3.5 h, oslevel
 # Transition/Churn/ParkUnpark A/C/B at ~9 min per state ≈ 80 min, COUNT runs
 # and the profiling pass add the rest) — versus ~1 h under the old reduced spec.
 set -euo pipefail
@@ -157,16 +157,16 @@ step "8/9 Transition N-sweep, gc pass only (convergence curve)"
 SKIP_BUILD=1 BATCH_ID="$BATCH_ID" NPARAM="yieldsPerVthread=1000,10000,100000" ONLY="Transition" QUICK=1 \
     RESULTS="$NSWEEP_DIR" "$SCRIPT_DIR/profile-matrix.sh"
 
-# 9. Full 10-cell matrix (gc + profiling pass [event=$PROF_EVENT] + flamegraphs)
+# 9. Full 12-cell matrix (gc + profiling pass [event=$PROF_EVENT] + flamegraphs)
 #    — the main tables. LAST so a late failure cannot cost the cheap runs above.
 #    Every output is scoped below this batch directory; an existing BATCH_ID is
 #    rejected before any work, so previous formal results cannot be overwritten.
 if [[ "$SKIP_MATRIX" != "1" ]]; then
-    step "9/9 full 10-cell matrix (main tables, PROF_EVENT=$PROF_EVENT)"
+    step "9/9 full 12-cell matrix (main tables, PROF_EVENT=$PROF_EVENT)"
     SKIP_BUILD=1 BATCH_ID="$BATCH_ID" PROF_EVENT="$PROF_EVENT" RESULTS="$MATRIX_DIR" \
         PROF_DIR="$COLLAPSED_DIR" OUT_DIR="$FIGURES_DIR" "$SCRIPT_DIR/profile-matrix.sh"
 else
-    step "9/9 full 10-cell matrix — SKIPPED (SKIP_MATRIX=1)"
+    step "9/9 full 12-cell matrix — SKIPPED (SKIP_MATRIX=1)"
 fi
 
 # ---- artifact inventory vs the built-in expected set -----------------------------------
@@ -210,8 +210,8 @@ for v in baseline agent jvmtipublish jvmalloc; do
 done
 if [[ "$SKIP_MATRIX" != "1" ]]; then
     for f in VThreadTransitionBenchmark_{baseline,agent,jvmtipublish,jvmalloc} \
-             VThreadParkUnparkBenchmark_{baseline,jvmtipublish,jvmalloc} \
-             VThreadChurnBenchmark_{baseline,agent,jvmalloc}; do
+             VThreadParkUnparkBenchmark_{baseline,agent,jvmtipublish,jvmalloc} \
+             VThreadChurnBenchmark_{baseline,agent,jvmtipublish,jvmalloc}; do
         expect "9 matrix gc JSON: $f" "$MATRIX_DIR/${f}_gc.json"
     done
 fi
