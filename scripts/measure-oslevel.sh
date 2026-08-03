@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# measure-oslevel.sh — A/C/B three-state quantification of OS-level observation overhead.
+# measure-oslevel.sh — legacy A/C/B, deployed S0/S1/S2/S3, and COUNT orchestration.
 #
 # SEPARATE from run-usdt.sh (the "probe alive" acceptance script). This script does NOT
 # modify bpf/correlate.bt, scripts/run-usdt.sh or scripts/profile-matrix.sh; it only
@@ -14,13 +14,22 @@
 #   C - A = publish residual   (expected ~0: cost of emitting USDT with no consumer)
 #   B - C = observation cost    (cost added by the eBPF consumer maintaining its maps)
 #
+# FACTORIAL=1 replaces the legacy three-state path with the self-contained deployed
+# configuration grid used by formal batches:
+#   S0  jvmAlloc=false, probes OFF, no consumer
+#   S1  jvmAlloc=true,  probes OFF, no consumer
+#   S2  jvmAlloc=true,  probes ON,  no consumer
+#   S3  jvmAlloc=true,  probes ON,  probesonly consumer attached
+# yielding S1-S0 allocation, S2-S1 buffered publication, S2-S0 total dormant,
+# and S3-S2 observation.  S2/S3 have identical JVM commands by construction.
+#
 # BEHAVIOUR CHANGE (jmh-defaults spec): the non-COUNT path no longer injects an
 # implicit `-f 2 -wi 3 -i 5`. F= / WI= / I= are now optional knobs — when UNSET,
 # the corresponding -f/-wi/-i flag is NOT passed at all, so the formal statistical
 # spec falls through to the JMH 1.37 built-in defaults (5 forks, warmup 5x10s,
 # measurement 5x10s; see result/analysis/JMH-PARAMS.md). Set them explicitly only
 # for special-purpose runs (e.g. quick orchestration checks or CI-tightening
-# reruns with a recorded, deliberate spec). Rationale: formally cited A/C/B
+# reruns with a recorded, deliberate spec). Rationale: formally cited oslevel
 # numbers must come from the same default spec as the main matrix, eliminating
 # deviation D7. The COUNT path is NOT affected (see below — correctness, not spec).
 #
@@ -53,8 +62,9 @@
 # EXTRA_JVMARGS= : extra JVM args routed into the fork via -jvmArgsAppend
 # (space-separated; e.g. EXTRA_JVMARGS="-agentpath:...=publish=jvmti" or
 # "-Dvthread.trace.jvmAlloc=true" for ParkUnpark counting variants). Applies in
-# every mode (default empty); in non-COUNT mode it is appended to ALL states so
-# each state still differs only by flag/consumer.
+# legacy and COUNT modes (default empty); in legacy non-COUNT mode it is appended
+# to ALL states so each state still differs only by flag/consumer. FACTORIAL=1
+# owns its axes explicitly and rejects EXTRA_JVMARGS.
 #
 # On a VM, every number this script prints is DIRECTIONAL — NOT citable as an
 # absolute overhead; citable numbers require bare metal AND the jmh-defaults spec
@@ -62,7 +72,7 @@
 # are for orchestration checks or bound-tightening experiments, recorded as
 # SPEC=custom in RUNINFO.
 #
-# B-state attach is by libjvm FILE PATH (USDT), never `bpftrace -c PID`:
+# Observed-state attach is by libjvm FILE PATH (USDT), never `bpftrace -c PID`:
 #   JMH forking (`-f` >= 1) runs the benchmark in a child JVM; a PID-scoped `-c` probe
 #   binds to the parent and would miss the child. Path attach catches the forked JVM
 #   regardless of PID. We poll the bpftrace log for the BEGIN "tracing started" marker
@@ -133,9 +143,23 @@ RUN_C="${RUN_C:-1}"                   # 1 = run C so publish residual / observat
 RUN_B="${RUN_B:-1}"                   # 0 = skip B (A/C only — publish pricing without a consumer;
                                       #     no probe self-check in that case, pair it with a COUNT run)
 COUNT="${COUNT:-0}"                   # 1 = counters-only mode: B state only, -f 1 -wi 0
+FACTORIAL="${FACTORIAL:-0}"           # 1 = formal S0/S1/S2/S3 alloc x probes x consumer run
 DRY_RUN="${DRY_RUN:-0}"               # 1 = print the states' commands and exit
 ATTACH_TIMEOUT="${ATTACH_TIMEOUT:-30}" # seconds to wait for bpftrace USDT attach
 EXTRA_JVMARGS="${EXTRA_JVMARGS:-}"    # extra fork args via -jvmArgsAppend (space-separated)
+
+if [[ "$COUNT" == "1" && "$FACTORIAL" == "1" ]]; then
+    echo "ERROR: COUNT=1 and FACTORIAL=1 are mutually exclusive" >&2
+    exit 1
+fi
+if [[ "$FACTORIAL" == "1" && -n "$EXTRA_JVMARGS" ]]; then
+    echo "ERROR: FACTORIAL=1 owns the jvmAlloc/probes axes; EXTRA_JVMARGS must be empty" >&2
+    exit 1
+fi
+if [[ "$FACTORIAL" == "1" && ( "$RUN_B" != "1" || "$RUN_C" != "1" ) ]]; then
+    echo "ERROR: FACTORIAL=1 requires RUN_B=1 and RUN_C=1" >&2
+    exit 1
+fi
 
 PROBES_BT="$REPO_ROOT/bpf/correlate-probesonly.bt"
 SHADED_JAR="$REPO_ROOT/target/ebpf-vthread-correlate-1.0-SNAPSHOT.jar"
@@ -154,6 +178,11 @@ A_LOG="$OUT/A_baseline_flag_off-$TAG.log"
 C_LOG="$OUT/C_publish_on_no_consumer-$TAG.log"
 B_LOG="$OUT/B_observed_jmh-$TAG.log"
 BT_LOG="$OUT/B_bpftrace-$TAG.log"
+S0_LOG="$OUT/S0_both_off-$TAG.log"
+S1_LOG="$OUT/S1_jvmalloc_probes_off-$TAG.log"
+S2_LOG="$OUT/S2_both_on_no_consumer-$TAG.log"
+S3_LOG="$OUT/S3_observed_real_buffer-$TAG.log"
+S3_BT_LOG="$OUT/S3_bpftrace_real_buffer-$TAG.log"
 MAIN_LOG="$OUT/measure-oslevel-$TAG.log"
 COUNT_FILE="$OUT/COUNT-$TAG.txt"
 
@@ -238,6 +267,25 @@ A_CMD=("$JAVA" "${COMMON_JMH[@]}" -jvmArgsAppend "-XX:-VThreadTraceProbes" ${EXT
 C_CMD=("$JAVA" "${COMMON_JMH[@]}" -jvmArgsAppend "-XX:+VThreadTraceProbes" ${EXTRA_APPEND[@]+"${EXTRA_APPEND[@]}"})
 B_CMD=("${C_CMD[@]}")   # B's JMH command is byte-for-byte identical to C.
 
+# Self-contained deployed-configuration factorial.  jvmAlloc=false is explicit in
+# S0 so the baseline never relies on an undocumented property default.  S2 and S3
+# are byte-for-byte identical JVM commands; only bpftrace attachment differs.
+S0_CMD=("$JAVA" "${COMMON_JMH[@]}" -jvmArgsAppend "-XX:-VThreadTraceProbes" -jvmArgsAppend "-Dvthread.trace.jvmAlloc=false")
+S1_CMD=("$JAVA" "${COMMON_JMH[@]}" -jvmArgsAppend "-XX:-VThreadTraceProbes" -jvmArgsAppend "-Dvthread.trace.jvmAlloc=true")
+S2_CMD=("$JAVA" "${COMMON_JMH[@]}" -jvmArgsAppend "-XX:+VThreadTraceProbes" -jvmArgsAppend "-Dvthread.trace.jvmAlloc=true")
+S3_CMD=("${S2_CMD[@]}")
+
+OBS_CMD=("${B_CMD[@]}")
+OBS_LOG="$B_LOG"
+OBS_BT_LOG="$BT_LOG"
+OBS_LABEL="B — observed (flag on, cropped bpftrace attached by libjvm path)"
+if [[ "$FACTORIAL" == "1" ]]; then
+    OBS_CMD=("${S3_CMD[@]}")
+    OBS_LOG="$S3_LOG"
+    OBS_BT_LOG="$S3_BT_LOG"
+    OBS_LABEL="S3 — observed (jvmAlloc on, probes on, cropped bpftrace attached by libjvm path)"
+fi
+
 # From here on, everything (including the final RESULT:/"COUNT RESULT:" lines)
 # is archived in the timestamped main log (GAP-5 fix). DRY_RUN stays
 # side-effect-free: no log, no RUNINFO.
@@ -245,13 +293,18 @@ if [[ "$DRY_RUN" != "1" ]]; then
     exec > >(tee "$MAIN_LOG") 2>&1
     RUNINFO_FILE="$(write_runinfo "$OUT" "measure-oslevel.sh" "$JAVA" \
         "SPEC=$([[ -z "$F$WI$I" ]] && echo jmh-defaults || echo custom)" "F=$F" "WI=$WI" "I=$I" \
-        "BATCH_ID=$BATCH_ID" "BENCH=$BENCH" "CLASS=$CLASS" "COUNT=$COUNT" "MI=$MI" \
+        "BATCH_ID=$BATCH_ID" "BENCH=$BENCH" "CLASS=$CLASS" "COUNT=$COUNT" "FACTORIAL=$FACTORIAL" "MI=$MI" \
         "RUN_C=$RUN_C" "RUN_B=$RUN_B" "EXTRA_JVMARGS=$EXTRA_JVMARGS" "ATTACH_TIMEOUT=$ATTACH_TIMEOUT" \
         "JDK=$JDK" "JAVA=$JAVA" "LIBJVM=$LIBJVM" "OUT=$OUT" "TAG=$TAG")"
 fi
 
-echo "measure-oslevel: A/C/B OS-level observation overhead  (DIRECTIONAL, VM-only — not citable)"
-echo "  C - A = publish residual (expected ~0);  B - C = observation cost"
+if [[ "$FACTORIAL" == "1" ]]; then
+    echo "measure-oslevel: S0/S1/S2/S3 deployed-configuration factorial"
+    echo "  S1-S0 = allocation; S2-S1 = buffered probe residual; S2-S0 = total dormant; S3-S2 = observation"
+else
+    echo "measure-oslevel: A/C/B OS-level observation overhead  (DIRECTIONAL, VM-only — not citable)"
+    echo "  C - A = publish residual (expected ~0);  B - C = observation cost"
+fi
 echo
 echo "JMH jar: $(readlink -f "$JAR" 2>/dev/null || echo "$JAR")"
 echo "JDK:     $JDK"
@@ -281,6 +334,19 @@ if [[ "$DRY_RUN" == "1" ]]; then
         echo
         echo "B  observed   (flag ON, cropped bpftrace attached by libjvm PATH, then JMH -f 1 -wi 0):"
         print_cmd "${B_CMD[@]}"
+        exit 0
+    fi
+    if [[ "$FACTORIAL" == "1" ]]; then
+        echo "DRY_RUN=1 — FACTORIAL mode; printing all four commands."
+        echo
+        echo "S0  both off (jvmAlloc=false, probes off, no bpftrace):"
+        print_cmd "${S0_CMD[@]}"
+        echo "S1  allocation only (jvmAlloc=true, probes off, no bpftrace):"
+        print_cmd "${S1_CMD[@]}"
+        echo "S2  deployed dormant (jvmAlloc=true, probes on, no bpftrace):"
+        print_cmd "${S2_CMD[@]}"
+        echo "S3  observed (same JVM command as S2, bpftrace attached):"
+        print_cmd "${S3_CMD[@]}"
         exit 0
     fi
     echo "DRY_RUN=1 — printing the three states' commands only; nothing is executed."
@@ -327,19 +393,19 @@ run_b() {
     # Path-scoped USDT: substitute the real libjvm so probes attach by file, not PID.
     sed "s#LIBJVM_PATH#${LIBJVM}#g" "$PROBES_BT" > "$BT_TMP"
 
-    : > "$BT_LOG"
-    sudo bpftrace "$BT_TMP" >"$BT_LOG" 2>&1 &
+    : > "$OBS_BT_LOG"
+    sudo bpftrace "$BT_TMP" >"$OBS_BT_LOG" 2>&1 &
     local sudo_pid=$!
 
     # Wait for the BEGIN attach marker — never a bare sleep.
     local waited=0
-    until grep -q "tracing started" "$BT_LOG" 2>/dev/null; do
+    until grep -q "tracing started" "$OBS_BT_LOG" 2>/dev/null; do
         if [[ ! -e "/proc/$sudo_pid" ]]; then
-            echo "----- bpftrace log -----" >&2; cat "$BT_LOG" >&2; echo "------------------------" >&2
+            echo "----- bpftrace log -----" >&2; cat "$OBS_BT_LOG" >&2; echo "------------------------" >&2
             die "bpftrace exited before attaching to USDT in $LIBJVM"
         fi
         if (( waited >= ATTACH_TIMEOUT )); then
-            echo "----- bpftrace log -----" >&2; cat "$BT_LOG" >&2; echo "------------------------" >&2
+            echo "----- bpftrace log -----" >&2; cat "$OBS_BT_LOG" >&2; echo "------------------------" >&2
             die "timed out after ${ATTACH_TIMEOUT}s waiting for bpftrace to attach"
         fi
         sleep 1; ((++waited))
@@ -347,12 +413,12 @@ run_b() {
     echo "  bpftrace attached after ${waited}s via libjvm path — no -c, no PID scope"
     echo
 
-    # B's JMH == C's JMH; only difference from C is that bpftrace is attached.
-    print_cmd "${B_CMD[@]}"
-    "${B_CMD[@]}" | tee "$B_LOG"
+    # Legacy B == C; factorial S3 == S2.  Only bpftrace attachment differs.
+    print_cmd "${OBS_CMD[@]}"
+    "${OBS_CMD[@]}" | tee "$OBS_LOG"
     echo
 
-    # SIGINT bpftrace (by its unique temp path) so END dumps the counters into BT_LOG;
+    # SIGINT bpftrace (by its unique temp path) so END dumps the counters into OBS_BT_LOG;
     # wait for the flush before parsing.
     sudo pkill -INT -f "$BT_TMP" 2>/dev/null || true
     wait "$sudo_pid" 2>/dev/null || true
@@ -362,6 +428,21 @@ run_b() {
 
 if [[ "$COUNT" == "1" ]]; then
     echo "COUNT MODE — time figures meaningless, counters only. Skipping A and C."
+    echo
+elif [[ "$FACTORIAL" == "1" ]]; then
+    echo "S0 — both off (jvmAlloc=false, probes off, no bpftrace)"
+    print_cmd "${S0_CMD[@]}"
+    "${S0_CMD[@]}" | tee "$S0_LOG"
+    echo
+
+    echo "S1 — allocation only (jvmAlloc=true, probes off, no bpftrace)"
+    print_cmd "${S1_CMD[@]}"
+    "${S1_CMD[@]}" | tee "$S1_LOG"
+    echo
+
+    echo "S2 — deployed dormant (jvmAlloc=true, probes on, no consumer)"
+    print_cmd "${S2_CMD[@]}"
+    "${S2_CMD[@]}" | tee "$S2_LOG"
     echo
 else
     echo "A — baseline (flag off, no bpftrace)"
@@ -378,20 +459,24 @@ else
 fi
 
 if [[ "$RUN_B" == "1" ]]; then
-    echo "B — observed (flag on, cropped bpftrace attached by libjvm path)"
+    echo "$OBS_LABEL"
     run_b
 fi
 
 # --- parse + self-check ----------------------------------------------------------------
 if [[ "$RUN_B" == "1" ]]; then
-    FREEZE_TOTAL="$(count_from_log "@freeze_total" "$BT_LOG")"
-    THAW_TOTAL="$(count_from_log "@thaw_total" "$BT_LOG")"
-    THAW_TOP="$(count_from_log "@thaw_kind[0]" "$BT_LOG")"
-    START_TOTAL="$(count_from_log "@start_total" "$BT_LOG")"
-    END_TOTAL="$(count_from_log "@end_total" "$BT_LOG")"
-    END_UNMATCHED="$(count_from_log "@end_unmatched" "$BT_LOG")"
+    FREEZE_TOTAL="$(count_from_log "@freeze_total" "$OBS_BT_LOG")"
+    THAW_TOTAL="$(count_from_log "@thaw_total" "$OBS_BT_LOG")"
+    THAW_TOP="$(count_from_log "@thaw_kind[0]" "$OBS_BT_LOG")"
+    THAW_NULLBUF="$(count_from_log "@thaw_nullbuf" "$OBS_BT_LOG")"
+    START_TOTAL="$(count_from_log "@start_total" "$OBS_BT_LOG")"
+    END_TOTAL="$(count_from_log "@end_total" "$OBS_BT_LOG")"
+    END_UNMATCHED="$(count_from_log "@end_unmatched" "$OBS_BT_LOG")"
+    FREEZE_UNMATCHED="$(count_from_log "@freeze_unmatched" "$OBS_BT_LOG")"
+    PINNED_TOTAL="$(count_from_log "@pinned_total" "$OBS_BT_LOG")"
 else
-    FREEZE_TOTAL=0; THAW_TOTAL=0; THAW_TOP=0; START_TOTAL=0; END_TOTAL=0; END_UNMATCHED=0
+    FREEZE_TOTAL=0; THAW_TOTAL=0; THAW_TOP=0; THAW_NULLBUF=0
+    START_TOTAL=0; END_TOTAL=0; END_UNMATCHED=0; FREEZE_UNMATCHED=0; PINNED_TOTAL=0
 fi
 
 FAIL=0
@@ -434,6 +519,79 @@ check_probe_counts() {
         echo "FAIL: @end_unmatched=$END_UNMATCHED (expected 0 — tracer attached mid-lifetime, or a cache-protocol anomaly; see bpf/correlate.bt header)." >&2
         FAIL=1
     fi
+    if [[ "${FREEZE_UNMATCHED:-0}" -ne 0 ]]; then
+        echo "FAIL: @freeze_unmatched=$FREEZE_UNMATCHED (expected 0)." >&2
+        FAIL=1
+    fi
+    if [[ "${START_TOTAL:-0}" -ne "${END_TOTAL:-0}" ]]; then
+        echo "FAIL: @start_total=$START_TOTAL != @end_total=$END_TOTAL (lifecycle probes must pair exactly)." >&2
+        FAIL=1
+    fi
+    if [[ "${PINNED_TOTAL:-0}" -ne 0 ]]; then
+        echo "FAIL: @pinned_total=$PINNED_TOTAL (expected 0 for the benchmark workloads)." >&2
+        FAIL=1
+    fi
+}
+
+require_vm_option() { # <log> <exact-token>
+    local log="$1" token="$2" line
+    line="$(grep -m1 '^# VM options:' "$log" 2>/dev/null || true)"
+    if [[ -z "$line" || " $line " != *" $token "* ]]; then
+        echo "FAIL: actual fork options in $log do not contain '$token': ${line:-(missing # VM options line)}" >&2
+        FAIL=1
+    fi
+}
+
+reject_vm_option() { # <log> <substring>
+    local log="$1" token="$2" line
+    line="$(grep -m1 '^# VM options:' "$log" 2>/dev/null || true)"
+    if [[ "$line" == *"$token"* ]]; then
+        echo "FAIL: actual fork options in $log unexpectedly contain '$token': $line" >&2
+        FAIL=1
+    fi
+}
+
+check_factorial_options() {
+    require_vm_option "$S0_LOG" "-XX:-VThreadTraceProbes"
+    require_vm_option "$S0_LOG" "-Dvthread.trace.jvmAlloc=false"
+    require_vm_option "$S1_LOG" "-XX:-VThreadTraceProbes"
+    require_vm_option "$S1_LOG" "-Dvthread.trace.jvmAlloc=true"
+    require_vm_option "$S2_LOG" "-XX:+VThreadTraceProbes"
+    require_vm_option "$S2_LOG" "-Dvthread.trace.jvmAlloc=true"
+    require_vm_option "$S3_LOG" "-XX:+VThreadTraceProbes"
+    require_vm_option "$S3_LOG" "-Dvthread.trace.jvmAlloc=true"
+    for log in "$S0_LOG" "$S1_LOG" "$S2_LOG" "$S3_LOG"; do
+        reject_vm_option "$log" "-agentpath:"
+    done
+
+    local s2_opts s3_opts
+    s2_opts="$(grep -m1 '^# VM options:' "$S2_LOG" 2>/dev/null || true)"
+    s3_opts="$(grep -m1 '^# VM options:' "$S3_LOG" 2>/dev/null || true)"
+    if [[ -z "$s2_opts" || "$s2_opts" != "$s3_opts" ]]; then
+        echo "FAIL: S2 and S3 actual fork options are not byte-for-byte identical" >&2
+        echo "  S2: ${s2_opts:-(missing)}" >&2
+        echo "  S3: ${s3_opts:-(missing)}" >&2
+        FAIL=1
+    fi
+}
+
+check_factorial_buffer() {
+    case "$BENCH" in
+        churn)
+            echo "  buffer self-check: Churn has @thaw_total=$THAW_TOTAL; @thaw_nullbuf=$THAW_NULLBUF is vacuous and is NOT accepted as allocator proof"
+            ;;
+        *)
+            if [[ "${THAW_TOTAL:-0}" -le 0 ]]; then
+                echo "FAIL: factorial S3 produced no thaws; cannot prove a real trace buffer was observed." >&2
+                FAIL=1
+            elif [[ "${THAW_NULLBUF:-0}" -ne 0 ]]; then
+                echo "FAIL: factorial S3 @thaw_nullbuf=$THAW_NULLBUF, expected 0 of @thaw_total=$THAW_TOTAL with jvmAlloc=true." >&2
+                FAIL=1
+            else
+                echo "  buffer self-check: PASS — @thaw_nullbuf=0 of @thaw_total=$THAW_TOTAL"
+            fi
+            ;;
+    esac
 }
 
 if [[ "$COUNT" == "1" ]]; then
@@ -457,7 +615,7 @@ if [[ "$COUNT" == "1" ]]; then
         FREEZES_PER_OP="$(awk -v n="$FREEZE_TOTAL" -v o="$OPS" 'BEGIN { printf "%.4f", n / o }')"
         TOP_THAWS_PER_OP="$(awk -v n="$THAW_TOP" -v o="$OPS" 'BEGIN { printf "%.4f", n / o }')"
         STARTS_PER_OP="$(awk -v n="$START_TOTAL" -v o="$OPS" 'BEGIN { printf "%.4f", n / o }')"
-        COUNT_LINE="COUNT RESULT: bench=$BENCH class=$CLASS ops=$OPS freeze_total=$FREEZE_TOTAL thaw_total=$THAW_TOTAL thaw_top=$THAW_TOP start_total=$START_TOTAL end_total=$END_TOTAL end_unmatched=$END_UNMATCHED freezes_per_op=$FREEZES_PER_OP top_thaws_per_op=$TOP_THAWS_PER_OP starts_per_op=$STARTS_PER_OP extra_jvmargs='$EXTRA_JVMARGS'"
+        COUNT_LINE="COUNT RESULT: bench=$BENCH class=$CLASS ops=$OPS freeze_total=$FREEZE_TOTAL thaw_total=$THAW_TOTAL thaw_top=$THAW_TOP thaw_nullbuf=$THAW_NULLBUF start_total=$START_TOTAL end_total=$END_TOTAL end_unmatched=$END_UNMATCHED freeze_unmatched=$FREEZE_UNMATCHED pinned_total=$PINNED_TOTAL freezes_per_op=$FREEZES_PER_OP top_thaws_per_op=$TOP_THAWS_PER_OP starts_per_op=$STARTS_PER_OP extra_jvmargs='$EXTRA_JVMARGS'"
         echo "$COUNT_LINE"
         printf '%s\n' "$COUNT_LINE" > "$COUNT_FILE"
         echo "  (archived: $COUNT_FILE)"
@@ -469,6 +627,54 @@ if [[ "$COUNT" == "1" ]]; then
         exit 1
     fi
     echo "RESULT: OK — COUNT mode counters harvested (time figures meaningless by design)."
+    exit 0
+fi
+
+if [[ "$FACTORIAL" == "1" ]]; then
+    S0_SCORE="$(score_num_from_log "$S0_LOG")"
+    S1_SCORE="$(score_num_from_log "$S1_LOG")"
+    S2_SCORE="$(score_num_from_log "$S2_LOG")"
+    S3_SCORE="$(score_num_from_log "$S3_LOG")"
+
+    [[ -n "$S0_SCORE" ]] || { echo "FAIL: could not parse S0 JMH score from $S0_LOG" >&2; FAIL=1; }
+    [[ -n "$S1_SCORE" ]] || { echo "FAIL: could not parse S1 JMH score from $S1_LOG" >&2; FAIL=1; }
+    [[ -n "$S2_SCORE" ]] || { echo "FAIL: could not parse S2 JMH score from $S2_LOG" >&2; FAIL=1; }
+    [[ -n "$S3_SCORE" ]] || { echo "FAIL: could not parse S3 JMH score from $S3_LOG" >&2; FAIL=1; }
+
+    check_probe_counts
+    check_factorial_options
+    check_factorial_buffer
+
+    echo "============================================================"
+    echo "Factorial summary — all contrasts are same-run-set comparisons"
+    echo
+    printf '  S0 both off        : %s us/op\n' "${S0_SCORE:-?}"
+    printf '  S1 allocation only : %s us/op\n' "${S1_SCORE:-?}"
+    printf '  S2 deployed dormant: %s us/op\n' "${S2_SCORE:-?}"
+    printf '  S3 observed        : %s us/op\n' "${S3_SCORE:-?}"
+    echo
+    if [[ -n "$S0_SCORE" && -n "$S1_SCORE" && -n "$S2_SCORE" && -n "$S3_SCORE" ]]; then
+        ALLOC_COST="$(awk -v s0="$S0_SCORE" -v s1="$S1_SCORE" 'BEGIN { printf "%.3f", s1 - s0 }')"
+        PROBE_RESIDUAL="$(awk -v s1="$S1_SCORE" -v s2="$S2_SCORE" 'BEGIN { printf "%.3f", s2 - s1 }')"
+        TOTAL_DORMANT="$(awk -v s0="$S0_SCORE" -v s2="$S2_SCORE" 'BEGIN { printf "%.3f", s2 - s0 }')"
+        OBS_COST="$(awk -v s2="$S2_SCORE" -v s3="$S3_SCORE" 'BEGIN { printf "%.3f", s3 - s2 }')"
+        printf '  S1 - S0 allocation cost        : %s us/op\n' "$ALLOC_COST"
+        printf '  S2 - S1 buffered probe residual: %s us/op\n' "$PROBE_RESIDUAL"
+        printf '  S2 - S0 total dormant cost     : %s us/op\n' "$TOTAL_DORMANT"
+        printf '  S3 - S2 observation cost       : %s us/op\n' "$OBS_COST"
+    fi
+    echo
+    echo "  S3 counters: @freeze_total=$FREEZE_TOTAL  @thaw_total=$THAW_TOTAL  @thaw_nullbuf=$THAW_NULLBUF"
+    echo "               @start_total=$START_TOTAL  @end_total=$END_TOTAL  @end_unmatched=$END_UNMATCHED"
+    echo "               @freeze_unmatched=$FREEZE_UNMATCHED  @pinned_total=$PINNED_TOTAL"
+
+    if [[ "$FAIL" != "0" ]]; then
+        echo
+        echo "FACTORIAL RESULT: FAIL — see messages above; do not use these contrasts." >&2
+        exit 1
+    fi
+    echo
+    echo "FACTORIAL RESULT: OK — four states completed, actual fork options verified, S3 counters harvested."
     exit 0
 fi
 

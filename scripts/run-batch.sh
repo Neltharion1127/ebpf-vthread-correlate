@@ -13,13 +13,14 @@
 #   taskset -c <cpus> scripts/run-batch.sh       # full formal batch
 #   BATCH_ID=<name> scripts/run-batch.sh         # explicit reproducible batch name
 #   SKIP_MATRIX=1 scripts/run-batch.sh           # gap-fill batch without step 9
+#   FACTORIAL_ONLY=1 scripts/run-batch.sh         # only the three formal S0/S1/S2/S3 runs
 #   PREFLIGHT_ONLY=1 scripts/run-batch.sh         # check host; create no output
 #
 # Every step's knobs are hard-coded here on purpose; the comment on each step names
 # the triage item (ANALYSIS-BAREMETAL.md §2 / v2 ANALYSIS.md §5a) it answers.
 #
 # SPEC=jmh-defaults: since the D3/D4/D5/D7 spec change, the matrix gc pass, the
-# N-sweep and the oslevel A/C/B states all run on the JMH 1.37 built-in defaults
+# N-sweep and the oslevel S0/S1/S2/S3 states all run on the JMH 1.37 built-in defaults
 # (5 forks, warmup 5x10s, measurement 5x10s — no -f/-wi/-i injected anywhere;
 # see result/analysis/JMH-PARAMS.md). Two deliberate exceptions, unchanged:
 # COUNT mode (-f 1 -wi 0 -r 1, correctness) and the profiling pass (-f 1,
@@ -30,9 +31,9 @@
 # the 20260705 batch's flame graphs are itimer, do not mix in differentials).
 # Requires kernel.perf_event_paranoid<=1 and kernel.kptr_restrict=0 — checked
 # up front below (fail-fast), set by scripts/env-bootstrap.sh.
-# EXPECTED WALL TIME on this spec: roughly 5 hours for the full batch
+# EXPECTED WALL TIME on this spec: roughly 6 hours for the full batch
 # (12 matrix gc cells + 12 N-sweep cells at ~9 min each ≈ 3.5 h, oslevel
-# Transition/Churn/ParkUnpark A/C/B at ~9 min per state ≈ 80 min, COUNT runs
+# Transition/Churn/ParkUnpark S0/S1/S2/S3 at ~9 min per state ≈ 2 h, COUNT runs
 # and the profiling pass add the rest) — versus ~1 h under the old reduced spec.
 set -euo pipefail
 
@@ -52,6 +53,10 @@ source "$SCRIPT_DIR/lib/runinfo.sh"
 source "$SCRIPT_DIR/lib/benchmark-preflight.sh"
 
 SKIP_MATRIX="${SKIP_MATRIX:-0}"
+FACTORIAL_ONLY="${FACTORIAL_ONLY:-0}"
+if [[ "$FACTORIAL_ONLY" == "1" ]]; then
+    SKIP_MATRIX=1
+fi
 PROF_EVENT="${PROF_EVENT:-cpu}"   # formal batch = perf events w/ kernel stacks (see header)
 PREFLIGHT_ONLY="${PREFLIGHT_ONLY:-0}"
 BATCH_ID="${BATCH_ID:-$(date +%Y%m%d-%H%M%S)}"
@@ -85,12 +90,12 @@ mkdir -p "$OSLEVEL" "$NSWEEP_DIR" "$MATRIX_DIR" "$COLLAPSED_DIR" "$FIGURES_DIR"
 
 exec > >(tee "$BATCH_LOG") 2>&1
 
-echo "run-batch: formal batch definition (BATCH_ID=$BATCH_ID, SKIP_MATRIX=$SKIP_MATRIX)"
+echo "run-batch: formal batch definition (BATCH_ID=$BATCH_ID, SKIP_MATRIX=$SKIP_MATRIX, FACTORIAL_ONLY=$FACTORIAL_ONLY)"
 RUNINFO_FILE="$(write_runinfo "$BATCH_DIR" "run-batch.sh" "${JAVA_HOME}/bin/java" \
     "SPEC=jmh-defaults" "PROF_EVENT=$PROF_EVENT" \
     "perf_event_paranoid=$(cat /proc/sys/kernel/perf_event_paranoid 2>/dev/null || echo unknown)" \
     "kptr_restrict=$(cat /proc/sys/kernel/kptr_restrict 2>/dev/null || echo unknown)" \
-    "BATCH_ID=$BATCH_ID" "SKIP_MATRIX=$SKIP_MATRIX" "SOURCE_PREFLIGHT=passed" \
+    "BATCH_ID=$BATCH_ID" "SKIP_MATRIX=$SKIP_MATRIX" "FACTORIAL_ONLY=$FACTORIAL_ONLY" "SOURCE_PREFLIGHT=passed" \
     "ALLOW_DIRTY=${ALLOW_DIRTY:-0}" "ALLOW_TURBO=${ALLOW_TURBO:-0}" \
     "REQUIRE_SMT_OFF=${REQUIRE_SMT_OFF:-0}" "REQUIRE_CPU_PINNING=${REQUIRE_CPU_PINNING:-0}" \
     "OSLEVEL=$OSLEVEL" "NSWEEP_DIR=$NSWEEP_DIR" "MATRIX_DIR=$MATRIX_DIR" \
@@ -115,58 +120,62 @@ sha256sum "$AGENT_PATH" "$JAR" > "$BATCH_DIR/build-artifacts.sha256"
 MARKER="$(mktemp "${TMPDIR:-/tmp}/run-batch-marker.XXXXXX")"
 trap 'rm -f "$MARKER"' EXIT
 
-# 1. Transition A/C/B — publish residual.
-#    Also the ENVIRONMENT SENTINEL for gap-fill runs: compare this A/C against the
-#    main batch's A/C — CI overlap means same-batch-comparable, non-overlap means
-#    the gap-fill data must be labelled a separate batch.
-step "1/9 oslevel Transition A/C/B (publish residual, observation cost, sentinel)"
-OUT="$OSLEVEL" BATCH_ID="$BATCH_ID" "$SCRIPT_DIR/measure-oslevel.sh"
+# 1. Transition deployed factorial.  Every contrast is internal to this run set:
+#    S0 both off; S1 jvmAlloc only; S2 jvmAlloc + probes, no consumer; S3 observed.
+step "1/9 oslevel Transition S0/S1/S2/S3 deployed factorial"
+OUT="$OSLEVEL" BATCH_ID="$BATCH_ID" FACTORIAL=1 "$SCRIPT_DIR/measure-oslevel.sh"
 
-# 2. Churn A/C/B — lifecycle publish pricing plus observation cost. COUNT in
-#    step 3 remains separate correctness evidence and is never used as timing.
-step "2/9 oslevel Churn A/C/B (lifecycle publish and observation cost)"
-OUT="$OSLEVEL" BATCH_ID="$BATCH_ID" BENCH=churn "$SCRIPT_DIR/measure-oslevel.sh"
+# 2. Churn deployed factorial. COUNT in step 3 remains separate correctness
+#    evidence and is never used as timing.
+step "2/9 oslevel Churn S0/S1/S2/S3 deployed factorial"
+OUT="$OSLEVEL" BATCH_ID="$BATCH_ID" BENCH=churn FACTORIAL=1 "$SCRIPT_DIR/measure-oslevel.sh"
 
 # 3. Churn COUNT — pure-isolation precondition, @freeze_total MUST be 0
 #    (churn vthreads never block by design), asserted workload-aware (lifecycle
 #    pair only; freeze_total recorded, not asserted — its value IS the verdict).
-step "3/9 oslevel Churn COUNT (precondition: freeze_total == 0)"
-OUT="$OSLEVEL" BATCH_ID="$BATCH_ID" BENCH=churn COUNT=1 "$SCRIPT_DIR/measure-oslevel.sh"
+if [[ "$FACTORIAL_ONLY" != "1" ]]; then
+    step "3/9 oslevel Churn COUNT (precondition: freeze_total == 0)"
+    OUT="$OSLEVEL" BATCH_ID="$BATCH_ID" BENCH=churn COUNT=1 "$SCRIPT_DIR/measure-oslevel.sh"
+fi
 
-# 4. ParkUnpark A/C/B — realistic blocking workload dormancy gradient.
-step "4/9 oslevel ParkUnpark A/C/B (blocking publish and observation cost)"
-OUT="$OSLEVEL" BATCH_ID="$BATCH_ID" BENCH=parkunpark "$SCRIPT_DIR/measure-oslevel.sh"
+# 4. ParkUnpark deployed factorial — realistic blocking workload.
+step "4/9 oslevel ParkUnpark S0/S1/S2/S3 deployed factorial"
+OUT="$OSLEVEL" BATCH_ID="$BATCH_ID" BENCH=parkunpark FACTORIAL=1 "$SCRIPT_DIR/measure-oslevel.sh"
 
-# 5-7. ParkUnpark COUNT x 3 variants — TRUE per-op denominators (alloc-axis
-#    adjudication needs freezes_per_op per variant; VM showed ~9% variant drift).
-step "5/9 oslevel ParkUnpark COUNT, baseline (true denominator)"
-OUT="$OSLEVEL" BATCH_ID="$BATCH_ID" COUNT=1 BENCH=parkunpark "$SCRIPT_DIR/measure-oslevel.sh"
+if [[ "$FACTORIAL_ONLY" != "1" ]]; then
+    # 5-7. ParkUnpark COUNT x 3 variants — TRUE per-op denominators (alloc-axis
+    #    adjudication needs freezes_per_op per variant; VM showed ~9% variant drift).
+    step "5/9 oslevel ParkUnpark COUNT, baseline (true denominator)"
+    OUT="$OSLEVEL" BATCH_ID="$BATCH_ID" COUNT=1 BENCH=parkunpark "$SCRIPT_DIR/measure-oslevel.sh"
 
-step "6/9 oslevel ParkUnpark COUNT, publish=jvmti (true denominator)"
-OUT="$OSLEVEL" BATCH_ID="$BATCH_ID" COUNT=1 BENCH=parkunpark EXTRA_JVMARGS="-agentpath:$AGENT_PATH=publish=jvmti" \
-    "$SCRIPT_DIR/measure-oslevel.sh"
+    step "6/9 oslevel ParkUnpark COUNT, publish=jvmti (true denominator)"
+    OUT="$OSLEVEL" BATCH_ID="$BATCH_ID" COUNT=1 BENCH=parkunpark EXTRA_JVMARGS="-agentpath:$AGENT_PATH=publish=jvmti" \
+        "$SCRIPT_DIR/measure-oslevel.sh"
 
-step "7/9 oslevel ParkUnpark COUNT, jvmAlloc (true denominator)"
-OUT="$OSLEVEL" BATCH_ID="$BATCH_ID" COUNT=1 BENCH=parkunpark EXTRA_JVMARGS="-Dvthread.trace.jvmAlloc=true" \
-    "$SCRIPT_DIR/measure-oslevel.sh"
+    step "7/9 oslevel ParkUnpark COUNT, jvmAlloc (true denominator)"
+    OUT="$OSLEVEL" BATCH_ID="$BATCH_ID" COUNT=1 BENCH=parkunpark EXTRA_JVMARGS="-Dvthread.trace.jvmAlloc=true" \
+        "$SCRIPT_DIR/measure-oslevel.sh"
 
-# 8. Transition N-sweep — per-yield convergence curve, both axes from the gc pass.
-#    QUICK=1: no profiling pass and no flamegraphs. Its batch subdirectory is
-#    separate from the main matrix by construction.
-step "8/9 Transition N-sweep, gc pass only (convergence curve)"
-SKIP_BUILD=1 BATCH_ID="$BATCH_ID" NPARAM="yieldsPerVthread=1000,10000,100000" ONLY="Transition" QUICK=1 \
-    RESULTS="$NSWEEP_DIR" "$SCRIPT_DIR/profile-matrix.sh"
+    # 8. Transition N-sweep — per-yield convergence curve, both axes from the gc pass.
+    #    QUICK=1: no profiling pass and no flamegraphs. Its batch subdirectory is
+    #    separate from the main matrix by construction.
+    step "8/9 Transition N-sweep, gc pass only (convergence curve)"
+    SKIP_BUILD=1 BATCH_ID="$BATCH_ID" NPARAM="yieldsPerVthread=1000,10000,100000" ONLY="Transition" QUICK=1 \
+        RESULTS="$NSWEEP_DIR" "$SCRIPT_DIR/profile-matrix.sh"
 
-# 9. Full 12-cell matrix (gc + profiling pass [event=$PROF_EVENT] + flamegraphs)
-#    — the main tables. LAST so a late failure cannot cost the cheap runs above.
-#    Every output is scoped below this batch directory; an existing BATCH_ID is
-#    rejected before any work, so previous formal results cannot be overwritten.
-if [[ "$SKIP_MATRIX" != "1" ]]; then
-    step "9/9 full 12-cell matrix (main tables, PROF_EVENT=$PROF_EVENT)"
-    SKIP_BUILD=1 BATCH_ID="$BATCH_ID" PROF_EVENT="$PROF_EVENT" RESULTS="$MATRIX_DIR" \
-        PROF_DIR="$COLLAPSED_DIR" OUT_DIR="$FIGURES_DIR" "$SCRIPT_DIR/profile-matrix.sh"
+    # 9. Full 12-cell matrix (gc + profiling pass [event=$PROF_EVENT] + flamegraphs)
+    #    — the main tables. LAST so a late failure cannot cost the cheap runs above.
+    #    Every output is scoped below this batch directory; an existing BATCH_ID is
+    #    rejected before any work, so previous formal results cannot be overwritten.
+    if [[ "$SKIP_MATRIX" != "1" ]]; then
+        step "9/9 full 12-cell matrix (main tables, PROF_EVENT=$PROF_EVENT)"
+        SKIP_BUILD=1 BATCH_ID="$BATCH_ID" PROF_EVENT="$PROF_EVENT" RESULTS="$MATRIX_DIR" \
+            PROF_DIR="$COLLAPSED_DIR" OUT_DIR="$FIGURES_DIR" "$SCRIPT_DIR/profile-matrix.sh"
+    else
+        step "9/9 full 12-cell matrix — SKIPPED (SKIP_MATRIX=1)"
+    fi
 else
-    step "9/9 full 12-cell matrix — SKIPPED (SKIP_MATRIX=1)"
+    step "3,5-9/9 COUNT/N-sweep/matrix — SKIPPED (FACTORIAL_ONLY=1)"
 fi
 
 # ---- artifact inventory vs the built-in expected set -----------------------------------
@@ -181,7 +190,7 @@ have() { # <glob...> -- [required-grep]
     [[ "${1:-}" == "--" ]] && { shift; pat="${1:-}"; }
     for f in "${pats[@]}"; do
         [[ -f "$f" && "$f" -nt "$MARKER" ]] || continue
-        if [[ -z "$pat" ]] || grep -q "$pat" "$f"; then return 0; fi
+        if [[ -z "$pat" ]] || grep -Fq -- "$pat" "$f"; then return 0; fi
     done
     return 1
 }
@@ -190,30 +199,44 @@ expect() { # <desc> <have-args...>
     if have "$@"; then echo "  [OK]      $desc"; else echo "  [MISSING] $desc"; MISSING+=("$desc"); fi
 }
 
-expect "1 Transition A/C/B includes B-C (sentinel)" \
-    "$OSLEVEL"/measure-oslevel-transition-*.log -- "B - C  observation cost"
-expect "2 Churn A/C/B includes B-C" \
-    "$OSLEVEL"/measure-oslevel-churn-2*.log -- "B - C  observation cost"
-expect "3 Churn COUNT line (freeze_total precondition)" \
-    "$OSLEVEL"/COUNT-churn-count-*.txt -- "freeze_total="
-expect "4 ParkUnpark A/C/B includes B-C" \
-    "$OSLEVEL"/measure-oslevel-parkunpark-2*.log -- "B - C  observation cost"
-expect "5 ParkUnpark COUNT baseline" \
-    "$OSLEVEL"/COUNT-parkunpark-count-*.txt -- "extra_jvmargs=''"
-expect "6 ParkUnpark COUNT publish=jvmti" \
-    "$OSLEVEL"/COUNT-parkunpark-count-*.txt -- "publish=jvmti"
-expect "7 ParkUnpark COUNT jvmAlloc" \
-    "$OSLEVEL"/COUNT-parkunpark-count-*.txt -- "jvmAlloc"
-for v in baseline agent jvmtipublish jvmalloc; do
-    expect "8 N-sweep gc JSON: Transition/$v" \
-        "$NSWEEP_DIR/VThreadTransitionBenchmark_${v}_gc.json"
+for bench in transition churn parkunpark; do
+    expect "oslevel factorial $bench completed" \
+        "$OSLEVEL"/measure-oslevel-$bench-*.log -- "FACTORIAL RESULT: OK"
+    expect "oslevel factorial $bench S0 actual jvmAlloc=false" \
+        "$OSLEVEL"/S0_both_off-$bench-*.log -- "-Dvthread.trace.jvmAlloc=false"
+    expect "oslevel factorial $bench S1 actual jvmAlloc=true" \
+        "$OSLEVEL"/S1_jvmalloc_probes_off-$bench-*.log -- "-Dvthread.trace.jvmAlloc=true"
+    expect "oslevel factorial $bench S2 actual jvmAlloc=true" \
+        "$OSLEVEL"/S2_both_on_no_consumer-$bench-*.log -- "-Dvthread.trace.jvmAlloc=true"
+    expect "oslevel factorial $bench S3 actual jvmAlloc=true" \
+        "$OSLEVEL"/S3_observed_real_buffer-$bench-*.log -- "-Dvthread.trace.jvmAlloc=true"
+    expect "oslevel factorial $bench S3 bpftrace END dump" \
+        "$OSLEVEL"/S3_bpftrace_real_buffer-$bench-*.log -- "@end_unmatched: 0"
 done
-if [[ "$SKIP_MATRIX" != "1" ]]; then
-    for f in VThreadTransitionBenchmark_{baseline,agent,jvmtipublish,jvmalloc} \
-             VThreadParkUnparkBenchmark_{baseline,agent,jvmtipublish,jvmalloc} \
-             VThreadChurnBenchmark_{baseline,agent,jvmtipublish,jvmalloc}; do
-        expect "9 matrix gc JSON: $f" "$MATRIX_DIR/${f}_gc.json"
+expect "Transition S3 real-buffer proof" \
+    "$OSLEVEL"/S3_bpftrace_real_buffer-transition-*.log -- "@thaw_nullbuf: 0"
+expect "ParkUnpark S3 real-buffer proof" \
+    "$OSLEVEL"/S3_bpftrace_real_buffer-parkunpark-*.log -- "@thaw_nullbuf: 0"
+if [[ "$FACTORIAL_ONLY" != "1" ]]; then
+    expect "3 Churn COUNT line (freeze_total precondition)" \
+        "$OSLEVEL"/COUNT-churn-count-*.txt -- "freeze_total="
+    expect "5 ParkUnpark COUNT baseline" \
+        "$OSLEVEL"/COUNT-parkunpark-count-*.txt -- "extra_jvmargs=''"
+    expect "6 ParkUnpark COUNT publish=jvmti" \
+        "$OSLEVEL"/COUNT-parkunpark-count-*.txt -- "publish=jvmti"
+    expect "7 ParkUnpark COUNT jvmAlloc" \
+        "$OSLEVEL"/COUNT-parkunpark-count-*.txt -- "jvmAlloc"
+    for v in baseline agent jvmtipublish jvmalloc; do
+        expect "8 N-sweep gc JSON: Transition/$v" \
+            "$NSWEEP_DIR/VThreadTransitionBenchmark_${v}_gc.json"
     done
+    if [[ "$SKIP_MATRIX" != "1" ]]; then
+        for f in VThreadTransitionBenchmark_{baseline,agent,jvmtipublish,jvmalloc} \
+                 VThreadParkUnparkBenchmark_{baseline,agent,jvmtipublish,jvmalloc} \
+                 VThreadChurnBenchmark_{baseline,agent,jvmtipublish,jvmalloc}; do
+            expect "9 matrix gc JSON: $f" "$MATRIX_DIR/${f}_gc.json"
+        done
+    fi
 fi
 
 echo
