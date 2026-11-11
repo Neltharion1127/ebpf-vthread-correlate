@@ -5,12 +5,12 @@
 // USDT probes (compiled into libjvm):
 //   hotspot:vthread__thaw(uintptr_t vthread_id, int thaw_kind,      uintptr_t trace_buffer_addr)
 //   hotspot:vthread__freeze(uintptr_t vthread_id, int freeze_result, uintptr_t trace_buffer_addr)
-//   hotspot:vthread__start(uintptr_t vthread_id, uintptr_t trace_buffer_addr)   [lifecycle-probes JDK only]
-//   hotspot:vthread__end(uintptr_t vthread_id)                                  [lifecycle-probes JDK only]
+//   hotspot:vthread__start(uintptr_t vthread_id, uintptr_t trace_buffer_addr)
+//   hotspot:vthread__end(uintptr_t vthread_id)
 //
 // LIBJVM_PATH is replaced at runtime by run.sh before bpftrace sees this file.
 //
-// ── Carrier-cache protocol (lifecycle-probes branch) ─────────────────────────
+// ── Carrier-cache protocol (four-probe) ──────────────────────────────────────
 //
 // Insert/delete responsibilities on @vthread/@vtbuf[curtask]:
 //
@@ -27,12 +27,10 @@
 //                          | misattributes the next vthread (soundness fix)
 //
 // All four events fire on the carrier they describe, so inserts/deletes hit
-// the right key with no cross-event ordering assumptions. This fixes the two
-// defects recorded in result/blindspot/FINDINGS.md.
+// the right key with no cross-event ordering assumptions. This closes the two
+// blind spots of the two-probe protocol (repro in repro/blindspot/).
 //
-// kind==1 (return_barrier) thaws no longer insert (behaviour change vs main,
-// this branch only; main keeps the old semantics as the recorded-defect
-// baseline): JDK-side measurement (jdk21u 55ca8535411, self-check 4) shows
+// kind==1 (return_barrier) thaws do not insert: JDK-side measurement (jdk21u 55ca8535411, self-check 4) shows
 // return-barrier thaws firing on the termination path AFTER vthread__end
 // (buf=0 under the JVMTI allocation variant). An unconditional insert would
 // resurrect the mapping end just cleared and reopen silent misattribution.
@@ -72,8 +70,8 @@
 //                                 transitions. One logical remount fires
 //                                 1x kind=0 + Nx kind=1 (N grows with stack
 //                                 depth; e.g. 12 events on a shallow stack in
-//                                 a single measurement, see
-//                                 result/blindspot/FINDINGS.md), and a
+//                                 a single measurement, logs in
+//                                 result/blindspot/), and a
 //                                 vthread's FIRST mount fires no thaw at all.
 //   @thaw_top                     kind==0 thaws only — the logical-remount
 //                                 normalisation divisor. Use THIS, never

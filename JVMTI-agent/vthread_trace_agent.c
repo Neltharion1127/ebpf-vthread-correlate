@@ -19,14 +19,17 @@
  *   - JVMTI (this agent):       mount/unmount callbacks write carrier-resident
  *           TLS, the Elastic-style approach. Agent runs WITH publish=jvmti.
  *
- * The JVM exposes only:
+ * The patched JVM exposes:
  *   - traceBufferAddress field on VirtualThread (volatile, default 0)
- *   - USDT probes vthread__freeze / vthread__thaw broadcasting that address
+ *   - USDT probes vthread__start/thaw/freeze/end carrying that address,
+ *     gated by -XX:+VThreadTraceProbes
+ *   - its own buffer allocation (-Dvthread.trace.jvmAlloc=true), the
+ *     alternative to the allocation done by this agent
  *
- * Without this agent loaded, the buffer is never allocated, the field stays 0,
- * the USDT probe fires with arg2=0, BufferSyncContextStorage falls back to its
- * platform-thread ThreadLocal path, and bpftrace's null-guard skips the read.
- * Result: zero residual overhead on the JVM when nobody is observing.
+ * With neither this agent nor jvmAlloc, the buffer is never allocated, the
+ * field stays 0, the probes carry address 0, BufferSyncContextStorage falls
+ * back to its platform-thread ThreadLocal path, and bpftrace's null-guard
+ * skips the read.
  *
  * Buffer layout (matches existing convention):
  *   [0-15]  OTel traceId   (written by BufferSyncContextStorage)

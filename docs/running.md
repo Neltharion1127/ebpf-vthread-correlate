@@ -117,7 +117,7 @@ Key observations:
 - `freeze_result=ok` on normal park; a vthread's FIRST mount emits no thaw at
   all. Each remount emits one `thaw_kind=top` followed by a stack-depth-
   dependent number of `return_barrier` thaws (e.g. 12 events on a shallow
-  stack in a single measurement — see `result/blindspot/FINDINGS.md`). Events
+  stack in a single measurement; logs in `result/blindspot/`). Events
   with `trace_buffer_addr=0` or `valid=0` are intentionally not printed.
 - When a nested inner span is active, the `spanId` on `[write]` events matches
   the inner span, not the child span, confirming the buffer is updated correctly

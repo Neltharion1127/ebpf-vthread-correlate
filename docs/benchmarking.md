@@ -10,7 +10,7 @@ source config/env.sh   # exports JAVA_HOME so Maven uses the custom JDK
 mvn clean package -q
 "$JAVA_HOME/bin/java" --enable-preview --enable-native-access=ALL-UNNAMED \
      -jar target/ebpf-vthread-correlate-1.0-SNAPSHOT.jar \
-     -prof gc
+     ContextStorageBenchmark -prof gc
 ```
 
 The benchmark runs `makeCurrent()` + child span creation + `close()` in a tight
@@ -107,8 +107,9 @@ not read the buffer. For a quick standalone check of the flag-gated probe path:
 bash scripts/run-usdt.sh
 ```
 
-That script uses its own `JDK`, `JAVA`, and `LIBJVM` defaults, overridable by
-environment variables, and writes logs under `result/benchmark/usdt-flag/`.
+That script takes the JDK from `JDK=` if set, otherwise from `config/env.sh`,
+and refuses to fall back to the system JDK; `JAVA` and `LIBJVM` default to paths
+inside that JDK. It writes logs under `result/benchmark/usdt-flag/`.
 The container/OrbStack results are useful for direction and smoke testing; final
 numbers should be collected on bare metal.
 

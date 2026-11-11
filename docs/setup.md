@@ -34,15 +34,13 @@ Two of them are architecture-specific and must match the test machine's CPU
 - **Linux kernel ≥ 5.8 with BTF enabled** — needed for bpftrace to read the USDT
   probes.
 - **async-profiler 4.4** at `lib/libasyncProfiler.so` — used by the itimer pass
-  of a full (non-`QUICK`) `profile-matrix.sh` run. The presence guard is
-  unconditional, so `QUICK=1` runs still require the file to exist even though
-  that mode never reads it — put the matching-arch `.so` in place before running
-  either way.
+  of a full (non-`QUICK`) `profile-matrix.sh` run; `QUICK=1` runs do not need it.
 
 ### Only when building the JDK yourself (skip when using the release JDK)
 
-- **systemtap-sdt-devel** — provides `sys/sdt.h` and `/usr/bin/dtrace`, required
-  by `--enable-dtrace`.
+- **systemtap-sdt-devel** and **systemtap-sdt-dtrace** (Fedora/RHEL) — provide
+  `sys/sdt.h` and the `/usr/bin/dtrace` wrapper, both required by
+  `--enable-dtrace`.
 - **boot JDK 21 + gcc/g++ + autoconf** — the OpenJDK `configure` / `make`
   toolchain.
 - **[jdk21u](https://github.com/Neltharion1127/jdk21u) source** (branch
@@ -76,9 +74,9 @@ cp config/env.sh.example config/env.sh   # then edit JAVA_HOME / LIBJVM_PATH
 See [Appendix: Building the JDK yourself](building-jdk.md)
 for the correct release build paths.
 
-Agent mode and the benchmark matrix also read `AGENT_PATH`, which `setup.sh` does
-not write. If it is not already in your `config/env.sh`, add this line (it
-resolves relative to the file, so the repo can move):
+Agent mode and the benchmark matrix also read `AGENT_PATH`. Both `setup.sh` and
+`config/env.sh.example` set it; if your `config/env.sh` predates that, add this
+line (it resolves relative to the file, so the repo can move):
 
 ```bash
 export AGENT_PATH="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)/JVMTI-agent/libvthread_trace_agent.so"

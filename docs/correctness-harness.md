@@ -3,7 +3,7 @@
 `scripts/harness/run-harness.sh` checks attribution against an independent
 ground truth (paper §7.2). A Java harness (`MarkerHarness`) starts N virtual
 threads that each issue M marker `write(2)` calls, whose byte counts encode the
-sender and sequence number, and records the expected trace context and virtual
+sender (the sequence number follows from each sender's order), and records the expected trace context and virtual
 thread for every marker in `manifest.csv`. A bpftrace consumer records what it
 attributes to the same syscalls, without going through the harness.
 

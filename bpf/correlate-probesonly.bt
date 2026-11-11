@@ -19,8 +19,8 @@
 //
 // Counter semantics: @thaw_total counts PROBE EVENTS, not logical transitions —
 // one logical remount fires 1x kind=0 + Nx kind=1 (N grows with stack depth;
-// e.g. 12 events on a shallow stack in a single measurement, see
-// result/blindspot/FINDINGS.md), and a vthread's FIRST mount fires no thaw at
+// e.g. 12 events on a shallow stack in a single measurement, logs in
+// result/blindspot/), and a vthread's FIRST mount fires no thaw at
 // all. @thaw_top counts kind==0 only and is the logical-remount normalisation
 // divisor — use it, never @thaw_total, for per-transition arithmetic.
 //

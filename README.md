@@ -121,3 +121,10 @@ For how the correlation actually works, see [How it works](docs/how-it-works.md)
 | [docs/correctness-harness.md](docs/correctness-harness.md) | the dual-channel correctness harness |
 | [docs/how-it-works.md](docs/how-it-works.md) | the four probes, BPF map rules, buffer layout, context synchronisation, enum decoding |
 | [docs/building-jdk.md](docs/building-jdk.md) | building the patched JDK from source |
+
+## License
+
+The code is released under the [Apache License 2.0](LICENSE). The data in
+[paper-data/](paper-data/) is released under
+[CC BY 4.0](https://creativecommons.org/licenses/by/4.0/); see
+[paper-data/LICENSE](paper-data/LICENSE).

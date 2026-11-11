@@ -60,7 +60,8 @@ so work on a copy:
 ```bash
 cp -r paper-data/correctness /tmp/correctness
 for r in /tmp/correctness/*; do
-  python3 scripts/harness/reconcile.py "$r/manifest.csv" "$r/consumer.log"
+  case "$r" in *4probe*) flag=--expect-clean ;; *) flag= ;; esac
+  python3 scripts/harness/reconcile.py $flag "$r/manifest.csv" "$r/consumer.log"
 done
 # each regenerated summary.json is identical to the archived one
 ```
@@ -76,3 +77,7 @@ python3 scripts/py/gen_paper_tables.py --batch 20260803-formal-rerun-1 --out-dir
 
 This writes the LaTeX tables and `channel-overhead.pdf` (the figure needs matplotlib and
 seaborn). The generated tables reproduce Tables 7 and 8 of the paper exactly.
+
+## License
+
+[CC BY 4.0](https://creativecommons.org/licenses/by/4.0/), see [LICENSE](LICENSE).
