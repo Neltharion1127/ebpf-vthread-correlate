@@ -1,0 +1,112 @@
+Attaching 52 probes...
+ebpf-vthread-correlate: tracing started
+  Program: correlate-probesonly (freeze/thaw perf path: cache + counters, no buffer deref)
+  USDT source: /home/ubuntu/ebpf-vthread-correlate/.vthread-jdk/jdk/lib/server/libjvm.so
+
+ebpf-vthread-correlate: tracing stopped — summary follows
+
+
+@cache_delete: 2074819
+@cache_insert: 2074819
+@carriers[87071]: 2
+@carriers[87097]: 2
+@carriers[87079]: 2
+@carriers[87067]: 2
+@carriers[86995]: 2
+@carriers[87098]: 3
+@carriers[87070]: 3
+@carriers[87080]: 3
+@carriers[87092]: 4
+@carriers[87086]: 5
+@carriers[87091]: 5
+@carriers[87066]: 5
+@carriers[87077]: 6
+@carriers[87076]: 6
+@carriers[87090]: 6
+@carriers[87075]: 6
+@carriers[86998]: 8
+@carriers[87099]: 14
+@carriers[86991]: 14
+@carriers[87073]: 15
+@carriers[87065]: 16
+@carriers[87095]: 17
+@carriers[87005]: 18
+@carriers[86982]: 18
+@carriers[86986]: 18
+@carriers[87074]: 18
+@carriers[86993]: 21
+@carriers[87083]: 22
+@carriers[87078]: 24
+@carriers[87096]: 26
+@carriers[87087]: 26
+@carriers[87082]: 27
+@carriers[86975]: 29
+@carriers[86978]: 31
+@carriers[87085]: 31
+@carriers[86989]: 32
+@carriers[86990]: 33
+@carriers[87064]: 35
+@carriers[86984]: 37
+@carriers[87008]: 40
+@carriers[86983]: 41
+@carriers[87002]: 43
+@carriers[87001]: 46
+@carriers[86988]: 47
+@carriers[86981]: 55
+@carriers[86977]: 69
+@carriers[87003]: 72
+@carriers[87000]: 72
+@carriers[87072]: 88
+@carriers[87081]: 89
+@carriers[87088]: 98
+@carriers[87063]: 114
+@carriers[87004]: 122
+@carriers[86979]: 125
+@carriers[86972]: 169
+@carriers[86973]: 171
+@carriers[87104]: 233
+@carriers[87093]: 369
+@carriers[86968]: 538
+@carriers[86965]: 553
+@carriers[87061]: 559
+@carriers[86967]: 604
+@carriers[86992]: 607
+@carriers[87102]: 696
+@carriers[86997]: 748
+@carriers[87084]: 750
+@carriers[86966]: 793
+@carriers[87068]: 912
+@carriers[87006]: 953
+@carriers[87103]: 1119
+@carriers[86971]: 1384
+@carriers[86994]: 1601
+@carriers[87007]: 4457
+@carriers[86985]: 4731
+@carriers[87069]: 6768
+@carriers[86996]: 7045
+@carriers[86969]: 9145
+@carriers[86987]: 17890
+@carriers[87060]: 34850
+@carriers[86980]: 39793
+@carriers[86974]: 42361
+@carriers[86999]: 95556
+@carriers[87094]: 342048
+@carriers[87101]: 343283
+@carriers[86976]: 386007
+@carriers[87062]: 389609
+@carriers[87089]: 417359
+@end_total: 212
+@end_unmatched: 0
+@freeze_failed_kept: 0
+@freeze_result[0]: 2074607
+@freeze_total: 2074607
+@freeze_unmatched: 0
+@pinned_total: 0
+@start_total: 212
+@thaw_kind[1]: 80767
+@thaw_kind[0]: 2074607
+@thaw_nullbuf: 2155374
+@thaw_top: 2074607
+@thaw_total: 2155374
+
+

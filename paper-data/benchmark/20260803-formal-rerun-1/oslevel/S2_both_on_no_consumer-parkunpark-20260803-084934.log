@@ -1,0 +1,101 @@
+# JMH version: 1.37
+# VM version: JDK 21.0.12-internal, OpenJDK 64-Bit Server VM, 21.0.12-internal-adhoc.root.src
+# VM invoker: /home/ubuntu/ebpf-vthread-correlate/.vthread-jdk/jdk/bin/java
+# VM options: --enable-preview --enable-native-access=ALL-UNNAMED -XX:+VThreadTraceProbes -Dvthread.trace.jvmAlloc=true
+# Blackhole mode: compiler (auto-detected, use -Djmh.blackhole.autoDetect=false to disable)
+# Warmup: 5 iterations, 10 s each
+# Measurement: 5 iterations, 10 s each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Average time, time/op
+# Benchmark: uk.ac.ncl.jensen.benchmark.VThreadParkUnparkBenchmark.parkUnpark_pingPong
+# Parameters: (rounds = 10000)
+
+# Run progress: 0.00% complete, ETA 00:08:20
+# Fork: 1 of 5
+# Warmup Iteration   1: 18298.674 us/op
+# Warmup Iteration   2: 17875.360 us/op
+# Warmup Iteration   3: 18443.050 us/op
+# Warmup Iteration   4: 18559.835 us/op
+# Warmup Iteration   5: 18652.989 us/op
+Iteration   1: 18136.152 us/op
+Iteration   2: 17385.122 us/op
+Iteration   3: 17436.312 us/op
+Iteration   4: 17414.874 us/op
+Iteration   5: 17369.977 us/op
+
+# Run progress: 20.00% complete, ETA 00:06:41
+# Fork: 2 of 5
+# Warmup Iteration   1: 18008.323 us/op
+# Warmup Iteration   2: 18257.397 us/op
+# Warmup Iteration   3: 18485.228 us/op
+# Warmup Iteration   4: 18715.483 us/op
+# Warmup Iteration   5: 18616.821 us/op
+Iteration   1: 18296.434 us/op
+Iteration   2: 17206.274 us/op
+Iteration   3: 17084.149 us/op
+Iteration   4: 16943.559 us/op
+Iteration   5: 17215.618 us/op
+
+# Run progress: 40.00% complete, ETA 00:05:01
+# Fork: 3 of 5
+# Warmup Iteration   1: 18016.421 us/op
+# Warmup Iteration   2: 17725.905 us/op
+# Warmup Iteration   3: 17736.493 us/op
+# Warmup Iteration   4: 17832.268 us/op
+# Warmup Iteration   5: 17659.774 us/op
+Iteration   1: 17631.611 us/op
+Iteration   2: 17973.426 us/op
+Iteration   3: 17855.246 us/op
+Iteration   4: 17854.526 us/op
+Iteration   5: 17798.139 us/op
+
+# Run progress: 60.00% complete, ETA 00:03:20
+# Fork: 4 of 5
+# Warmup Iteration   1: 17872.747 us/op
+# Warmup Iteration   2: 18584.620 us/op
+# Warmup Iteration   3: 18722.596 us/op
+# Warmup Iteration   4: 18873.170 us/op
+# Warmup Iteration   5: 19097.119 us/op
+Iteration   1: 18921.470 us/op
+Iteration   2: 17688.742 us/op
+Iteration   3: 17360.498 us/op
+Iteration   4: 17430.806 us/op
+Iteration   5: 17341.533 us/op
+
+# Run progress: 80.00% complete, ETA 00:01:40
+# Fork: 5 of 5
+# Warmup Iteration   1: 18335.995 us/op
+# Warmup Iteration   2: 18384.345 us/op
+# Warmup Iteration   3: 18582.629 us/op
+# Warmup Iteration   4: 18697.840 us/op
+# Warmup Iteration   5: 18595.427 us/op
+Iteration   1: 18277.697 us/op
+Iteration   2: 18501.829 us/op
+Iteration   3: 18768.391 us/op
+Iteration   4: 18630.183 us/op
+Iteration   5: 18672.627 us/op
+
+
+Result "uk.ac.ncl.jensen.benchmark.VThreadParkUnparkBenchmark.parkUnpark_pingPong":
+  17807.808 ±(99.9%) 430.284 us/op [Average]
+  (min, avg, max) = (16943.559, 17807.808, 18921.470), stdev = 574.417
+  CI (99.9%): [17377.524, 18238.092] (assumes normal distribution)
+
+
+# Run complete. Total time: 00:08:21
+
+REMEMBER: The numbers below are just data. To gain reusable insights, you need to follow up on
+why the numbers are the way they are. Use profilers (see -prof, -lprof), design factorial
+experiments, perform baseline and negative tests that provide experimental control, make sure
+the benchmarking environment is safe on JVM/OS/HW level, ask for reviews from the domain experts.
+Do not assume the numbers tell you what you want them to tell.
+
+NOTE: Current JVM experimentally supports Compiler Blackholes, and they are in use. Please exercise
+extra caution when trusting the results, look into the generated code to check the benchmark still
+works, and factor in a small probability of new VM bugs. Additionally, while comparisons between
+different JVMs are already problematic, the performance difference caused by different Blackhole
+modes can be very significant. Please make sure you use the consistent Blackhole mode for comparisons.
+
+Benchmark                                       (rounds)  Mode  Cnt      Score     Error  Units
+VThreadParkUnparkBenchmark.parkUnpark_pingPong     10000  avgt   25  17807.808 ± 430.284  us/op
