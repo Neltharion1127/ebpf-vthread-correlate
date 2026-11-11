@@ -1,0 +1,829 @@
+{
+  "manifest_entries": 128,
+  "log_events": 128,
+  "content_plane": {
+    "counts": {
+      "CORRECT": 114,
+      "MISATTRIBUTED": 10,
+      "UNMAPPED": 4,
+      "NULLBUF": 0,
+      "INVALID": 0,
+      "LOST": 0
+    },
+    "reason_counts": {
+      "FOREIGN_CONTEXT": 10,
+      "MATCH": 114,
+      "UNMAPPED": 4
+    },
+    "foreign_context": 10
+  },
+  "identity_plane": {
+    "counts": {
+      "IDENTITY_CORRECT": 112,
+      "IDENTITY_MISATTRIBUTED": 12,
+      "IDENTITY_UNMAPPED": 4,
+      "IDENTITY_LOST": 0
+    },
+    "reason_counts": {
+      "MATCH": 112,
+      "NO_IDENTITY_MAPPING": 4,
+      "WRONG_VTHREAD": 12
+    }
+  },
+  "pairing": {
+    "complete": true,
+    "lost": 0,
+    "surplus": 0,
+    "malformed_marker_lines": 0,
+    "violations": 0,
+    "surplus_events": [],
+    "malformed_examples": []
+  },
+  "per_k": {
+    "0": {
+      "total": 8,
+      "content_plane": {
+        "CORRECT": 7,
+        "MISATTRIBUTED": 0,
+        "UNMAPPED": 1,
+        "NULLBUF": 0,
+        "INVALID": 0,
+        "LOST": 0
+      },
+      "identity_plane": {
+        "IDENTITY_CORRECT": 7,
+        "IDENTITY_MISATTRIBUTED": 0,
+        "IDENTITY_UNMAPPED": 1,
+        "IDENTITY_LOST": 0
+      },
+      "surplus": 0
+    },
+    "1": {
+      "total": 8,
+      "content_plane": {
+        "CORRECT": 7,
+        "MISATTRIBUTED": 1,
+        "UNMAPPED": 0,
+        "NULLBUF": 0,
+        "INVALID": 0,
+        "LOST": 0
+      },
+      "identity_plane": {
+        "IDENTITY_CORRECT": 7,
+        "IDENTITY_MISATTRIBUTED": 1,
+        "IDENTITY_UNMAPPED": 0,
+        "IDENTITY_LOST": 0
+      },
+      "surplus": 0
+    },
+    "2": {
+      "total": 8,
+      "content_plane": {
+        "CORRECT": 7,
+        "MISATTRIBUTED": 1,
+        "UNMAPPED": 0,
+        "NULLBUF": 0,
+        "INVALID": 0,
+        "LOST": 0
+      },
+      "identity_plane": {
+        "IDENTITY_CORRECT": 7,
+        "IDENTITY_MISATTRIBUTED": 1,
+        "IDENTITY_UNMAPPED": 0,
+        "IDENTITY_LOST": 0
+      },
+      "surplus": 0
+    },
+    "3": {
+      "total": 8,
+      "content_plane": {
+        "CORRECT": 7,
+        "MISATTRIBUTED": 1,
+        "UNMAPPED": 0,
+        "NULLBUF": 0,
+        "INVALID": 0,
+        "LOST": 0
+      },
+      "identity_plane": {
+        "IDENTITY_CORRECT": 7,
+        "IDENTITY_MISATTRIBUTED": 1,
+        "IDENTITY_UNMAPPED": 0,
+        "IDENTITY_LOST": 0
+      },
+      "surplus": 0
+    },
+    "4": {
+      "total": 8,
+      "content_plane": {
+        "CORRECT": 7,
+        "MISATTRIBUTED": 1,
+        "UNMAPPED": 0,
+        "NULLBUF": 0,
+        "INVALID": 0,
+        "LOST": 0
+      },
+      "identity_plane": {
+        "IDENTITY_CORRECT": 7,
+        "IDENTITY_MISATTRIBUTED": 1,
+        "IDENTITY_UNMAPPED": 0,
+        "IDENTITY_LOST": 0
+      },
+      "surplus": 0
+    },
+    "5": {
+      "total": 8,
+      "content_plane": {
+        "CORRECT": 7,
+        "MISATTRIBUTED": 1,
+        "UNMAPPED": 0,
+        "NULLBUF": 0,
+        "INVALID": 0,
+        "LOST": 0
+      },
+      "identity_plane": {
+        "IDENTITY_CORRECT": 7,
+        "IDENTITY_MISATTRIBUTED": 1,
+        "IDENTITY_UNMAPPED": 0,
+        "IDENTITY_LOST": 0
+      },
+      "surplus": 0
+    },
+    "6": {
+      "total": 8,
+      "content_plane": {
+        "CORRECT": 7,
+        "MISATTRIBUTED": 1,
+        "UNMAPPED": 0,
+        "NULLBUF": 0,
+        "INVALID": 0,
+        "LOST": 0
+      },
+      "identity_plane": {
+        "IDENTITY_CORRECT": 7,
+        "IDENTITY_MISATTRIBUTED": 1,
+        "IDENTITY_UNMAPPED": 0,
+        "IDENTITY_LOST": 0
+      },
+      "surplus": 0
+    },
+    "7": {
+      "total": 8,
+      "content_plane": {
+        "CORRECT": 7,
+        "MISATTRIBUTED": 1,
+        "UNMAPPED": 0,
+        "NULLBUF": 0,
+        "INVALID": 0,
+        "LOST": 0
+      },
+      "identity_plane": {
+        "IDENTITY_CORRECT": 7,
+        "IDENTITY_MISATTRIBUTED": 1,
+        "IDENTITY_UNMAPPED": 0,
+        "IDENTITY_LOST": 0
+      },
+      "surplus": 0
+    },
+    "8": {
+      "total": 8,
+      "content_plane": {
+        "CORRECT": 7,
+        "MISATTRIBUTED": 1,
+        "UNMAPPED": 0,
+        "NULLBUF": 0,
+        "INVALID": 0,
+        "LOST": 0
+      },
+      "identity_plane": {
+        "IDENTITY_CORRECT": 7,
+        "IDENTITY_MISATTRIBUTED": 1,
+        "IDENTITY_UNMAPPED": 0,
+        "IDENTITY_LOST": 0
+      },
+      "surplus": 0
+    },
+    "9": {
+      "total": 8,
+      "content_plane": {
+        "CORRECT": 7,
+        "MISATTRIBUTED": 0,
+        "UNMAPPED": 1,
+        "NULLBUF": 0,
+        "INVALID": 0,
+        "LOST": 0
+      },
+      "identity_plane": {
+        "IDENTITY_CORRECT": 7,
+        "IDENTITY_MISATTRIBUTED": 0,
+        "IDENTITY_UNMAPPED": 1,
+        "IDENTITY_LOST": 0
+      },
+      "surplus": 0
+    },
+    "10": {
+      "total": 8,
+      "content_plane": {
+        "CORRECT": 7,
+        "MISATTRIBUTED": 0,
+        "UNMAPPED": 1,
+        "NULLBUF": 0,
+        "INVALID": 0,
+        "LOST": 0
+      },
+      "identity_plane": {
+        "IDENTITY_CORRECT": 7,
+        "IDENTITY_MISATTRIBUTED": 0,
+        "IDENTITY_UNMAPPED": 1,
+        "IDENTITY_LOST": 0
+      },
+      "surplus": 0
+    },
+    "11": {
+      "total": 8,
+      "content_plane": {
+        "CORRECT": 7,
+        "MISATTRIBUTED": 1,
+        "UNMAPPED": 0,
+        "NULLBUF": 0,
+        "INVALID": 0,
+        "LOST": 0
+      },
+      "identity_plane": {
+        "IDENTITY_CORRECT": 7,
+        "IDENTITY_MISATTRIBUTED": 1,
+        "IDENTITY_UNMAPPED": 0,
+        "IDENTITY_LOST": 0
+      },
+      "surplus": 0
+    },
+    "12": {
+      "total": 8,
+      "content_plane": {
+        "CORRECT": 7,
+        "MISATTRIBUTED": 0,
+        "UNMAPPED": 1,
+        "NULLBUF": 0,
+        "INVALID": 0,
+        "LOST": 0
+      },
+      "identity_plane": {
+        "IDENTITY_CORRECT": 7,
+        "IDENTITY_MISATTRIBUTED": 0,
+        "IDENTITY_UNMAPPED": 1,
+        "IDENTITY_LOST": 0
+      },
+      "surplus": 0
+    },
+    "13": {
+      "total": 8,
+      "content_plane": {
+        "CORRECT": 7,
+        "MISATTRIBUTED": 1,
+        "UNMAPPED": 0,
+        "NULLBUF": 0,
+        "INVALID": 0,
+        "LOST": 0
+      },
+      "identity_plane": {
+        "IDENTITY_CORRECT": 7,
+        "IDENTITY_MISATTRIBUTED": 1,
+        "IDENTITY_UNMAPPED": 0,
+        "IDENTITY_LOST": 0
+      },
+      "surplus": 0
+    },
+    "14": {
+      "total": 8,
+      "content_plane": {
+        "CORRECT": 8,
+        "MISATTRIBUTED": 0,
+        "UNMAPPED": 0,
+        "NULLBUF": 0,
+        "INVALID": 0,
+        "LOST": 0
+      },
+      "identity_plane": {
+        "IDENTITY_CORRECT": 7,
+        "IDENTITY_MISATTRIBUTED": 1,
+        "IDENTITY_UNMAPPED": 0,
+        "IDENTITY_LOST": 0
+      },
+      "surplus": 0
+    },
+    "15": {
+      "total": 8,
+      "content_plane": {
+        "CORRECT": 8,
+        "MISATTRIBUTED": 0,
+        "UNMAPPED": 0,
+        "NULLBUF": 0,
+        "INVALID": 0,
+        "LOST": 0
+      },
+      "identity_plane": {
+        "IDENTITY_CORRECT": 7,
+        "IDENTITY_MISATTRIBUTED": 1,
+        "IDENTITY_UNMAPPED": 0,
+        "IDENTITY_LOST": 0
+      },
+      "surplus": 0
+    }
+  },
+  "per_seq": {
+    "0": {
+      "total": 16,
+      "content_plane": {
+        "CORRECT": 2,
+        "MISATTRIBUTED": 10,
+        "UNMAPPED": 4,
+        "NULLBUF": 0,
+        "INVALID": 0,
+        "LOST": 0
+      },
+      "identity_plane": {
+        "IDENTITY_CORRECT": 0,
+        "IDENTITY_MISATTRIBUTED": 12,
+        "IDENTITY_UNMAPPED": 4,
+        "IDENTITY_LOST": 0
+      }
+    },
+    "1": {
+      "total": 16,
+      "content_plane": {
+        "CORRECT": 16,
+        "MISATTRIBUTED": 0,
+        "UNMAPPED": 0,
+        "NULLBUF": 0,
+        "INVALID": 0,
+        "LOST": 0
+      },
+      "identity_plane": {
+        "IDENTITY_CORRECT": 16,
+        "IDENTITY_MISATTRIBUTED": 0,
+        "IDENTITY_UNMAPPED": 0,
+        "IDENTITY_LOST": 0
+      }
+    },
+    "2": {
+      "total": 16,
+      "content_plane": {
+        "CORRECT": 16,
+        "MISATTRIBUTED": 0,
+        "UNMAPPED": 0,
+        "NULLBUF": 0,
+        "INVALID": 0,
+        "LOST": 0
+      },
+      "identity_plane": {
+        "IDENTITY_CORRECT": 16,
+        "IDENTITY_MISATTRIBUTED": 0,
+        "IDENTITY_UNMAPPED": 0,
+        "IDENTITY_LOST": 0
+      }
+    },
+    "3": {
+      "total": 16,
+      "content_plane": {
+        "CORRECT": 16,
+        "MISATTRIBUTED": 0,
+        "UNMAPPED": 0,
+        "NULLBUF": 0,
+        "INVALID": 0,
+        "LOST": 0
+      },
+      "identity_plane": {
+        "IDENTITY_CORRECT": 16,
+        "IDENTITY_MISATTRIBUTED": 0,
+        "IDENTITY_UNMAPPED": 0,
+        "IDENTITY_LOST": 0
+      }
+    },
+    "4": {
+      "total": 16,
+      "content_plane": {
+        "CORRECT": 16,
+        "MISATTRIBUTED": 0,
+        "UNMAPPED": 0,
+        "NULLBUF": 0,
+        "INVALID": 0,
+        "LOST": 0
+      },
+      "identity_plane": {
+        "IDENTITY_CORRECT": 16,
+        "IDENTITY_MISATTRIBUTED": 0,
+        "IDENTITY_UNMAPPED": 0,
+        "IDENTITY_LOST": 0
+      }
+    },
+    "5": {
+      "total": 16,
+      "content_plane": {
+        "CORRECT": 16,
+        "MISATTRIBUTED": 0,
+        "UNMAPPED": 0,
+        "NULLBUF": 0,
+        "INVALID": 0,
+        "LOST": 0
+      },
+      "identity_plane": {
+        "IDENTITY_CORRECT": 16,
+        "IDENTITY_MISATTRIBUTED": 0,
+        "IDENTITY_UNMAPPED": 0,
+        "IDENTITY_LOST": 0
+      }
+    },
+    "6": {
+      "total": 16,
+      "content_plane": {
+        "CORRECT": 16,
+        "MISATTRIBUTED": 0,
+        "UNMAPPED": 0,
+        "NULLBUF": 0,
+        "INVALID": 0,
+        "LOST": 0
+      },
+      "identity_plane": {
+        "IDENTITY_CORRECT": 16,
+        "IDENTITY_MISATTRIBUTED": 0,
+        "IDENTITY_UNMAPPED": 0,
+        "IDENTITY_LOST": 0
+      }
+    },
+    "7": {
+      "total": 16,
+      "content_plane": {
+        "CORRECT": 16,
+        "MISATTRIBUTED": 0,
+        "UNMAPPED": 0,
+        "NULLBUF": 0,
+        "INVALID": 0,
+        "LOST": 0
+      },
+      "identity_plane": {
+        "IDENTITY_CORRECT": 16,
+        "IDENTITY_MISATTRIBUTED": 0,
+        "IDENTITY_UNMAPPED": 0,
+        "IDENTITY_LOST": 0
+      }
+    }
+  },
+  "first_10_trace_misattributed": [
+    {
+      "line": 12,
+      "timestamp": 69988034879388,
+      "carrier": 59043,
+      "count": 1001,
+      "k_true": 1,
+      "status": "OK",
+      "vthread": 21,
+      "traceid_hi": "f901faff0f000000",
+      "traceid_lo": "b937f8bc39e9da71",
+      "spanid": "0000000100000008",
+      "manifest_k": 1,
+      "seq": 0,
+      "k_attr": null,
+      "reason": "FOREIGN_CONTEXT",
+      "expected_traceId": "cafebabe00c0ffee0000000000000001",
+      "expected_spanId": "0000000200000001",
+      "expected_vthread_id": 29
+    },
+    {
+      "line": 20,
+      "timestamp": 69988089503687,
+      "carrier": 59043,
+      "count": 1002,
+      "k_true": 2,
+      "status": "OK",
+      "vthread": 29,
+      "traceid_hi": "ab9de55ff0ff0000",
+      "traceid_lo": "b937f8bc39e9da71",
+      "spanid": "0000000200000008",
+      "manifest_k": 2,
+      "seq": 0,
+      "k_attr": null,
+      "reason": "FOREIGN_CONTEXT",
+      "expected_traceId": "cafebabe00c0ffee0000000000000002",
+      "expected_spanId": "0000000300000001",
+      "expected_vthread_id": 30
+    },
+    {
+      "line": 28,
+      "timestamp": 69988146871144,
+      "carrier": 59043,
+      "count": 1003,
+      "k_true": 3,
+      "status": "OK",
+      "vthread": 30,
+      "traceid_hi": "cbb4e55ff0ff0000",
+      "traceid_lo": "b937f8bc39e9da71",
+      "spanid": "0000000300000008",
+      "manifest_k": 3,
+      "seq": 0,
+      "k_attr": null,
+      "reason": "FOREIGN_CONTEXT",
+      "expected_traceId": "cafebabe00c0ffee0000000000000003",
+      "expected_spanId": "0000000400000001",
+      "expected_vthread_id": 31
+    },
+    {
+      "line": 36,
+      "timestamp": 69988202742481,
+      "carrier": 59043,
+      "count": 1004,
+      "k_true": 4,
+      "status": "OK",
+      "vthread": 31,
+      "traceid_hi": "7bb4e55ff0ff0000",
+      "traceid_lo": "b937f8bc39e9da71",
+      "spanid": "0000000400000008",
+      "manifest_k": 4,
+      "seq": 0,
+      "k_attr": null,
+      "reason": "FOREIGN_CONTEXT",
+      "expected_traceId": "cafebabe00c0ffee0000000000000004",
+      "expected_spanId": "0000000500000001",
+      "expected_vthread_id": 32
+    },
+    {
+      "line": 44,
+      "timestamp": 69988269575119,
+      "carrier": 59043,
+      "count": 1005,
+      "k_true": 5,
+      "status": "OK",
+      "vthread": 32,
+      "traceid_hi": "2bb4e55ff0ff0000",
+      "traceid_lo": "b937f8bc39e9da71",
+      "spanid": "0000000500000008",
+      "manifest_k": 5,
+      "seq": 0,
+      "k_attr": null,
+      "reason": "FOREIGN_CONTEXT",
+      "expected_traceId": "cafebabe00c0ffee0000000000000005",
+      "expected_spanId": "0000000600000001",
+      "expected_vthread_id": 33
+    },
+    {
+      "line": 52,
+      "timestamp": 69988321916550,
+      "carrier": 59043,
+      "count": 1006,
+      "k_true": 6,
+      "status": "OK",
+      "vthread": 33,
+      "traceid_hi": "dbb7e55ff0ff0000",
+      "traceid_lo": "b937f8bc39e9da71",
+      "spanid": "0000000600000008",
+      "manifest_k": 6,
+      "seq": 0,
+      "k_attr": null,
+      "reason": "FOREIGN_CONTEXT",
+      "expected_traceId": "cafebabe00c0ffee0000000000000006",
+      "expected_spanId": "0000000700000001",
+      "expected_vthread_id": 34
+    },
+    {
+      "line": 60,
+      "timestamp": 69988368479580,
+      "carrier": 59043,
+      "count": 1007,
+      "k_true": 7,
+      "status": "OK",
+      "vthread": 34,
+      "traceid_hi": "8bb7e55ff0ff0000",
+      "traceid_lo": "b937f8bc39e9da71",
+      "spanid": "0000000700000008",
+      "manifest_k": 7,
+      "seq": 0,
+      "k_attr": null,
+      "reason": "FOREIGN_CONTEXT",
+      "expected_traceId": "cafebabe00c0ffee0000000000000007",
+      "expected_spanId": "0000000800000001",
+      "expected_vthread_id": 35
+    },
+    {
+      "line": 68,
+      "timestamp": 69988431494396,
+      "carrier": 59045,
+      "count": 1008,
+      "k_true": 8,
+      "status": "OK",
+      "vthread": 35,
+      "traceid_hi": "fb01faff0f000000",
+      "traceid_lo": "b937f8bc39e9da71",
+      "spanid": "0000000800000008",
+      "manifest_k": 8,
+      "seq": 0,
+      "k_attr": null,
+      "reason": "FOREIGN_CONTEXT",
+      "expected_traceId": "cafebabe00c0ffee0000000000000008",
+      "expected_spanId": "0000000900000001",
+      "expected_vthread_id": 36
+    },
+    {
+      "line": 92,
+      "timestamp": 69988589562185,
+      "carrier": 59043,
+      "count": 1011,
+      "k_true": 11,
+      "status": "OK",
+      "vthread": 38,
+      "traceid_hi": "8bb7e55ff0ff0000",
+      "traceid_lo": "b937f8bc39e9da71",
+      "spanid": "0000000b00000008",
+      "manifest_k": 11,
+      "seq": 0,
+      "k_attr": null,
+      "reason": "FOREIGN_CONTEXT",
+      "expected_traceId": "cafebabe00c0ffee000000000000000b",
+      "expected_spanId": "0000000c00000001",
+      "expected_vthread_id": 39
+    },
+    {
+      "line": 108,
+      "timestamp": 69988684461241,
+      "carrier": 59044,
+      "count": 1013,
+      "k_true": 13,
+      "status": "OK",
+      "vthread": 40,
+      "traceid_hi": "abb9e55ff0ff0000",
+      "traceid_lo": "b937f8bc39e9da71",
+      "spanid": "0000000d00000008",
+      "manifest_k": 13,
+      "seq": 0,
+      "k_attr": null,
+      "reason": "FOREIGN_CONTEXT",
+      "expected_traceId": "cafebabe00c0ffee000000000000000d",
+      "expected_spanId": "0000000e00000001",
+      "expected_vthread_id": 41
+    }
+  ],
+  "first_10_identity_misattributed": [
+    {
+      "line": 12,
+      "timestamp": 69988034879388,
+      "carrier": 59043,
+      "count": 1001,
+      "k_true": 1,
+      "status": "OK",
+      "vthread": 21,
+      "traceid_hi": "f901faff0f000000",
+      "traceid_lo": "b937f8bc39e9da71",
+      "spanid": "0000000100000008",
+      "manifest_k": 1,
+      "seq": 0,
+      "reason": "WRONG_VTHREAD",
+      "expected_vthread_id": 29
+    },
+    {
+      "line": 20,
+      "timestamp": 69988089503687,
+      "carrier": 59043,
+      "count": 1002,
+      "k_true": 2,
+      "status": "OK",
+      "vthread": 29,
+      "traceid_hi": "ab9de55ff0ff0000",
+      "traceid_lo": "b937f8bc39e9da71",
+      "spanid": "0000000200000008",
+      "manifest_k": 2,
+      "seq": 0,
+      "reason": "WRONG_VTHREAD",
+      "expected_vthread_id": 30
+    },
+    {
+      "line": 28,
+      "timestamp": 69988146871144,
+      "carrier": 59043,
+      "count": 1003,
+      "k_true": 3,
+      "status": "OK",
+      "vthread": 30,
+      "traceid_hi": "cbb4e55ff0ff0000",
+      "traceid_lo": "b937f8bc39e9da71",
+      "spanid": "0000000300000008",
+      "manifest_k": 3,
+      "seq": 0,
+      "reason": "WRONG_VTHREAD",
+      "expected_vthread_id": 31
+    },
+    {
+      "line": 36,
+      "timestamp": 69988202742481,
+      "carrier": 59043,
+      "count": 1004,
+      "k_true": 4,
+      "status": "OK",
+      "vthread": 31,
+      "traceid_hi": "7bb4e55ff0ff0000",
+      "traceid_lo": "b937f8bc39e9da71",
+      "spanid": "0000000400000008",
+      "manifest_k": 4,
+      "seq": 0,
+      "reason": "WRONG_VTHREAD",
+      "expected_vthread_id": 32
+    },
+    {
+      "line": 44,
+      "timestamp": 69988269575119,
+      "carrier": 59043,
+      "count": 1005,
+      "k_true": 5,
+      "status": "OK",
+      "vthread": 32,
+      "traceid_hi": "2bb4e55ff0ff0000",
+      "traceid_lo": "b937f8bc39e9da71",
+      "spanid": "0000000500000008",
+      "manifest_k": 5,
+      "seq": 0,
+      "reason": "WRONG_VTHREAD",
+      "expected_vthread_id": 33
+    },
+    {
+      "line": 52,
+      "timestamp": 69988321916550,
+      "carrier": 59043,
+      "count": 1006,
+      "k_true": 6,
+      "status": "OK",
+      "vthread": 33,
+      "traceid_hi": "dbb7e55ff0ff0000",
+      "traceid_lo": "b937f8bc39e9da71",
+      "spanid": "0000000600000008",
+      "manifest_k": 6,
+      "seq": 0,
+      "reason": "WRONG_VTHREAD",
+      "expected_vthread_id": 34
+    },
+    {
+      "line": 60,
+      "timestamp": 69988368479580,
+      "carrier": 59043,
+      "count": 1007,
+      "k_true": 7,
+      "status": "OK",
+      "vthread": 34,
+      "traceid_hi": "8bb7e55ff0ff0000",
+      "traceid_lo": "b937f8bc39e9da71",
+      "spanid": "0000000700000008",
+      "manifest_k": 7,
+      "seq": 0,
+      "reason": "WRONG_VTHREAD",
+      "expected_vthread_id": 35
+    },
+    {
+      "line": 68,
+      "timestamp": 69988431494396,
+      "carrier": 59045,
+      "count": 1008,
+      "k_true": 8,
+      "status": "OK",
+      "vthread": 35,
+      "traceid_hi": "fb01faff0f000000",
+      "traceid_lo": "b937f8bc39e9da71",
+      "spanid": "0000000800000008",
+      "manifest_k": 8,
+      "seq": 0,
+      "reason": "WRONG_VTHREAD",
+      "expected_vthread_id": 36
+    },
+    {
+      "line": 92,
+      "timestamp": 69988589562185,
+      "carrier": 59043,
+      "count": 1011,
+      "k_true": 11,
+      "status": "OK",
+      "vthread": 38,
+      "traceid_hi": "8bb7e55ff0ff0000",
+      "traceid_lo": "b937f8bc39e9da71",
+      "spanid": "0000000b00000008",
+      "manifest_k": 11,
+      "seq": 0,
+      "reason": "WRONG_VTHREAD",
+      "expected_vthread_id": 39
+    },
+    {
+      "line": 108,
+      "timestamp": 69988684461241,
+      "carrier": 59044,
+      "count": 1013,
+      "k_true": 13,
+      "status": "OK",
+      "vthread": 40,
+      "traceid_hi": "abb9e55ff0ff0000",
+      "traceid_lo": "b937f8bc39e9da71",
+      "spanid": "0000000d00000008",
+      "manifest_k": 13,
+      "seq": 0,
+      "reason": "WRONG_VTHREAD",
+      "expected_vthread_id": 41
+    }
+  ],
+  "manifest_header": {
+    "pid": 58986,
+    "fd": 5
+  },
+  "expect_clean": false
+}

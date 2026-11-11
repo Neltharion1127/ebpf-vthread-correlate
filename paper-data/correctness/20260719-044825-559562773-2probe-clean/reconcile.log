@@ -1,0 +1,49 @@
+Per-k results
+    key   total CORRECT MISATTRIBUTED UNMAPPED NULLBUF INVALID    LOST IDENTITY_MISATTRIBUTED IDENTITY_UNMAPPED IDENTITY_LOST SURPLUS
+------- ------- ------- ------------- -------- ------- ------- ------- ---------------------- ----------------- ------------- -------
+      0       8       7             0        1       0       0       0                      0                 1             0       0
+      1       8       7             0        0       0       1       0                      1                 0             0       0
+      2       8       7             0        0       0       1       0                      1                 0             0       0
+      3       8       7             0        0       0       1       0                      1                 0             0       0
+      4       8       7             0        0       0       1       0                      1                 0             0       0
+      5       8       7             0        0       0       1       0                      1                 0             0       0
+      6       8       7             0        0       0       1       0                      1                 0             0       0
+      7       8       7             0        0       0       1       0                      1                 0             0       0
+      8       8       7             0        0       0       1       0                      1                 0             0       0
+      9       8       7             0        0       0       1       0                      1                 0             0       0
+     10       8       7             0        0       0       1       0                      1                 0             0       0
+     11       8       7             0        0       0       1       0                      1                 0             0       0
+     12       8       7             0        0       0       1       0                      1                 0             0       0
+     13       8       8             0        0       0       0       0                      1                 0             0       0
+     14       8       7             0        1       0       0       0                      0                 1             0       0
+     15       8       7             0        0       0       1       0                      1                 0             0       0
+
+Per-sequence results
+    key   total CORRECT MISATTRIBUTED UNMAPPED NULLBUF INVALID    LOST IDENTITY_MISATTRIBUTED IDENTITY_UNMAPPED IDENTITY_LOST
+------- ------- ------- ------------- -------- ------- ------- ------- ---------------------- ----------------- -------------
+      0      16       1             0        2       0      13       0                     14                 2             0
+      1      16      16             0        0       0       0       0                      0                 0             0
+      2      16      16             0        0       0       0       0                      0                 0             0
+      3      16      16             0        0       0       0       0                      0                 0             0
+      4      16      16             0        0       0       0       0                      0                 0             0
+      5      16      16             0        0       0       0       0                      0                 0             0
+      6      16      16             0        0       0       0       0                      0                 0             0
+      7      16      16             0        0       0       0       0                      0                 0             0
+
+Content plane
+  CORRECT                  113
+  MISATTRIBUTED            0
+  UNMAPPED                 2
+  NULLBUF                  0
+  INVALID                  13
+  LOST                     0
+Identity plane
+  IDENTITY_CORRECT         112
+  IDENTITY_MISATTRIBUTED   14
+  IDENTITY_UNMAPPED        2
+  IDENTITY_LOST            0
+Pairing
+  SURPLUS                  0
+  MALFORMED                0
+  PAIRING                  complete
+  summary.json             /home/jie/csc8499/ebpf-vthread-correlate/result/harness/20260719-044825-559562773-2probe-clean/summary.json

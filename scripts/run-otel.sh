@@ -52,7 +52,7 @@ fi
 
 # Optional JVMTI agent (Plan A): set USE_AGENT=1 to have the agent allocate the
 # per-vthread trace buffer. Default (USE_AGENT unset/0) runs in degraded mode.
-JAVA_OPTS=(--enable-preview --enable-native-access=ALL-UNNAMED)
+JAVA_OPTS=(-XX:+VThreadTraceProbes --enable-preview --enable-native-access=ALL-UNNAMED)
 if [[ "${USE_AGENT:-0}" == "1" ]]; then
     if [[ -z "${AGENT_PATH:-}" ]]; then
         echo "error: USE_AGENT=1 but AGENT_PATH is not set in $CONFIG" >&2

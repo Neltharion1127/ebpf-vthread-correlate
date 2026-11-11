@@ -1,0 +1,638 @@
+{
+  "manifest_entries": 128,
+  "log_events": 128,
+  "content_plane": {
+    "counts": {
+      "CORRECT": 113,
+      "MISATTRIBUTED": 0,
+      "UNMAPPED": 3,
+      "NULLBUF": 0,
+      "INVALID": 12,
+      "LOST": 0
+    },
+    "reason_counts": {
+      "INVALID": 12,
+      "MATCH": 113,
+      "UNMAPPED": 3
+    },
+    "foreign_context": 0
+  },
+  "identity_plane": {
+    "counts": {
+      "IDENTITY_CORRECT": 112,
+      "IDENTITY_MISATTRIBUTED": 13,
+      "IDENTITY_UNMAPPED": 3,
+      "IDENTITY_LOST": 0
+    },
+    "reason_counts": {
+      "MATCH": 112,
+      "NO_IDENTITY_MAPPING": 3,
+      "WRONG_VTHREAD": 13
+    }
+  },
+  "pairing": {
+    "complete": true,
+    "lost": 0,
+    "surplus": 0,
+    "malformed_marker_lines": 0,
+    "violations": 0,
+    "surplus_events": [],
+    "malformed_examples": []
+  },
+  "per_k": {
+    "0": {
+      "total": 8,
+      "content_plane": {
+        "CORRECT": 7,
+        "MISATTRIBUTED": 0,
+        "UNMAPPED": 1,
+        "NULLBUF": 0,
+        "INVALID": 0,
+        "LOST": 0
+      },
+      "identity_plane": {
+        "IDENTITY_CORRECT": 7,
+        "IDENTITY_MISATTRIBUTED": 0,
+        "IDENTITY_UNMAPPED": 1,
+        "IDENTITY_LOST": 0
+      },
+      "surplus": 0
+    },
+    "1": {
+      "total": 8,
+      "content_plane": {
+        "CORRECT": 7,
+        "MISATTRIBUTED": 0,
+        "UNMAPPED": 0,
+        "NULLBUF": 0,
+        "INVALID": 1,
+        "LOST": 0
+      },
+      "identity_plane": {
+        "IDENTITY_CORRECT": 7,
+        "IDENTITY_MISATTRIBUTED": 1,
+        "IDENTITY_UNMAPPED": 0,
+        "IDENTITY_LOST": 0
+      },
+      "surplus": 0
+    },
+    "2": {
+      "total": 8,
+      "content_plane": {
+        "CORRECT": 7,
+        "MISATTRIBUTED": 0,
+        "UNMAPPED": 0,
+        "NULLBUF": 0,
+        "INVALID": 1,
+        "LOST": 0
+      },
+      "identity_plane": {
+        "IDENTITY_CORRECT": 7,
+        "IDENTITY_MISATTRIBUTED": 1,
+        "IDENTITY_UNMAPPED": 0,
+        "IDENTITY_LOST": 0
+      },
+      "surplus": 0
+    },
+    "3": {
+      "total": 8,
+      "content_plane": {
+        "CORRECT": 7,
+        "MISATTRIBUTED": 0,
+        "UNMAPPED": 0,
+        "NULLBUF": 0,
+        "INVALID": 1,
+        "LOST": 0
+      },
+      "identity_plane": {
+        "IDENTITY_CORRECT": 7,
+        "IDENTITY_MISATTRIBUTED": 1,
+        "IDENTITY_UNMAPPED": 0,
+        "IDENTITY_LOST": 0
+      },
+      "surplus": 0
+    },
+    "4": {
+      "total": 8,
+      "content_plane": {
+        "CORRECT": 7,
+        "MISATTRIBUTED": 0,
+        "UNMAPPED": 0,
+        "NULLBUF": 0,
+        "INVALID": 1,
+        "LOST": 0
+      },
+      "identity_plane": {
+        "IDENTITY_CORRECT": 7,
+        "IDENTITY_MISATTRIBUTED": 1,
+        "IDENTITY_UNMAPPED": 0,
+        "IDENTITY_LOST": 0
+      },
+      "surplus": 0
+    },
+    "5": {
+      "total": 8,
+      "content_plane": {
+        "CORRECT": 7,
+        "MISATTRIBUTED": 0,
+        "UNMAPPED": 0,
+        "NULLBUF": 0,
+        "INVALID": 1,
+        "LOST": 0
+      },
+      "identity_plane": {
+        "IDENTITY_CORRECT": 7,
+        "IDENTITY_MISATTRIBUTED": 1,
+        "IDENTITY_UNMAPPED": 0,
+        "IDENTITY_LOST": 0
+      },
+      "surplus": 0
+    },
+    "6": {
+      "total": 8,
+      "content_plane": {
+        "CORRECT": 7,
+        "MISATTRIBUTED": 0,
+        "UNMAPPED": 0,
+        "NULLBUF": 0,
+        "INVALID": 1,
+        "LOST": 0
+      },
+      "identity_plane": {
+        "IDENTITY_CORRECT": 7,
+        "IDENTITY_MISATTRIBUTED": 1,
+        "IDENTITY_UNMAPPED": 0,
+        "IDENTITY_LOST": 0
+      },
+      "surplus": 0
+    },
+    "7": {
+      "total": 8,
+      "content_plane": {
+        "CORRECT": 7,
+        "MISATTRIBUTED": 0,
+        "UNMAPPED": 0,
+        "NULLBUF": 0,
+        "INVALID": 1,
+        "LOST": 0
+      },
+      "identity_plane": {
+        "IDENTITY_CORRECT": 7,
+        "IDENTITY_MISATTRIBUTED": 1,
+        "IDENTITY_UNMAPPED": 0,
+        "IDENTITY_LOST": 0
+      },
+      "surplus": 0
+    },
+    "8": {
+      "total": 8,
+      "content_plane": {
+        "CORRECT": 7,
+        "MISATTRIBUTED": 0,
+        "UNMAPPED": 1,
+        "NULLBUF": 0,
+        "INVALID": 0,
+        "LOST": 0
+      },
+      "identity_plane": {
+        "IDENTITY_CORRECT": 7,
+        "IDENTITY_MISATTRIBUTED": 0,
+        "IDENTITY_UNMAPPED": 1,
+        "IDENTITY_LOST": 0
+      },
+      "surplus": 0
+    },
+    "9": {
+      "total": 8,
+      "content_plane": {
+        "CORRECT": 7,
+        "MISATTRIBUTED": 0,
+        "UNMAPPED": 0,
+        "NULLBUF": 0,
+        "INVALID": 1,
+        "LOST": 0
+      },
+      "identity_plane": {
+        "IDENTITY_CORRECT": 7,
+        "IDENTITY_MISATTRIBUTED": 1,
+        "IDENTITY_UNMAPPED": 0,
+        "IDENTITY_LOST": 0
+      },
+      "surplus": 0
+    },
+    "10": {
+      "total": 8,
+      "content_plane": {
+        "CORRECT": 7,
+        "MISATTRIBUTED": 0,
+        "UNMAPPED": 0,
+        "NULLBUF": 0,
+        "INVALID": 1,
+        "LOST": 0
+      },
+      "identity_plane": {
+        "IDENTITY_CORRECT": 7,
+        "IDENTITY_MISATTRIBUTED": 1,
+        "IDENTITY_UNMAPPED": 0,
+        "IDENTITY_LOST": 0
+      },
+      "surplus": 0
+    },
+    "11": {
+      "total": 8,
+      "content_plane": {
+        "CORRECT": 7,
+        "MISATTRIBUTED": 0,
+        "UNMAPPED": 0,
+        "NULLBUF": 0,
+        "INVALID": 1,
+        "LOST": 0
+      },
+      "identity_plane": {
+        "IDENTITY_CORRECT": 7,
+        "IDENTITY_MISATTRIBUTED": 1,
+        "IDENTITY_UNMAPPED": 0,
+        "IDENTITY_LOST": 0
+      },
+      "surplus": 0
+    },
+    "12": {
+      "total": 8,
+      "content_plane": {
+        "CORRECT": 7,
+        "MISATTRIBUTED": 0,
+        "UNMAPPED": 1,
+        "NULLBUF": 0,
+        "INVALID": 0,
+        "LOST": 0
+      },
+      "identity_plane": {
+        "IDENTITY_CORRECT": 7,
+        "IDENTITY_MISATTRIBUTED": 0,
+        "IDENTITY_UNMAPPED": 1,
+        "IDENTITY_LOST": 0
+      },
+      "surplus": 0
+    },
+    "13": {
+      "total": 8,
+      "content_plane": {
+        "CORRECT": 7,
+        "MISATTRIBUTED": 0,
+        "UNMAPPED": 0,
+        "NULLBUF": 0,
+        "INVALID": 1,
+        "LOST": 0
+      },
+      "identity_plane": {
+        "IDENTITY_CORRECT": 7,
+        "IDENTITY_MISATTRIBUTED": 1,
+        "IDENTITY_UNMAPPED": 0,
+        "IDENTITY_LOST": 0
+      },
+      "surplus": 0
+    },
+    "14": {
+      "total": 8,
+      "content_plane": {
+        "CORRECT": 7,
+        "MISATTRIBUTED": 0,
+        "UNMAPPED": 0,
+        "NULLBUF": 0,
+        "INVALID": 1,
+        "LOST": 0
+      },
+      "identity_plane": {
+        "IDENTITY_CORRECT": 7,
+        "IDENTITY_MISATTRIBUTED": 1,
+        "IDENTITY_UNMAPPED": 0,
+        "IDENTITY_LOST": 0
+      },
+      "surplus": 0
+    },
+    "15": {
+      "total": 8,
+      "content_plane": {
+        "CORRECT": 8,
+        "MISATTRIBUTED": 0,
+        "UNMAPPED": 0,
+        "NULLBUF": 0,
+        "INVALID": 0,
+        "LOST": 0
+      },
+      "identity_plane": {
+        "IDENTITY_CORRECT": 7,
+        "IDENTITY_MISATTRIBUTED": 1,
+        "IDENTITY_UNMAPPED": 0,
+        "IDENTITY_LOST": 0
+      },
+      "surplus": 0
+    }
+  },
+  "per_seq": {
+    "0": {
+      "total": 16,
+      "content_plane": {
+        "CORRECT": 1,
+        "MISATTRIBUTED": 0,
+        "UNMAPPED": 3,
+        "NULLBUF": 0,
+        "INVALID": 12,
+        "LOST": 0
+      },
+      "identity_plane": {
+        "IDENTITY_CORRECT": 0,
+        "IDENTITY_MISATTRIBUTED": 13,
+        "IDENTITY_UNMAPPED": 3,
+        "IDENTITY_LOST": 0
+      }
+    },
+    "1": {
+      "total": 16,
+      "content_plane": {
+        "CORRECT": 16,
+        "MISATTRIBUTED": 0,
+        "UNMAPPED": 0,
+        "NULLBUF": 0,
+        "INVALID": 0,
+        "LOST": 0
+      },
+      "identity_plane": {
+        "IDENTITY_CORRECT": 16,
+        "IDENTITY_MISATTRIBUTED": 0,
+        "IDENTITY_UNMAPPED": 0,
+        "IDENTITY_LOST": 0
+      }
+    },
+    "2": {
+      "total": 16,
+      "content_plane": {
+        "CORRECT": 16,
+        "MISATTRIBUTED": 0,
+        "UNMAPPED": 0,
+        "NULLBUF": 0,
+        "INVALID": 0,
+        "LOST": 0
+      },
+      "identity_plane": {
+        "IDENTITY_CORRECT": 16,
+        "IDENTITY_MISATTRIBUTED": 0,
+        "IDENTITY_UNMAPPED": 0,
+        "IDENTITY_LOST": 0
+      }
+    },
+    "3": {
+      "total": 16,
+      "content_plane": {
+        "CORRECT": 16,
+        "MISATTRIBUTED": 0,
+        "UNMAPPED": 0,
+        "NULLBUF": 0,
+        "INVALID": 0,
+        "LOST": 0
+      },
+      "identity_plane": {
+        "IDENTITY_CORRECT": 16,
+        "IDENTITY_MISATTRIBUTED": 0,
+        "IDENTITY_UNMAPPED": 0,
+        "IDENTITY_LOST": 0
+      }
+    },
+    "4": {
+      "total": 16,
+      "content_plane": {
+        "CORRECT": 16,
+        "MISATTRIBUTED": 0,
+        "UNMAPPED": 0,
+        "NULLBUF": 0,
+        "INVALID": 0,
+        "LOST": 0
+      },
+      "identity_plane": {
+        "IDENTITY_CORRECT": 16,
+        "IDENTITY_MISATTRIBUTED": 0,
+        "IDENTITY_UNMAPPED": 0,
+        "IDENTITY_LOST": 0
+      }
+    },
+    "5": {
+      "total": 16,
+      "content_plane": {
+        "CORRECT": 16,
+        "MISATTRIBUTED": 0,
+        "UNMAPPED": 0,
+        "NULLBUF": 0,
+        "INVALID": 0,
+        "LOST": 0
+      },
+      "identity_plane": {
+        "IDENTITY_CORRECT": 16,
+        "IDENTITY_MISATTRIBUTED": 0,
+        "IDENTITY_UNMAPPED": 0,
+        "IDENTITY_LOST": 0
+      }
+    },
+    "6": {
+      "total": 16,
+      "content_plane": {
+        "CORRECT": 16,
+        "MISATTRIBUTED": 0,
+        "UNMAPPED": 0,
+        "NULLBUF": 0,
+        "INVALID": 0,
+        "LOST": 0
+      },
+      "identity_plane": {
+        "IDENTITY_CORRECT": 16,
+        "IDENTITY_MISATTRIBUTED": 0,
+        "IDENTITY_UNMAPPED": 0,
+        "IDENTITY_LOST": 0
+      }
+    },
+    "7": {
+      "total": 16,
+      "content_plane": {
+        "CORRECT": 16,
+        "MISATTRIBUTED": 0,
+        "UNMAPPED": 0,
+        "NULLBUF": 0,
+        "INVALID": 0,
+        "LOST": 0
+      },
+      "identity_plane": {
+        "IDENTITY_CORRECT": 16,
+        "IDENTITY_MISATTRIBUTED": 0,
+        "IDENTITY_UNMAPPED": 0,
+        "IDENTITY_LOST": 0
+      }
+    }
+  },
+  "first_10_trace_misattributed": [],
+  "first_10_identity_misattributed": [
+    {
+      "line": 12,
+      "timestamp": 517013537687700,
+      "carrier": 2504874,
+      "count": 1001,
+      "k_true": 1,
+      "status": "INVALID",
+      "vthread": 21,
+      "traceid_hi": "0000000000000000",
+      "traceid_lo": "0000000000000000",
+      "spanid": "0000000000000000",
+      "manifest_k": 1,
+      "seq": 0,
+      "reason": "WRONG_VTHREAD",
+      "expected_vthread_id": 29
+    },
+    {
+      "line": 20,
+      "timestamp": 517013585018837,
+      "carrier": 2504874,
+      "count": 1002,
+      "k_true": 2,
+      "status": "INVALID",
+      "vthread": 29,
+      "traceid_hi": "0000000000000000",
+      "traceid_lo": "0000000000000000",
+      "spanid": "0000000000000000",
+      "manifest_k": 2,
+      "seq": 0,
+      "reason": "WRONG_VTHREAD",
+      "expected_vthread_id": 30
+    },
+    {
+      "line": 28,
+      "timestamp": 517013633466277,
+      "carrier": 2504874,
+      "count": 1003,
+      "k_true": 3,
+      "status": "INVALID",
+      "vthread": 30,
+      "traceid_hi": "0000000000000000",
+      "traceid_lo": "0000000000000000",
+      "spanid": "0000000000000000",
+      "manifest_k": 3,
+      "seq": 0,
+      "reason": "WRONG_VTHREAD",
+      "expected_vthread_id": 31
+    },
+    {
+      "line": 36,
+      "timestamp": 517013697246661,
+      "carrier": 2504874,
+      "count": 1004,
+      "k_true": 4,
+      "status": "INVALID",
+      "vthread": 31,
+      "traceid_hi": "0000000000000000",
+      "traceid_lo": "0000000000000000",
+      "spanid": "0000000000000000",
+      "manifest_k": 4,
+      "seq": 0,
+      "reason": "WRONG_VTHREAD",
+      "expected_vthread_id": 32
+    },
+    {
+      "line": 44,
+      "timestamp": 517013758981399,
+      "carrier": 2504874,
+      "count": 1005,
+      "k_true": 5,
+      "status": "INVALID",
+      "vthread": 32,
+      "traceid_hi": "0000000000000000",
+      "traceid_lo": "0000000000000000",
+      "spanid": "0000000000000000",
+      "manifest_k": 5,
+      "seq": 0,
+      "reason": "WRONG_VTHREAD",
+      "expected_vthread_id": 33
+    },
+    {
+      "line": 52,
+      "timestamp": 517013822901951,
+      "carrier": 2504874,
+      "count": 1006,
+      "k_true": 6,
+      "status": "INVALID",
+      "vthread": 33,
+      "traceid_hi": "0000000000000000",
+      "traceid_lo": "0000000000000000",
+      "spanid": "0000000000000000",
+      "manifest_k": 6,
+      "seq": 0,
+      "reason": "WRONG_VTHREAD",
+      "expected_vthread_id": 34
+    },
+    {
+      "line": 60,
+      "timestamp": 517013879550723,
+      "carrier": 2504874,
+      "count": 1007,
+      "k_true": 7,
+      "status": "INVALID",
+      "vthread": 34,
+      "traceid_hi": "0000000000000000",
+      "traceid_lo": "0000000000000000",
+      "spanid": "0000000000000000",
+      "manifest_k": 7,
+      "seq": 0,
+      "reason": "WRONG_VTHREAD",
+      "expected_vthread_id": 35
+    },
+    {
+      "line": 76,
+      "timestamp": 517014000114629,
+      "carrier": 2504878,
+      "count": 1009,
+      "k_true": 9,
+      "status": "INVALID",
+      "vthread": 36,
+      "traceid_hi": "0000000000000000",
+      "traceid_lo": "0000000000000000",
+      "spanid": "0000000000000000",
+      "manifest_k": 9,
+      "seq": 0,
+      "reason": "WRONG_VTHREAD",
+      "expected_vthread_id": 37
+    },
+    {
+      "line": 84,
+      "timestamp": 517014043855731,
+      "carrier": 2504879,
+      "count": 1010,
+      "k_true": 10,
+      "status": "INVALID",
+      "vthread": 37,
+      "traceid_hi": "0000000000000000",
+      "traceid_lo": "0000000000000000",
+      "spanid": "0000000000000000",
+      "manifest_k": 10,
+      "seq": 0,
+      "reason": "WRONG_VTHREAD",
+      "expected_vthread_id": 38
+    },
+    {
+      "line": 92,
+      "timestamp": 517014090710363,
+      "carrier": 2504879,
+      "count": 1011,
+      "k_true": 11,
+      "status": "INVALID",
+      "vthread": 38,
+      "traceid_hi": "0000000000000000",
+      "traceid_lo": "0000000000000000",
+      "spanid": "0000000000000000",
+      "manifest_k": 11,
+      "seq": 0,
+      "reason": "WRONG_VTHREAD",
+      "expected_vthread_id": 39
+    }
+  ],
+  "manifest_header": {
+    "pid": 2504819,
+    "fd": 5
+  },
+  "expect_clean": false
+}

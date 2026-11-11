@@ -1,0 +1,473 @@
+{
+  "manifest_entries": 128,
+  "log_events": 128,
+  "content_plane": {
+    "counts": {
+      "CORRECT": 128,
+      "MISATTRIBUTED": 0,
+      "UNMAPPED": 0,
+      "NULLBUF": 0,
+      "INVALID": 0,
+      "LOST": 0
+    },
+    "reason_counts": {
+      "MATCH": 128
+    },
+    "foreign_context": 0
+  },
+  "identity_plane": {
+    "counts": {
+      "IDENTITY_CORRECT": 128,
+      "IDENTITY_MISATTRIBUTED": 0,
+      "IDENTITY_UNMAPPED": 0,
+      "IDENTITY_LOST": 0
+    },
+    "reason_counts": {
+      "MATCH": 128
+    }
+  },
+  "pairing": {
+    "complete": true,
+    "lost": 0,
+    "surplus": 0,
+    "malformed_marker_lines": 0,
+    "violations": 0,
+    "surplus_events": [],
+    "malformed_examples": []
+  },
+  "per_k": {
+    "0": {
+      "total": 8,
+      "content_plane": {
+        "CORRECT": 8,
+        "MISATTRIBUTED": 0,
+        "UNMAPPED": 0,
+        "NULLBUF": 0,
+        "INVALID": 0,
+        "LOST": 0
+      },
+      "identity_plane": {
+        "IDENTITY_CORRECT": 8,
+        "IDENTITY_MISATTRIBUTED": 0,
+        "IDENTITY_UNMAPPED": 0,
+        "IDENTITY_LOST": 0
+      },
+      "surplus": 0
+    },
+    "1": {
+      "total": 8,
+      "content_plane": {
+        "CORRECT": 8,
+        "MISATTRIBUTED": 0,
+        "UNMAPPED": 0,
+        "NULLBUF": 0,
+        "INVALID": 0,
+        "LOST": 0
+      },
+      "identity_plane": {
+        "IDENTITY_CORRECT": 8,
+        "IDENTITY_MISATTRIBUTED": 0,
+        "IDENTITY_UNMAPPED": 0,
+        "IDENTITY_LOST": 0
+      },
+      "surplus": 0
+    },
+    "2": {
+      "total": 8,
+      "content_plane": {
+        "CORRECT": 8,
+        "MISATTRIBUTED": 0,
+        "UNMAPPED": 0,
+        "NULLBUF": 0,
+        "INVALID": 0,
+        "LOST": 0
+      },
+      "identity_plane": {
+        "IDENTITY_CORRECT": 8,
+        "IDENTITY_MISATTRIBUTED": 0,
+        "IDENTITY_UNMAPPED": 0,
+        "IDENTITY_LOST": 0
+      },
+      "surplus": 0
+    },
+    "3": {
+      "total": 8,
+      "content_plane": {
+        "CORRECT": 8,
+        "MISATTRIBUTED": 0,
+        "UNMAPPED": 0,
+        "NULLBUF": 0,
+        "INVALID": 0,
+        "LOST": 0
+      },
+      "identity_plane": {
+        "IDENTITY_CORRECT": 8,
+        "IDENTITY_MISATTRIBUTED": 0,
+        "IDENTITY_UNMAPPED": 0,
+        "IDENTITY_LOST": 0
+      },
+      "surplus": 0
+    },
+    "4": {
+      "total": 8,
+      "content_plane": {
+        "CORRECT": 8,
+        "MISATTRIBUTED": 0,
+        "UNMAPPED": 0,
+        "NULLBUF": 0,
+        "INVALID": 0,
+        "LOST": 0
+      },
+      "identity_plane": {
+        "IDENTITY_CORRECT": 8,
+        "IDENTITY_MISATTRIBUTED": 0,
+        "IDENTITY_UNMAPPED": 0,
+        "IDENTITY_LOST": 0
+      },
+      "surplus": 0
+    },
+    "5": {
+      "total": 8,
+      "content_plane": {
+        "CORRECT": 8,
+        "MISATTRIBUTED": 0,
+        "UNMAPPED": 0,
+        "NULLBUF": 0,
+        "INVALID": 0,
+        "LOST": 0
+      },
+      "identity_plane": {
+        "IDENTITY_CORRECT": 8,
+        "IDENTITY_MISATTRIBUTED": 0,
+        "IDENTITY_UNMAPPED": 0,
+        "IDENTITY_LOST": 0
+      },
+      "surplus": 0
+    },
+    "6": {
+      "total": 8,
+      "content_plane": {
+        "CORRECT": 8,
+        "MISATTRIBUTED": 0,
+        "UNMAPPED": 0,
+        "NULLBUF": 0,
+        "INVALID": 0,
+        "LOST": 0
+      },
+      "identity_plane": {
+        "IDENTITY_CORRECT": 8,
+        "IDENTITY_MISATTRIBUTED": 0,
+        "IDENTITY_UNMAPPED": 0,
+        "IDENTITY_LOST": 0
+      },
+      "surplus": 0
+    },
+    "7": {
+      "total": 8,
+      "content_plane": {
+        "CORRECT": 8,
+        "MISATTRIBUTED": 0,
+        "UNMAPPED": 0,
+        "NULLBUF": 0,
+        "INVALID": 0,
+        "LOST": 0
+      },
+      "identity_plane": {
+        "IDENTITY_CORRECT": 8,
+        "IDENTITY_MISATTRIBUTED": 0,
+        "IDENTITY_UNMAPPED": 0,
+        "IDENTITY_LOST": 0
+      },
+      "surplus": 0
+    },
+    "8": {
+      "total": 8,
+      "content_plane": {
+        "CORRECT": 8,
+        "MISATTRIBUTED": 0,
+        "UNMAPPED": 0,
+        "NULLBUF": 0,
+        "INVALID": 0,
+        "LOST": 0
+      },
+      "identity_plane": {
+        "IDENTITY_CORRECT": 8,
+        "IDENTITY_MISATTRIBUTED": 0,
+        "IDENTITY_UNMAPPED": 0,
+        "IDENTITY_LOST": 0
+      },
+      "surplus": 0
+    },
+    "9": {
+      "total": 8,
+      "content_plane": {
+        "CORRECT": 8,
+        "MISATTRIBUTED": 0,
+        "UNMAPPED": 0,
+        "NULLBUF": 0,
+        "INVALID": 0,
+        "LOST": 0
+      },
+      "identity_plane": {
+        "IDENTITY_CORRECT": 8,
+        "IDENTITY_MISATTRIBUTED": 0,
+        "IDENTITY_UNMAPPED": 0,
+        "IDENTITY_LOST": 0
+      },
+      "surplus": 0
+    },
+    "10": {
+      "total": 8,
+      "content_plane": {
+        "CORRECT": 8,
+        "MISATTRIBUTED": 0,
+        "UNMAPPED": 0,
+        "NULLBUF": 0,
+        "INVALID": 0,
+        "LOST": 0
+      },
+      "identity_plane": {
+        "IDENTITY_CORRECT": 8,
+        "IDENTITY_MISATTRIBUTED": 0,
+        "IDENTITY_UNMAPPED": 0,
+        "IDENTITY_LOST": 0
+      },
+      "surplus": 0
+    },
+    "11": {
+      "total": 8,
+      "content_plane": {
+        "CORRECT": 8,
+        "MISATTRIBUTED": 0,
+        "UNMAPPED": 0,
+        "NULLBUF": 0,
+        "INVALID": 0,
+        "LOST": 0
+      },
+      "identity_plane": {
+        "IDENTITY_CORRECT": 8,
+        "IDENTITY_MISATTRIBUTED": 0,
+        "IDENTITY_UNMAPPED": 0,
+        "IDENTITY_LOST": 0
+      },
+      "surplus": 0
+    },
+    "12": {
+      "total": 8,
+      "content_plane": {
+        "CORRECT": 8,
+        "MISATTRIBUTED": 0,
+        "UNMAPPED": 0,
+        "NULLBUF": 0,
+        "INVALID": 0,
+        "LOST": 0
+      },
+      "identity_plane": {
+        "IDENTITY_CORRECT": 8,
+        "IDENTITY_MISATTRIBUTED": 0,
+        "IDENTITY_UNMAPPED": 0,
+        "IDENTITY_LOST": 0
+      },
+      "surplus": 0
+    },
+    "13": {
+      "total": 8,
+      "content_plane": {
+        "CORRECT": 8,
+        "MISATTRIBUTED": 0,
+        "UNMAPPED": 0,
+        "NULLBUF": 0,
+        "INVALID": 0,
+        "LOST": 0
+      },
+      "identity_plane": {
+        "IDENTITY_CORRECT": 8,
+        "IDENTITY_MISATTRIBUTED": 0,
+        "IDENTITY_UNMAPPED": 0,
+        "IDENTITY_LOST": 0
+      },
+      "surplus": 0
+    },
+    "14": {
+      "total": 8,
+      "content_plane": {
+        "CORRECT": 8,
+        "MISATTRIBUTED": 0,
+        "UNMAPPED": 0,
+        "NULLBUF": 0,
+        "INVALID": 0,
+        "LOST": 0
+      },
+      "identity_plane": {
+        "IDENTITY_CORRECT": 8,
+        "IDENTITY_MISATTRIBUTED": 0,
+        "IDENTITY_UNMAPPED": 0,
+        "IDENTITY_LOST": 0
+      },
+      "surplus": 0
+    },
+    "15": {
+      "total": 8,
+      "content_plane": {
+        "CORRECT": 8,
+        "MISATTRIBUTED": 0,
+        "UNMAPPED": 0,
+        "NULLBUF": 0,
+        "INVALID": 0,
+        "LOST": 0
+      },
+      "identity_plane": {
+        "IDENTITY_CORRECT": 8,
+        "IDENTITY_MISATTRIBUTED": 0,
+        "IDENTITY_UNMAPPED": 0,
+        "IDENTITY_LOST": 0
+      },
+      "surplus": 0
+    }
+  },
+  "per_seq": {
+    "0": {
+      "total": 16,
+      "content_plane": {
+        "CORRECT": 16,
+        "MISATTRIBUTED": 0,
+        "UNMAPPED": 0,
+        "NULLBUF": 0,
+        "INVALID": 0,
+        "LOST": 0
+      },
+      "identity_plane": {
+        "IDENTITY_CORRECT": 16,
+        "IDENTITY_MISATTRIBUTED": 0,
+        "IDENTITY_UNMAPPED": 0,
+        "IDENTITY_LOST": 0
+      }
+    },
+    "1": {
+      "total": 16,
+      "content_plane": {
+        "CORRECT": 16,
+        "MISATTRIBUTED": 0,
+        "UNMAPPED": 0,
+        "NULLBUF": 0,
+        "INVALID": 0,
+        "LOST": 0
+      },
+      "identity_plane": {
+        "IDENTITY_CORRECT": 16,
+        "IDENTITY_MISATTRIBUTED": 0,
+        "IDENTITY_UNMAPPED": 0,
+        "IDENTITY_LOST": 0
+      }
+    },
+    "2": {
+      "total": 16,
+      "content_plane": {
+        "CORRECT": 16,
+        "MISATTRIBUTED": 0,
+        "UNMAPPED": 0,
+        "NULLBUF": 0,
+        "INVALID": 0,
+        "LOST": 0
+      },
+      "identity_plane": {
+        "IDENTITY_CORRECT": 16,
+        "IDENTITY_MISATTRIBUTED": 0,
+        "IDENTITY_UNMAPPED": 0,
+        "IDENTITY_LOST": 0
+      }
+    },
+    "3": {
+      "total": 16,
+      "content_plane": {
+        "CORRECT": 16,
+        "MISATTRIBUTED": 0,
+        "UNMAPPED": 0,
+        "NULLBUF": 0,
+        "INVALID": 0,
+        "LOST": 0
+      },
+      "identity_plane": {
+        "IDENTITY_CORRECT": 16,
+        "IDENTITY_MISATTRIBUTED": 0,
+        "IDENTITY_UNMAPPED": 0,
+        "IDENTITY_LOST": 0
+      }
+    },
+    "4": {
+      "total": 16,
+      "content_plane": {
+        "CORRECT": 16,
+        "MISATTRIBUTED": 0,
+        "UNMAPPED": 0,
+        "NULLBUF": 0,
+        "INVALID": 0,
+        "LOST": 0
+      },
+      "identity_plane": {
+        "IDENTITY_CORRECT": 16,
+        "IDENTITY_MISATTRIBUTED": 0,
+        "IDENTITY_UNMAPPED": 0,
+        "IDENTITY_LOST": 0
+      }
+    },
+    "5": {
+      "total": 16,
+      "content_plane": {
+        "CORRECT": 16,
+        "MISATTRIBUTED": 0,
+        "UNMAPPED": 0,
+        "NULLBUF": 0,
+        "INVALID": 0,
+        "LOST": 0
+      },
+      "identity_plane": {
+        "IDENTITY_CORRECT": 16,
+        "IDENTITY_MISATTRIBUTED": 0,
+        "IDENTITY_UNMAPPED": 0,
+        "IDENTITY_LOST": 0
+      }
+    },
+    "6": {
+      "total": 16,
+      "content_plane": {
+        "CORRECT": 16,
+        "MISATTRIBUTED": 0,
+        "UNMAPPED": 0,
+        "NULLBUF": 0,
+        "INVALID": 0,
+        "LOST": 0
+      },
+      "identity_plane": {
+        "IDENTITY_CORRECT": 16,
+        "IDENTITY_MISATTRIBUTED": 0,
+        "IDENTITY_UNMAPPED": 0,
+        "IDENTITY_LOST": 0
+      }
+    },
+    "7": {
+      "total": 16,
+      "content_plane": {
+        "CORRECT": 16,
+        "MISATTRIBUTED": 0,
+        "UNMAPPED": 0,
+        "NULLBUF": 0,
+        "INVALID": 0,
+        "LOST": 0
+      },
+      "identity_plane": {
+        "IDENTITY_CORRECT": 16,
+        "IDENTITY_MISATTRIBUTED": 0,
+        "IDENTITY_UNMAPPED": 0,
+        "IDENTITY_LOST": 0
+      }
+    }
+  },
+  "first_10_trace_misattributed": [],
+  "first_10_identity_misattributed": [],
+  "manifest_header": {
+    "pid": 2510491,
+    "fd": 5
+  },
+  "expect_clean": true
+}

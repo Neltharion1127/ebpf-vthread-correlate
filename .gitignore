@@ -22,3 +22,6 @@ __pycache__/
 # External helper clones
 tools/
 result/
+
+
+/paper-tables/tex

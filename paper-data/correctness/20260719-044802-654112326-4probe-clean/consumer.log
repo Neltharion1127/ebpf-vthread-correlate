@@ -1,0 +1,158 @@
+Attached 53 probes
+ebpf-vthread-harness: tracing started
+  Protocol: start/end + top-level thaw/successful freeze
+[marker] ts=69935849763925 carrier=57908 count=1000 status=OK vthread=21 traceid_hi=cafebabe00c0ffee traceid_lo=0 spanid=100000001
+[marker] ts=69935862861043 carrier=57908 count=1000 status=OK vthread=21 traceid_hi=cafebabe00c0ffee traceid_lo=0 spanid=100000002
+[marker] ts=69935871820176 carrier=57908 count=1000 status=OK vthread=21 traceid_hi=cafebabe00c0ffee traceid_lo=0 spanid=100000003
+[marker] ts=69935880923600 carrier=57908 count=1000 status=OK vthread=21 traceid_hi=cafebabe00c0ffee traceid_lo=0 spanid=100000004
+[marker] ts=69935889265444 carrier=57908 count=1000 status=OK vthread=21 traceid_hi=cafebabe00c0ffee traceid_lo=0 spanid=100000005
+[marker] ts=69935898313369 carrier=57908 count=1000 status=OK vthread=21 traceid_hi=cafebabe00c0ffee traceid_lo=0 spanid=100000006
+[marker] ts=69935901043692 carrier=57908 count=1000 status=OK vthread=21 traceid_hi=cafebabe00c0ffee traceid_lo=0 spanid=100000007
+[marker] ts=69935904802136 carrier=57908 count=1000 status=OK vthread=21 traceid_hi=cafebabe00c0ffee traceid_lo=0 spanid=100000008
+[marker] ts=69935905124010 carrier=57908 count=1001 status=OK vthread=31 traceid_hi=cafebabe00c0ffee traceid_lo=1 spanid=200000001
+[marker] ts=69935907637667 carrier=57908 count=1001 status=OK vthread=31 traceid_hi=cafebabe00c0ffee traceid_lo=1 spanid=200000002
+[marker] ts=69935917833504 carrier=57908 count=1001 status=OK vthread=31 traceid_hi=cafebabe00c0ffee traceid_lo=1 spanid=200000003
+[marker] ts=69935922467028 carrier=57908 count=1001 status=OK vthread=31 traceid_hi=cafebabe00c0ffee traceid_lo=1 spanid=200000004
+[marker] ts=69935933976527 carrier=57908 count=1001 status=OK vthread=31 traceid_hi=cafebabe00c0ffee traceid_lo=1 spanid=200000005
+[marker] ts=69935941601790 carrier=57908 count=1001 status=OK vthread=31 traceid_hi=cafebabe00c0ffee traceid_lo=1 spanid=200000006
+[marker] ts=69935951800668 carrier=57908 count=1001 status=OK vthread=31 traceid_hi=cafebabe00c0ffee traceid_lo=1 spanid=200000007
+[marker] ts=69935954515783 carrier=57908 count=1001 status=OK vthread=31 traceid_hi=cafebabe00c0ffee traceid_lo=1 spanid=200000008
+[marker] ts=69935954772032 carrier=57908 count=1002 status=OK vthread=32 traceid_hi=cafebabe00c0ffee traceid_lo=2 spanid=300000001
+[marker] ts=69935961485674 carrier=57908 count=1002 status=OK vthread=32 traceid_hi=cafebabe00c0ffee traceid_lo=2 spanid=300000002
+[marker] ts=69935968137816 carrier=57908 count=1002 status=OK vthread=32 traceid_hi=cafebabe00c0ffee traceid_lo=2 spanid=300000003
+[marker] ts=69935971348054 carrier=57908 count=1002 status=OK vthread=32 traceid_hi=cafebabe00c0ffee traceid_lo=2 spanid=300000004
+[marker] ts=69935977871571 carrier=57908 count=1002 status=OK vthread=32 traceid_hi=cafebabe00c0ffee traceid_lo=2 spanid=300000005
+[marker] ts=69935983836799 carrier=57908 count=1002 status=OK vthread=32 traceid_hi=cafebabe00c0ffee traceid_lo=2 spanid=300000006
+[marker] ts=69935992975348 carrier=57908 count=1002 status=OK vthread=32 traceid_hi=cafebabe00c0ffee traceid_lo=2 spanid=300000007
+[marker] ts=69935995546338 carrier=57908 count=1002 status=OK vthread=32 traceid_hi=cafebabe00c0ffee traceid_lo=2 spanid=300000008
+[marker] ts=69935995794087 carrier=57908 count=1003 status=OK vthread=33 traceid_hi=cafebabe00c0ffee traceid_lo=3 spanid=400000001
+[marker] ts=69936000715652 carrier=57908 count=1003 status=OK vthread=33 traceid_hi=cafebabe00c0ffee traceid_lo=3 spanid=400000002
+[marker] ts=69936004773054 carrier=57908 count=1003 status=OK vthread=33 traceid_hi=cafebabe00c0ffee traceid_lo=3 spanid=400000003
+[marker] ts=69936013896728 carrier=57909 count=1003 status=OK vthread=33 traceid_hi=cafebabe00c0ffee traceid_lo=3 spanid=400000004
+[marker] ts=69936022342363 carrier=57909 count=1003 status=OK vthread=33 traceid_hi=cafebabe00c0ffee traceid_lo=3 spanid=400000005
+[marker] ts=69936029175837 carrier=57909 count=1003 status=OK vthread=33 traceid_hi=cafebabe00c0ffee traceid_lo=3 spanid=400000006
+[marker] ts=69936038164429 carrier=57913 count=1003 status=OK vthread=33 traceid_hi=cafebabe00c0ffee traceid_lo=3 spanid=400000007
+[marker] ts=69936049384720 carrier=57913 count=1003 status=OK vthread=33 traceid_hi=cafebabe00c0ffee traceid_lo=3 spanid=400000008
+[marker] ts=69936049675677 carrier=57908 count=1004 status=OK vthread=34 traceid_hi=cafebabe00c0ffee traceid_lo=4 spanid=500000001
+[marker] ts=69936054434368 carrier=57909 count=1004 status=OK vthread=34 traceid_hi=cafebabe00c0ffee traceid_lo=4 spanid=500000002
+[marker] ts=69936060079763 carrier=57908 count=1004 status=OK vthread=34 traceid_hi=cafebabe00c0ffee traceid_lo=4 spanid=500000003
+[marker] ts=69936071033597 carrier=57908 count=1004 status=OK vthread=34 traceid_hi=cafebabe00c0ffee traceid_lo=4 spanid=500000004
+[marker] ts=69936078644819 carrier=57908 count=1004 status=OK vthread=34 traceid_hi=cafebabe00c0ffee traceid_lo=4 spanid=500000005
+[marker] ts=69936083377968 carrier=57908 count=1004 status=OK vthread=34 traceid_hi=cafebabe00c0ffee traceid_lo=4 spanid=500000006
+[marker] ts=69936091492563 carrier=57908 count=1004 status=OK vthread=34 traceid_hi=cafebabe00c0ffee traceid_lo=4 spanid=500000007
+[marker] ts=69936100712945 carrier=57908 count=1004 status=OK vthread=34 traceid_hi=cafebabe00c0ffee traceid_lo=4 spanid=500000008
+[marker] ts=69936101077193 carrier=57913 count=1005 status=OK vthread=35 traceid_hi=cafebabe00c0ffee traceid_lo=5 spanid=600000001
+[marker] ts=69936104749180 carrier=57908 count=1005 status=OK vthread=35 traceid_hi=cafebabe00c0ffee traceid_lo=5 spanid=600000002
+[marker] ts=69936107852626 carrier=57908 count=1005 status=OK vthread=35 traceid_hi=cafebabe00c0ffee traceid_lo=5 spanid=600000003
+[marker] ts=69936120590620 carrier=57908 count=1005 status=OK vthread=35 traceid_hi=cafebabe00c0ffee traceid_lo=5 spanid=600000004
+[marker] ts=69936123361860 carrier=57909 count=1005 status=OK vthread=35 traceid_hi=cafebabe00c0ffee traceid_lo=5 spanid=600000005
+[marker] ts=69936135889397 carrier=57908 count=1005 status=OK vthread=35 traceid_hi=cafebabe00c0ffee traceid_lo=5 spanid=600000006
+[marker] ts=69936146169066 carrier=57908 count=1005 status=OK vthread=35 traceid_hi=cafebabe00c0ffee traceid_lo=5 spanid=600000007
+[marker] ts=69936154722493 carrier=57908 count=1005 status=OK vthread=35 traceid_hi=cafebabe00c0ffee traceid_lo=5 spanid=600000008
+[marker] ts=69936155120075 carrier=57913 count=1006 status=OK vthread=36 traceid_hi=cafebabe00c0ffee traceid_lo=6 spanid=700000001
+[marker] ts=69936164060124 carrier=57913 count=1006 status=OK vthread=36 traceid_hi=cafebabe00c0ffee traceid_lo=6 spanid=700000002
+[marker] ts=69936168263609 carrier=57913 count=1006 status=OK vthread=36 traceid_hi=cafebabe00c0ffee traceid_lo=6 spanid=700000003
+[marker] ts=69936172265677 carrier=57913 count=1006 status=OK vthread=36 traceid_hi=cafebabe00c0ffee traceid_lo=6 spanid=700000004
+[marker] ts=69936177314533 carrier=57913 count=1006 status=OK vthread=36 traceid_hi=cafebabe00c0ffee traceid_lo=6 spanid=700000005
+[marker] ts=69936186285541 carrier=57913 count=1006 status=OK vthread=36 traceid_hi=cafebabe00c0ffee traceid_lo=6 spanid=700000006
+[marker] ts=69936195300924 carrier=57913 count=1006 status=OK vthread=36 traceid_hi=cafebabe00c0ffee traceid_lo=6 spanid=700000007
+[marker] ts=69936205236387 carrier=57913 count=1006 status=OK vthread=36 traceid_hi=cafebabe00c0ffee traceid_lo=6 spanid=700000008
+[marker] ts=69936205536969 carrier=57913 count=1007 status=OK vthread=37 traceid_hi=cafebabe00c0ffee traceid_lo=7 spanid=800000001
+[marker] ts=69936216046555 carrier=57913 count=1007 status=OK vthread=37 traceid_hi=cafebabe00c0ffee traceid_lo=7 spanid=800000002
+[marker] ts=69936220010707 carrier=57909 count=1007 status=OK vthread=37 traceid_hi=cafebabe00c0ffee traceid_lo=7 spanid=800000003
+[marker] ts=69936224683606 carrier=57909 count=1007 status=OK vthread=37 traceid_hi=cafebabe00c0ffee traceid_lo=7 spanid=800000004
+[marker] ts=69936236571228 carrier=57909 count=1007 status=OK vthread=37 traceid_hi=cafebabe00c0ffee traceid_lo=7 spanid=800000005
+[marker] ts=69936246547941 carrier=57909 count=1007 status=OK vthread=37 traceid_hi=cafebabe00c0ffee traceid_lo=7 spanid=800000006
+[marker] ts=69936257430984 carrier=57909 count=1007 status=OK vthread=37 traceid_hi=cafebabe00c0ffee traceid_lo=7 spanid=800000007
+[marker] ts=69936265493828 carrier=57909 count=1007 status=OK vthread=37 traceid_hi=cafebabe00c0ffee traceid_lo=7 spanid=800000008
+[marker] ts=69936266100618 carrier=57913 count=1008 status=OK vthread=38 traceid_hi=cafebabe00c0ffee traceid_lo=8 spanid=900000001
+[marker] ts=69936276727536 carrier=57909 count=1008 status=OK vthread=38 traceid_hi=cafebabe00c0ffee traceid_lo=8 spanid=900000002
+[marker] ts=69936279476943 carrier=57909 count=1008 status=OK vthread=38 traceid_hi=cafebabe00c0ffee traceid_lo=8 spanid=900000003
+[marker] ts=69936292131937 carrier=57909 count=1008 status=OK vthread=38 traceid_hi=cafebabe00c0ffee traceid_lo=8 spanid=900000004
+[marker] ts=69936303313187 carrier=57909 count=1008 status=OK vthread=38 traceid_hi=cafebabe00c0ffee traceid_lo=8 spanid=900000005
+[marker] ts=69936314879519 carrier=57909 count=1008 status=OK vthread=38 traceid_hi=cafebabe00c0ffee traceid_lo=8 spanid=900000006
+[marker] ts=69936325714728 carrier=57909 count=1008 status=OK vthread=38 traceid_hi=cafebabe00c0ffee traceid_lo=8 spanid=900000007
+[marker] ts=69936330094337 carrier=57909 count=1008 status=OK vthread=38 traceid_hi=cafebabe00c0ffee traceid_lo=8 spanid=900000008
+[marker] ts=69936330673918 carrier=57913 count=1009 status=OK vthread=39 traceid_hi=cafebabe00c0ffee traceid_lo=9 spanid=a00000001
+[marker] ts=69936342424749 carrier=57909 count=1009 status=OK vthread=39 traceid_hi=cafebabe00c0ffee traceid_lo=9 spanid=a00000002
+[marker] ts=69936345489613 carrier=57909 count=1009 status=OK vthread=39 traceid_hi=cafebabe00c0ffee traceid_lo=9 spanid=a00000003
+[marker] ts=69936350503469 carrier=57909 count=1009 status=OK vthread=39 traceid_hi=cafebabe00c0ffee traceid_lo=9 spanid=a00000004
+[marker] ts=69936356812195 carrier=57909 count=1009 status=OK vthread=39 traceid_hi=cafebabe00c0ffee traceid_lo=9 spanid=a00000005
+[marker] ts=69936360831430 carrier=57909 count=1009 status=OK vthread=39 traceid_hi=cafebabe00c0ffee traceid_lo=9 spanid=a00000006
+[marker] ts=69936367502655 carrier=57909 count=1009 status=OK vthread=39 traceid_hi=cafebabe00c0ffee traceid_lo=9 spanid=a00000007
+[marker] ts=69936375705416 carrier=57909 count=1009 status=OK vthread=39 traceid_hi=cafebabe00c0ffee traceid_lo=9 spanid=a00000008
+[marker] ts=69936376371414 carrier=57913 count=1010 status=OK vthread=40 traceid_hi=cafebabe00c0ffee traceid_lo=a spanid=b00000001
+[marker] ts=69936380406440 carrier=57913 count=1010 status=OK vthread=40 traceid_hi=cafebabe00c0ffee traceid_lo=a spanid=b00000002
+[marker] ts=69936384624966 carrier=57913 count=1010 status=OK vthread=40 traceid_hi=cafebabe00c0ffee traceid_lo=a spanid=b00000003
+[marker] ts=69936390297737 carrier=57913 count=1010 status=OK vthread=40 traceid_hi=cafebabe00c0ffee traceid_lo=a spanid=b00000004
+[marker] ts=69936395718800 carrier=57913 count=1010 status=OK vthread=40 traceid_hi=cafebabe00c0ffee traceid_lo=a spanid=b00000005
+[marker] ts=69936402123151 carrier=57908 count=1010 status=OK vthread=40 traceid_hi=cafebabe00c0ffee traceid_lo=a spanid=b00000006
+[marker] ts=69936411126950 carrier=57908 count=1010 status=OK vthread=40 traceid_hi=cafebabe00c0ffee traceid_lo=a spanid=b00000007
+[marker] ts=69936421826119 carrier=57908 count=1010 status=OK vthread=40 traceid_hi=cafebabe00c0ffee traceid_lo=a spanid=b00000008
+[marker] ts=69936422972448 carrier=57908 count=1011 status=OK vthread=41 traceid_hi=cafebabe00c0ffee traceid_lo=b spanid=c00000001
+[marker] ts=69936432142163 carrier=57908 count=1011 status=OK vthread=41 traceid_hi=cafebabe00c0ffee traceid_lo=b spanid=c00000002
+[marker] ts=69936442472791 carrier=57908 count=1011 status=OK vthread=41 traceid_hi=cafebabe00c0ffee traceid_lo=b spanid=c00000003
+[marker] ts=69936445574780 carrier=57908 count=1011 status=OK vthread=41 traceid_hi=cafebabe00c0ffee traceid_lo=b spanid=c00000004
+[marker] ts=69936453267126 carrier=57908 count=1011 status=OK vthread=41 traceid_hi=cafebabe00c0ffee traceid_lo=b spanid=c00000005
+[marker] ts=69936465311914 carrier=57908 count=1011 status=OK vthread=41 traceid_hi=cafebabe00c0ffee traceid_lo=b spanid=c00000006
+[marker] ts=69936469990230 carrier=57908 count=1011 status=OK vthread=41 traceid_hi=cafebabe00c0ffee traceid_lo=b spanid=c00000007
+[marker] ts=69936478212616 carrier=57908 count=1011 status=OK vthread=41 traceid_hi=cafebabe00c0ffee traceid_lo=b spanid=c00000008
+[marker] ts=69936479201362 carrier=57908 count=1012 status=OK vthread=42 traceid_hi=cafebabe00c0ffee traceid_lo=c spanid=d00000001
+[marker] ts=69936482230476 carrier=57908 count=1012 status=OK vthread=42 traceid_hi=cafebabe00c0ffee traceid_lo=c spanid=d00000002
+[marker] ts=69936486450835 carrier=57908 count=1012 status=OK vthread=42 traceid_hi=cafebabe00c0ffee traceid_lo=c spanid=d00000003
+[marker] ts=69936490876277 carrier=57913 count=1012 status=OK vthread=42 traceid_hi=cafebabe00c0ffee traceid_lo=c spanid=d00000004
+[marker] ts=69936499731244 carrier=57908 count=1012 status=OK vthread=42 traceid_hi=cafebabe00c0ffee traceid_lo=c spanid=d00000005
+[marker] ts=69936510668328 carrier=57908 count=1012 status=OK vthread=42 traceid_hi=cafebabe00c0ffee traceid_lo=c spanid=d00000006
+[marker] ts=69936516686347 carrier=57908 count=1012 status=OK vthread=42 traceid_hi=cafebabe00c0ffee traceid_lo=c spanid=d00000007
+[marker] ts=69936528572344 carrier=57913 count=1012 status=OK vthread=42 traceid_hi=cafebabe00c0ffee traceid_lo=c spanid=d00000008
+[marker] ts=69936529380008 carrier=57908 count=1013 status=OK vthread=43 traceid_hi=cafebabe00c0ffee traceid_lo=d spanid=e00000001
+[marker] ts=69936538855306 carrier=57908 count=1013 status=OK vthread=43 traceid_hi=cafebabe00c0ffee traceid_lo=d spanid=e00000002
+[marker] ts=69936543147623 carrier=57908 count=1013 status=OK vthread=43 traceid_hi=cafebabe00c0ffee traceid_lo=d spanid=e00000003
+[marker] ts=69936553618417 carrier=57908 count=1013 status=OK vthread=43 traceid_hi=cafebabe00c0ffee traceid_lo=d spanid=e00000004
+[marker] ts=69936566714410 carrier=57908 count=1013 status=OK vthread=43 traceid_hi=cafebabe00c0ffee traceid_lo=d spanid=e00000005
+[marker] ts=69936577223996 carrier=57908 count=1013 status=OK vthread=43 traceid_hi=cafebabe00c0ffee traceid_lo=d spanid=e00000006
+[marker] ts=69936586411545 carrier=57908 count=1013 status=OK vthread=43 traceid_hi=cafebabe00c0ffee traceid_lo=d spanid=e00000007
+[marker] ts=69936592307189 carrier=57908 count=1013 status=OK vthread=43 traceid_hi=cafebabe00c0ffee traceid_lo=d spanid=e00000008
+[marker] ts=69936592949895 carrier=57908 count=1014 status=OK vthread=44 traceid_hi=cafebabe00c0ffee traceid_lo=e spanid=f00000001
+[marker] ts=69936597672961 carrier=57908 count=1014 status=OK vthread=44 traceid_hi=cafebabe00c0ffee traceid_lo=e spanid=f00000002
+[marker] ts=69936607721173 carrier=57908 count=1014 status=OK vthread=44 traceid_hi=cafebabe00c0ffee traceid_lo=e spanid=f00000003
+[marker] ts=69936614785230 carrier=57908 count=1014 status=OK vthread=44 traceid_hi=cafebabe00c0ffee traceid_lo=e spanid=f00000004
+[marker] ts=69936625843856 carrier=57913 count=1014 status=OK vthread=44 traceid_hi=cafebabe00c0ffee traceid_lo=e spanid=f00000005
+[marker] ts=69936631806958 carrier=57913 count=1014 status=OK vthread=44 traceid_hi=cafebabe00c0ffee traceid_lo=e spanid=f00000006
+[marker] ts=69936634722531 carrier=57913 count=1014 status=OK vthread=44 traceid_hi=cafebabe00c0ffee traceid_lo=e spanid=f00000007
+[marker] ts=69936646415154 carrier=57913 count=1014 status=OK vthread=44 traceid_hi=cafebabe00c0ffee traceid_lo=e spanid=f00000008
+[marker] ts=69936647326275 carrier=57913 count=1015 status=OK vthread=45 traceid_hi=cafebabe00c0ffee traceid_lo=f spanid=1000000001
+[marker] ts=69936652521464 carrier=57913 count=1015 status=OK vthread=45 traceid_hi=cafebabe00c0ffee traceid_lo=f spanid=1000000002
+[marker] ts=69936664751627 carrier=57913 count=1015 status=OK vthread=45 traceid_hi=cafebabe00c0ffee traceid_lo=f spanid=1000000003
+[marker] ts=69936672261890 carrier=57908 count=1015 status=OK vthread=45 traceid_hi=cafebabe00c0ffee traceid_lo=f spanid=1000000004
+[marker] ts=69936678812491 carrier=57913 count=1015 status=OK vthread=45 traceid_hi=cafebabe00c0ffee traceid_lo=f spanid=1000000005
+[marker] ts=69936691035862 carrier=57913 count=1015 status=OK vthread=45 traceid_hi=cafebabe00c0ffee traceid_lo=f spanid=1000000006
+[marker] ts=69936697145672 carrier=57913 count=1015 status=OK vthread=45 traceid_hi=cafebabe00c0ffee traceid_lo=f spanid=1000000007
+[marker] ts=69936701632655 carrier=57913 count=1015 status=OK vthread=45 traceid_hi=cafebabe00c0ffee traceid_lo=f spanid=1000000008
+ebpf-vthread-harness: tracing stopped
+
+
+@cache_delete: 128
+@cache_insert: 128
+@carriers[57909]: 171
+@carriers[57913]: 191
+@carriers[57908]: 422
+@end_total: 16
+@end_unmatched: 0
+@freeze_failed_kept: 0
+@freeze_result[0]: 112
+@freeze_total: 112
+@freeze_unmatched: 0
+@marker_nullbuf: 0
+@marker_total: 128
+@marker_unmapped: 0
+@pinned_total: 0
+@start_total: 16
+@thaw_kind[0]: 112
+@thaw_kind[1]: 672
+@thaw_nullbuf: 0
+@thaw_top: 112
+@thaw_total: 784
+@write_correlated: 128
+@write_invalid_ctx: 0
+@write_on_vthread: 128
